@@ -36,7 +36,7 @@
 			<Add library="../lib/libpng12_linux64.a" />
 			<Add library="z" />
 		</Linker>
-		<Unit filename="../../02_quad_color.cpp" />
+		<Unit filename="01_quad.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
