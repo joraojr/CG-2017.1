@@ -1,0 +1,45 @@
+# depslib dependency file v1.0
+1409787732 source:/media/rodrigo/Data/Rodrigo/Dropbox/Projects/Disciplinas/CG/CG/src/01_quad.cpp
+	<stdio.h>
+	<GL/glut.h>
+
+1368290960 /media/rodrigo/Data/Rodrigo/Dropbox/Projects/Disciplinas/CG/CG/include/GL/glut.h
+	"freeglut_std.h"
+
+1368290960 /media/rodrigo/Data/Rodrigo/Dropbox/Projects/Disciplinas/CG/CG/include/GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1489588914 source:/home/jorao/Documentos/02_quad_color.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<math.h>
+
+1368290960 /home/jorao/Documentos/CG/include/GL/glut.h
+	"freeglut_std.h"
+
+1368290960 /home/jorao/Documentos/CG/include/GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1490205370 source:/home/jorao/Documentos/CG/Exercícios/05_triangle_anim.cpp
+	<GL/glut.h>
+
+1490209045 source:/home/jorao/Documentos/CG/Exercícios/animation/animationBase.cpp
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"extras.h"
+	<math.h>
+
+1471984452 /home/jorao/Documentos/CG/Exercícios/animation/extras.h
+
