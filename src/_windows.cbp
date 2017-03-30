@@ -24,7 +24,7 @@
 			<Add option="-fexceptions" />
 			<Add directory="../include" />
 			<Add directory="../include/png" />
-			<Add directory="../include/zlib" />			
+			<Add directory="../include/zlib" />
 		</Compiler>
 		<Linker>
 			<Add library="libpng.a" />
@@ -37,7 +37,6 @@
 			<Add library="libglew32.dll.a" />
 			<Add directory="../lib" />
 		</Linker>
-		<Unit filename="01_quad.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

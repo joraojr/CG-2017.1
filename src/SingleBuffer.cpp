@@ -14,40 +14,53 @@
 float var=0.0;
 float step = 0.0001;
 float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
-int type = 2; /// 1 - Epitrochoid 2 - Hypotrochoid
+int type = 3; /// 1 - Epitrochoid 2 - Hypotrochoid
 
 void idle(void)
 {
-    if(type == 1){
+    if(type == 1)
+    {
         x = (bigR + minorR)*cos(theta) - d*cos(((bigR + minorR)/minorR)*theta);
         y = (bigR + minorR)*sin(theta) - d*sin(((bigR + minorR)/minorR)*theta);
-    }else if(type == 2){
+    }
+    else if(type == 2)
+    {
         x = (bigR - minorR)*cos(theta) + d*cos(((bigR - minorR)/minorR)*theta);
         y = (bigR - minorR)*sin(theta) - d*sin(((bigR - minorR)/minorR)*theta);
     }
 
     theta += speed;
 
-	glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 void display()
 {
-	glColor3f(0.0,0.0,0.0);
-	glBegin(GL_POINTS);
-		glVertex2f(x,y);
-	glEnd();
+    glColor3f(0.0,0.0,0.0);
+    glBegin(GL_POINTS);
+    glVertex2f(x,y);
+    glEnd();
 
-	glFinish();
+    glFinish();
 }
 
 void keyboard(unsigned char key, int x, int y)
 {
     switch (key)
     {
-      case 27:
-         exit(0);
-      break;
+    case 27:
+        exit(0);
+        break;
+    case '1':
+        type = 1;
+        break;
+    case '2':
+        type =2;
+        break;
+    case '3':
+        type =3;
+        glClear(GL_COLOR_BUFFER_BIT);
+        break;
     }
 }
 
@@ -55,12 +68,12 @@ void init()
 {
     glPointSize(2.0);
 
-	glClearColor(1.0,1.0,1.0,0.0);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-20.0,20.0,-20.0,20.0,-1.0,1.0);
+    glClearColor(1.0,1.0,1.0,0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-20.0,20.0,-20.0,20.0,-1.0,1.0);
 
-	glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -68,16 +81,16 @@ void init()
 
 int main(int argc,char *argv[])
 {
-	glutInit(&argc,argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize(500, 500);
-	glutCreateWindow("Single Buffer - Not clearing Buffer (ESC to Exit)");
- 	init();
-	glutIdleFunc(idle);
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(500, 500);
+    glutCreateWindow("Single Buffer - Not clearing Buffer (ESC to Exit)");
+    init();
+    glutIdleFunc(idle);
     glutKeyboardFunc(keyboard);
-	glutDisplayFunc(display);
+    glutDisplayFunc(display);
 
-	glutMainLoop();
-	return 0;
+    glutMainLoop();
+    return 0;
 }
 
