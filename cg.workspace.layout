@@ -2,5 +2,6 @@
 <CodeBlocks_workspace_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveProject path="src/_linux64.cbp" />
-	<EditorTabsLayout layout="045846c058dab7be00683f6f00000002=*0;Windows:01_quad.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=546;besth=240;minw=546;minh=240;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=045846c058dab7be00683f6f00000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<PreferredTarget name="Debug" />
+	<EditorTabsLayout layout="0506430058dc6f35020b3f8000000002=*0;Linux:../../GLUI_examples/example1.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=546;besth=240;minw=546;minh=240;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=0506430058dc6f35020b3f8000000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_workspace_layout_file>
