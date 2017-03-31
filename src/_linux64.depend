@@ -43,3 +43,41 @@
 
 1471984452 /home/jorao/Documentos/CG/Exercícios/animation/extras.h
 
+1490840850 source:/home/jorao/Documentos/CG/CG-2017.1/src/SingleBuffer.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<math.h>
+
+1490840850 /home/jorao/Documentos/CG/CG-2017.1/include/GL/glut.h
+	"freeglut_std.h"
+
+1490840850 /home/jorao/Documentos/CG/CG-2017.1/include/GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1490841171 source:/home/jorao/Documentos/CG/gluiSimple.cpp
+	<string.h>
+	<GL/glui.h>
+
+1490840850 /home/jorao/Documentos/CG/CG-2017.1/include/GL/glui.h
+	<GL/freeglut.h>
+	<GL/openglut.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdlib>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1490840850 /home/jorao/Documentos/CG/CG-2017.1/include/GL/freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1490840850 /home/jorao/Documentos/CG/CG-2017.1/include/GL/freeglut_ext.h
+	<stdarg.h>
+
