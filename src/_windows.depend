@@ -1,20 +1,5 @@
 # depslib dependency file v1.0
-1490749729 source:/home/jorao/Documentos/CG/CG-2017.1/src/01_quad.cpp
-	<stdio.h>
-	<GL/glut.h>
-
-1490749729 /home/jorao/Documentos/CG/CG-2017.1/include/GL/glut.h
-	"freeglut_std.h"
-
-1490749729 /home/jorao/Documentos/CG/CG-2017.1/include/GL/freeglut_std.h
-	<windows.h>
-	<OpenGL/gl.h>
-	<OpenGL/glu.h>
-	<GL/gl.h>
-	<GL/glu.h>
-	<stdlib.h>
-
-1490981849 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
+1490985946 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
