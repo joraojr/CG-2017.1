@@ -19,7 +19,7 @@
 #define TYPE_ID 123
 
 using namespace std;
-int listbox_item_id = 6;
+int listbox_item_id = 5;
 float color [3] = {1.0,1.0,1.0} ;
 
 
@@ -29,13 +29,14 @@ int idleOn = 0, main_window,cleanScreen = 0;
 
 GLUI *glui;
 GLUI_Panel *obj_panel;
+GLUI_Panel *obj_panel_color;
 GLUI_RadioGroup *radio;
+GLUI_RadioGroup *radio_colors;
 
 void idle(void)
 {
     if(idleOn)
     {
-        color[0] = 0.0;
         if(type == 0)
         {
             x = (bigR + minorR)*cos(theta) - d*cos(((bigR + minorR)/minorR)*theta);
@@ -89,7 +90,8 @@ void keyboard(unsigned char key, int x, int y)
     }
 }
 
-void setColorToWhite(){
+void setColorToWhite()
+{
     color[0] = 1.0;
     color[1] = 1.0;
     color[2] = 1.0;
@@ -109,70 +111,63 @@ void init()
 
     glClear(GL_COLOR_BUFFER_BIT);
 }
-
 void control_callback(int control)
 {
     switch(control)
     {
-        case DISABLE_ID :
-            idleOn = 1;
-            obj_panel->disable();
+    case DISABLE_ID :
+        idleOn = 1;
+        obj_panel->disable();
+        break;
+    case ENABLE_ID:
+   //     setColorToWhite();
+        idleOn = 0;
+        obj_panel->enable();
+        break;
+    case CLEAN_ID:
+   //     setColorToWhite();
+        cleanScreen = 1;
+        break;
+    case COLOR_LISTBOX:
+        cout << listbox_item_id;
+        switch (listbox_item_id)
+        {
+        case 0:
+            color[0] = 0.0;
+            color[1] = 0.0;
+            color[2] = 0.0;
             break;
-        case ENABLE_ID:
-            setColorToWhite();
-            idleOn = 0;
-            obj_panel->enable();
+        case 1:
+            color[0] = 0.0;
+            color[1] = 0.0;
+            color[2] = 255.0;
             break;
-        case CLEAN_ID:
-            setColorToWhite();
-            cleanScreen = 1;
+        case 2:
+            color[0] = 255.0;
+            color[1] = 0.0;
+            color[2] = 0.0;
             break;
-        case COLOR_LISTBOX:
-            switch (listbox_item_id)
-            {
-            case 1:
-                color[0] = 0.0;
-                color[1] = 0.0;
-                color[2] = 0.0;
-                break;
-            case 2:
-                color[0] = 0.0;
-                color[1] = 0.0;
-                color[2] = 255.0;
-                break;
-            case 3:
-                color[0] = 255.0;
-                color[1] = 0.0;
-                color[2] = 0.0;
-                break;
-            case 4:
-                color[0] = 255.0;
-                color[1] = 255.0;
-                color[2] = 255.0;
-                break;
-            case 5:
-                color[0] = 0.0;
-                color[1] = 255.0;
-                color[2] = 0.0;
-                break;
-            case 6:
-                color[0] = 255.0;
-                color[1] = 255.0;
-                color[2] = 255.0;
-                break;
-            default:
-                break;
-            }
+        case 3:
+            color[0] = 255.0;
+            color[1] = 255.0;
+            color[2] = 0.0;
             break;
-        case TYPE_ID:
-            if(radio->get_int_val() == 0){
-                type = 0;
-            }else if(radio->get_int_val() == 1){
-                type = 1;
-            }
+        case 4:
+            color[0] = 0.0;
+            color[1] = 255.0;
+            color[2] = 0.0;
+            break;
+        case 5:
+            color[0] = 255.0;
+            color[1] = 255.0;
+            color[2] = 255.0;
             break;
         default:
             break;
+        }
+        break;
+    default:
+        break;
     }
 
 }
@@ -212,10 +207,10 @@ int main(int argc,char *argv[])
     /*
     ///Cores
 
-/// Cria o listbox de cores dentro do painel
+    /// Cria o listbox de cores dentro do painel
     GLUI_Listbox *color_listbox = glui->add_listbox_to_panel (obj_panel, "Color", &listbox_item_id, COLOR_LISTBOX, control_callback);
 
-///  Adiciona itens no listbox
+    ///  Adiciona itens no listbox
     color_listbox->add_item (1, "Preto");
     color_listbox->add_item (2, "Azul");
     color_listbox->add_item (3, "Vermelho");
@@ -223,6 +218,18 @@ int main(int argc,char *argv[])
     color_listbox->add_item (5, "Verde");
     color_listbox->add_item (6, "Branco");
     */
+
+    ///Cores
+    obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
+
+    radio_colors = new GLUI_RadioGroup( obj_panel_color,&listbox_item_id,COLOR_LISTBOX,control_callback);
+    new GLUI_RadioButton( radio_colors, "Preto" );
+    new GLUI_RadioButton( radio_colors, "Azul" );
+    new GLUI_RadioButton( radio_colors, "Vermelho" );
+    new GLUI_RadioButton( radio_colors, "Amarelo" );
+    new GLUI_RadioButton( radio_colors, "Verde" );
+    new GLUI_RadioButton( radio_colors, "Branco" );
+//    new GLUI_RadioButton( radio_colors, "Automatico" );
 
     new GLUI_Button(obj_panel, "Desenhar", DISABLE_ID, control_callback );
 
