@@ -21,7 +21,7 @@
 using namespace std;
 int listbox_item_id = 5;
 float color [3] = {1.0,1.0,1.0} ;
-
+float colorAux [3] = {0.0,0.0,0.0};
 
 float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
 int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
@@ -37,6 +37,9 @@ void idle(void)
 {
     if(idleOn)
     {
+        color[0] = colorAux[0];
+        color[1] = colorAux[1];
+        color[2] = colorAux[2];
         if(type == 0)
         {
             x = (bigR + minorR)*cos(theta) - d*cos(((bigR + minorR)/minorR)*theta);
@@ -62,7 +65,6 @@ void idle(void)
         glClear(GL_COLOR_BUFFER_BIT);
         cleanScreen = 0;
     }
-
 
     glutPostRedisplay();
 }
@@ -120,12 +122,12 @@ void control_callback(int control)
         obj_panel->disable();
         break;
     case ENABLE_ID:
-   //     setColorToWhite();
+        setColorToWhite();
         idleOn = 0;
         obj_panel->enable();
         break;
     case CLEAN_ID:
-   //     setColorToWhite();
+        setColorToWhite();
         cleanScreen = 1;
         break;
     case COLOR_LISTBOX:
@@ -133,34 +135,29 @@ void control_callback(int control)
         switch (listbox_item_id)
         {
         case 0:
-            color[0] = 0.0;
-            color[1] = 0.0;
-            color[2] = 0.0;
+            colorAux[0] = 0.0;
+            colorAux[1] = 0.0;
+            colorAux[2] = 0.0;
             break;
         case 1:
-            color[0] = 0.0;
-            color[1] = 0.0;
-            color[2] = 255.0;
+            colorAux[0] = 0.0;
+            colorAux[1] = 0.0;
+            colorAux[2] = 255.0;
             break;
         case 2:
-            color[0] = 255.0;
-            color[1] = 0.0;
-            color[2] = 0.0;
+            colorAux[0] = 255.0;
+            colorAux[1] = 0.0;
+            colorAux[2] = 0.0;
             break;
         case 3:
-            color[0] = 255.0;
-            color[1] = 255.0;
-            color[2] = 0.0;
+            colorAux[0] = 255.0;
+            colorAux[1] = 255.0;
+            colorAux[2] = 0.0;
             break;
         case 4:
-            color[0] = 0.0;
-            color[1] = 255.0;
-            color[2] = 0.0;
-            break;
-        case 5:
-            color[0] = 255.0;
-            color[1] = 255.0;
-            color[2] = 255.0;
+            colorAux[0] = 0.0;
+            colorAux[1] = 255.0;
+            colorAux[2] = 0.0;
             break;
         default:
             break;
@@ -204,20 +201,6 @@ int main(int argc,char *argv[])
     GLUI_Spinner *spinnerD = new GLUI_Spinner( obj_panel, "d:", &d);
     spinnerD->set_float_limits(0.0,40.0);
     spinnerBigR->set_float_limits(0.0,40.0);
-    /*
-    ///Cores
-
-    /// Cria o listbox de cores dentro do painel
-    GLUI_Listbox *color_listbox = glui->add_listbox_to_panel (obj_panel, "Color", &listbox_item_id, COLOR_LISTBOX, control_callback);
-
-    ///  Adiciona itens no listbox
-    color_listbox->add_item (1, "Preto");
-    color_listbox->add_item (2, "Azul");
-    color_listbox->add_item (3, "Vermelho");
-    color_listbox->add_item (4, "Amarelo");
-    color_listbox->add_item (5, "Verde");
-    color_listbox->add_item (6, "Branco");
-    */
 
     ///Cores
     obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
@@ -228,7 +211,6 @@ int main(int argc,char *argv[])
     new GLUI_RadioButton( radio_colors, "Vermelho" );
     new GLUI_RadioButton( radio_colors, "Amarelo" );
     new GLUI_RadioButton( radio_colors, "Verde" );
-    new GLUI_RadioButton( radio_colors, "Branco" );
 //    new GLUI_RadioButton( radio_colors, "Automatico" );
 
     new GLUI_Button(obj_panel, "Desenhar", DISABLE_ID, control_callback );
