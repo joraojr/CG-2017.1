@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1490985946 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
+1491069274 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<math.h>
+	<iostream>
 
 1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\glut.h
 	"freeglut_std.h"
@@ -34,7 +35,7 @@
 1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\freeglut_ext.h
 	<stdarg.h>
 
-1491022452 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\singlebuffer.cpp
+1491077654 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\singlebuffer.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
@@ -71,4 +72,6 @@
 	<stdarg.h>
 
 1491019596 source:c:\users\jorgo\downloads\cg\cg\src\gluiexample.cpp
+
+1491075436 source:c:\users\jorgo\downloads\glui_examples\example2.cpp
 

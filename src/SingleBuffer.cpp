@@ -14,31 +14,35 @@
 #include <iostream>
 #define DISABLE_ID 1234
 #define ENABLE_ID 4321
-#define CLEAN 1111
+#define CLEAN_ID 1111
 #define COLOR_LISTBOX 7895
+#define TYPE_ID 123
 
 using namespace std;
-int listbox_item_id = 6;
-float color [3] = {0.0,0.0,0.0} ;
+int listbox_item_id = 5;
+float color [3] = {1.0,1.0,1.0} ;
 
 
 float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
-int type = 1; /// 1 - Epitrochoid 2 - Hypotrochoid
+int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
 int idleOn = 0, main_window,cleanScreen = 0;
 
 GLUI *glui;
 GLUI_Panel *obj_panel;
+GLUI_Panel *obj_panel_color;
+GLUI_RadioGroup *radio;
+GLUI_RadioGroup *radio_colors;
 
 void idle(void)
 {
     if(idleOn)
     {
-        if(type == 1)
+        if(type == 0)
         {
             x = (bigR + minorR)*cos(theta) - d*cos(((bigR + minorR)/minorR)*theta);
             y = (bigR + minorR)*sin(theta) - d*sin(((bigR + minorR)/minorR)*theta);
         }
-        else if(type == 2)
+        else if(type == 1)
         {
             x = (bigR - minorR)*cos(theta) + d*cos(((bigR - minorR)/minorR)*theta);
             y = (bigR - minorR)*sin(theta) - d*sin(((bigR - minorR)/minorR)*theta);
@@ -67,7 +71,6 @@ void display()
 {
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
     glColor3fv(color);
-
     glBegin(GL_POINTS);
     glVertex2f(x,y);
     glEnd();
@@ -87,6 +90,13 @@ void keyboard(unsigned char key, int x, int y)
     }
 }
 
+void setColorToWhite()
+{
+    color[0] = 1.0;
+    color[1] = 1.0;
+    color[2] = 1.0;
+}
+
 void init()
 {
     glPointSize(2.0);
@@ -101,7 +111,6 @@ void init()
 
     glClear(GL_COLOR_BUFFER_BIT);
 }
-
 void control_callback(int control)
 {
     switch(control)
@@ -111,41 +120,44 @@ void control_callback(int control)
         obj_panel->disable();
         break;
     case ENABLE_ID:
+   //     setColorToWhite();
         idleOn = 0;
         obj_panel->enable();
         break;
-    case CLEAN:
-            cleanScreen = 1;
+    case CLEAN_ID:
+   //     setColorToWhite();
+        cleanScreen = 1;
         break;
     case COLOR_LISTBOX:
+        cout << listbox_item_id;
         switch (listbox_item_id)
         {
+        case 0:
+            color[0] = 0.0;
+            color[1] = 0.0;
+            color[2] = 0.0;
+            break;
         case 1:
             color[0] = 0.0;
             color[1] = 0.0;
-            color[2] = 0.0;
+            color[2] = 255.0;
             break;
         case 2:
-            color[0] = 0.0;
+            color[0] = 255.0;
             color[1] = 0.0;
-            color[2] = 255.0;
+            color[2] = 0.0;
             break;
         case 3:
             color[0] = 255.0;
-            color[1] = 0.0;
+            color[1] = 255.0;
             color[2] = 0.0;
             break;
         case 4:
-            color[0] = 255.0;
-            color[1] = 255.0;
-            color[2] = 255.0;
-            break;
-        case 5:
             color[0] = 0.0;
             color[1] = 255.0;
             color[2] = 0.0;
             break;
-        case 6:
+        case 5:
             color[0] = 255.0;
             color[1] = 255.0;
             color[2] = 255.0;
@@ -153,6 +165,8 @@ void control_callback(int control)
         default:
             break;
         }
+        break;
+    default:
         break;
     }
 
@@ -172,41 +186,55 @@ int main(int argc,char *argv[])
     ///GLUI code
     glui = GLUI_Master.create_glui_subwindow( main_window,GLUI_SUBWINDOW_RIGHT );
     obj_panel = new GLUI_Rollout(glui, "Parametros", true );
+
+    /// Selecionar tipo de Espirógrafo
+    radio = new GLUI_RadioGroup(obj_panel,&type,TYPE_ID,control_callback);
+    new GLUI_RadioButton(radio,"Epitrochoid");
+    new GLUI_RadioButton(radio,"Hypotrochoid");
+
     ///Raio da esfera maior
     GLUI_Spinner *spinnerBigR = new GLUI_Spinner( obj_panel, "R:", &bigR);
-    spinnerBigR->set_alignment( GLUI_ALIGN_CENTER );
+
     spinnerBigR->set_float_limits(0.0,40.0);
     ///Raio da esfera menor
     GLUI_Spinner *spinnerMinorR = new GLUI_Spinner( obj_panel, "r:", &minorR);
-    spinnerMinorR->set_alignment( GLUI_ALIGN_CENTER );
+
     spinnerMinorR->set_float_limits(0.0,40.0);
     ///Distancia do centro da esfera menor até o ponto de desenho
     GLUI_Spinner *spinnerD = new GLUI_Spinner( obj_panel, "d:", &d);
-    spinnerD->set_alignment( GLUI_ALIGN_CENTER );
     spinnerD->set_float_limits(0.0,40.0);
     spinnerBigR->set_float_limits(0.0,40.0);
-
+    /*
     ///Cores
 
-/// Cria o listbox de cores dentro do painel
+    /// Cria o listbox de cores dentro do painel
     GLUI_Listbox *color_listbox = glui->add_listbox_to_panel (obj_panel, "Color", &listbox_item_id, COLOR_LISTBOX, control_callback);
 
-///  Adiciona itens no listbox
+    ///  Adiciona itens no listbox
     color_listbox->add_item (1, "Preto");
     color_listbox->add_item (2, "Azul");
     color_listbox->add_item (3, "Vermelho");
     color_listbox->add_item (4, "Amarelo");
     color_listbox->add_item (5, "Verde");
     color_listbox->add_item (6, "Branco");
+    */
 
+    ///Cores
+    obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
 
-
-
+    radio_colors = new GLUI_RadioGroup( obj_panel_color,&listbox_item_id,COLOR_LISTBOX,control_callback);
+    new GLUI_RadioButton( radio_colors, "Preto" );
+    new GLUI_RadioButton( radio_colors, "Azul" );
+    new GLUI_RadioButton( radio_colors, "Vermelho" );
+    new GLUI_RadioButton( radio_colors, "Amarelo" );
+    new GLUI_RadioButton( radio_colors, "Verde" );
+    new GLUI_RadioButton( radio_colors, "Branco" );
+//    new GLUI_RadioButton( radio_colors, "Automatico" );
 
     new GLUI_Button(obj_panel, "Desenhar", DISABLE_ID, control_callback );
 
     new GLUI_Button(glui, "Parar desenho", ENABLE_ID, control_callback );
-    new GLUI_Button(glui, "Limpar desenho", CLEAN, control_callback );
+    new GLUI_Button(glui, "Limpar desenho", CLEAN_ID, control_callback );
 
 
 
