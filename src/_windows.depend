@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1490985946 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
+1491069274 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<math.h>
+	<iostream>
 
 1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\glut.h
 	"freeglut_std.h"
