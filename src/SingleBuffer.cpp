@@ -39,6 +39,7 @@ GLUI_RadioGroup *radio_colors;
 
 void idle(void)
 {
+
     if(idleOn)
     {
 
@@ -76,6 +77,10 @@ void idle(void)
 
 void display()
 {
+    ///Para conseguir alterar o ortho
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-position,position,-position,position,-1.0,1.0);
 
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
     glPointSize(3);
@@ -112,9 +117,6 @@ void init()
     glPointSize(2.0);
 
     glClearColor(1.0,1.0,1.0,0.0);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-position,position,-position,position,-1.0,1.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -130,7 +132,6 @@ void control_callback(int control)
         obj_panel->disable();
         break;
     case ENABLE_ID:
-        setColorToWhite();
         idleOn = 0;
         obj_panel->enable();
         break;
@@ -182,12 +183,10 @@ void mouse(int key, int state, int x, int y)
     {
     case 3:
         printf("\nScroll up.");
-
         position +=10;
         break;
     case 4:
         printf("\nScroll down.");
-
         position -=10;
         break;
     }
@@ -226,11 +225,6 @@ int main(int argc,char *argv[])
     GLUI_Spinner *spinnerD = new GLUI_Spinner( obj_panel, "d:", &d);
     spinnerD->set_float_limits(0.0,40.0);
     spinnerBigR->set_float_limits(0.0,40.0);
-
-    ///Speed
-    obj_panel_speed = new GLUI_Rollout(glui, "Velocidade", true );
-    GLUI_Spinner *spinnerS = new GLUI_Spinner(obj_panel_speed, "speed:", &speed);
-    spinnerS->set_float_limits(0.005,0.050);
 
     ///Cores
     obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
