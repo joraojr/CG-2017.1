@@ -17,6 +17,8 @@
 #define CLEAN_ID 1111
 #define COLOR_LISTBOX 7895
 #define TYPE_ID 123
+#define LIGHT0_INTENSITY_ID  250
+
 
 using namespace std;
 int listbox_item_id = 0;
@@ -26,6 +28,7 @@ float colorAux [3] = {0.0,0.0,0.0};
 float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
 int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
 int idleOn = 0, main_window,cleanScreen = 0;
+float position = 30.0;
 
 GLUI *glui;
 GLUI_Panel *obj_panel;
@@ -38,6 +41,7 @@ void idle(void)
 {
     if(idleOn)
     {
+
         color[0] = colorAux[0];
         color[1] = colorAux[1];
         color[2] = colorAux[2];
@@ -72,10 +76,12 @@ void idle(void)
 
 void display()
 {
+
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
     glColor3fv(color);
     glBegin(GL_POINTS);
     glVertex2f(x,y);
+
     glEnd();
 
     glFinish();
@@ -107,7 +113,7 @@ void init()
     glClearColor(1.0,1.0,1.0,0.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-30.0,30.0,-30.0,30.0,-1.0,1.0);
+    glOrtho(-position,position,-position,position,-1.0,1.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -169,6 +175,23 @@ void control_callback(int control)
 
 }
 
+void mouse(int key, int state, int x, int y)
+{
+    switch(key)
+    {
+    case 3:
+        printf("\nScroll up.");
+
+        position +=10;
+        break;
+    case 4:
+        printf("\nScroll down.");
+
+        position -=10;
+        break;
+    }
+
+}
 
 int main(int argc,char *argv[])
 {
@@ -178,6 +201,7 @@ int main(int argc,char *argv[])
     main_window = glutCreateWindow("Espirógrafo");
     init();
     glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
     glutDisplayFunc(display);
 
     ///GLUI code
@@ -216,8 +240,8 @@ int main(int argc,char *argv[])
     new GLUI_RadioButton( radio_colors, "Vermelho" );
     new GLUI_RadioButton( radio_colors, "Amarelo" );
     new GLUI_RadioButton( radio_colors, "Verde" );
-//    new GLUI_RadioButton( radio_colors, "Automatico" );
 
+    ///Desenhar-Parar desenho e Limpar
     new GLUI_Button(obj_panel, "Desenhar", DISABLE_ID, control_callback );
 
     new GLUI_Button(glui, "Parar desenho", ENABLE_ID, control_callback );
