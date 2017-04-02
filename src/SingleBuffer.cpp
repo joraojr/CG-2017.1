@@ -19,7 +19,7 @@
 #define TYPE_ID 123
 
 using namespace std;
-int listbox_item_id = 5;
+int listbox_item_id = 0;
 float color [3] = {1.0,1.0,1.0} ;
 float colorAux [3] = {0.0,0.0,0.0};
 
@@ -30,6 +30,7 @@ int idleOn = 0, main_window,cleanScreen = 0;
 GLUI *glui;
 GLUI_Panel *obj_panel;
 GLUI_Panel *obj_panel_color;
+GLUI_Panel *obj_panel_speed;
 GLUI_RadioGroup *radio;
 GLUI_RadioGroup *radio_colors;
 
@@ -131,7 +132,6 @@ void control_callback(int control)
         cleanScreen = 1;
         break;
     case COLOR_LISTBOX:
-        cout << listbox_item_id;
         switch (listbox_item_id)
         {
         case 0:
@@ -201,6 +201,11 @@ int main(int argc,char *argv[])
     GLUI_Spinner *spinnerD = new GLUI_Spinner( obj_panel, "d:", &d);
     spinnerD->set_float_limits(0.0,40.0);
     spinnerBigR->set_float_limits(0.0,40.0);
+
+    ///Speed
+    obj_panel_speed = new GLUI_Rollout(glui, "Velocidade", true );
+    GLUI_Spinner *spinnerS = new GLUI_Spinner( obj_panel_speed, "speed:", &speed);
+    spinnerS->set_float_limits(0.0,10.0);
 
     ///Cores
     obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
