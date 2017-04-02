@@ -73,6 +73,7 @@ void idle(void)
 void display()
 {
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
+    glPointSize(3);
     glColor3fv(color);
     glBegin(GL_POINTS);
     glVertex2f(x,y);
@@ -204,8 +205,8 @@ int main(int argc,char *argv[])
 
     ///Speed
     obj_panel_speed = new GLUI_Rollout(glui, "Velocidade", true );
-    GLUI_Spinner *spinnerS = new GLUI_Spinner( obj_panel_speed, "speed:", &speed);
-    spinnerS->set_float_limits(0.0,10.0);
+    GLUI_Spinner *spinnerS = new GLUI_Spinner(obj_panel_speed, "speed:", &speed);
+    spinnerS->set_float_limits(0.005,0.050);
 
     ///Cores
     obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
