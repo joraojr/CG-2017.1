@@ -17,19 +17,23 @@
 #define CLEAN_ID 1111
 #define COLOR_LISTBOX 7895
 #define TYPE_ID 123
+#define LIGHT0_INTENSITY_ID  250
+
 
 using namespace std;
-int listbox_item_id = 5;
+int listbox_item_id = 0;
 float color [3] = {1.0,1.0,1.0} ;
-
+float colorAux [3] = {0.0,0.0,0.0};
 
 float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
 int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
 int idleOn = 0, main_window,cleanScreen = 0;
+float position = 30.0;
 
 GLUI *glui;
 GLUI_Panel *obj_panel;
 GLUI_Panel *obj_panel_color;
+GLUI_Panel *obj_panel_speed;
 GLUI_RadioGroup *radio;
 GLUI_RadioGroup *radio_colors;
 
@@ -37,6 +41,10 @@ void idle(void)
 {
     if(idleOn)
     {
+
+        color[0] = colorAux[0];
+        color[1] = colorAux[1];
+        color[2] = colorAux[2];
         if(type == 0)
         {
             x = (bigR + minorR)*cos(theta) - d*cos(((bigR + minorR)/minorR)*theta);
@@ -63,16 +71,17 @@ void idle(void)
         cleanScreen = 0;
     }
 
-
     glutPostRedisplay();
 }
 
 void display()
 {
+
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
     glColor3fv(color);
     glBegin(GL_POINTS);
     glVertex2f(x,y);
+
     glEnd();
 
     glFinish();
@@ -104,7 +113,7 @@ void init()
     glClearColor(1.0,1.0,1.0,0.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-30.0,30.0,-30.0,30.0,-1.0,1.0);
+    glOrtho(-position,position,-position,position,-1.0,1.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -120,47 +129,41 @@ void control_callback(int control)
         obj_panel->disable();
         break;
     case ENABLE_ID:
-   //     setColorToWhite();
+        setColorToWhite();
         idleOn = 0;
         obj_panel->enable();
         break;
     case CLEAN_ID:
-   //     setColorToWhite();
+        setColorToWhite();
         cleanScreen = 1;
         break;
     case COLOR_LISTBOX:
-        cout << listbox_item_id;
         switch (listbox_item_id)
         {
         case 0:
-            color[0] = 0.0;
-            color[1] = 0.0;
-            color[2] = 0.0;
+            colorAux[0] = 0.0;
+            colorAux[1] = 0.0;
+            colorAux[2] = 0.0;
             break;
         case 1:
-            color[0] = 0.0;
-            color[1] = 0.0;
-            color[2] = 255.0;
+            colorAux[0] = 0.0;
+            colorAux[1] = 0.0;
+            colorAux[2] = 255.0;
             break;
         case 2:
-            color[0] = 255.0;
-            color[1] = 0.0;
-            color[2] = 0.0;
+            colorAux[0] = 255.0;
+            colorAux[1] = 0.0;
+            colorAux[2] = 0.0;
             break;
         case 3:
-            color[0] = 255.0;
-            color[1] = 255.0;
-            color[2] = 0.0;
+            colorAux[0] = 255.0;
+            colorAux[1] = 255.0;
+            colorAux[2] = 0.0;
             break;
         case 4:
-            color[0] = 0.0;
-            color[1] = 255.0;
-            color[2] = 0.0;
-            break;
-        case 5:
-            color[0] = 255.0;
-            color[1] = 255.0;
-            color[2] = 255.0;
+            colorAux[0] = 0.0;
+            colorAux[1] = 255.0;
+            colorAux[2] = 0.0;
             break;
         default:
             break;
@@ -172,6 +175,23 @@ void control_callback(int control)
 
 }
 
+void mouse(int key, int state, int x, int y)
+{
+    switch(key)
+    {
+    case 3:
+        printf("\nScroll up.");
+
+        position +=10;
+        break;
+    case 4:
+        printf("\nScroll down.");
+
+        position -=10;
+        break;
+    }
+
+}
 
 int main(int argc,char *argv[])
 {
@@ -181,6 +201,7 @@ int main(int argc,char *argv[])
     main_window = glutCreateWindow("Espirógrafo");
     init();
     glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
     glutDisplayFunc(display);
 
     ///GLUI code
@@ -204,20 +225,11 @@ int main(int argc,char *argv[])
     GLUI_Spinner *spinnerD = new GLUI_Spinner( obj_panel, "d:", &d);
     spinnerD->set_float_limits(0.0,40.0);
     spinnerBigR->set_float_limits(0.0,40.0);
-    /*
-    ///Cores
 
-    /// Cria o listbox de cores dentro do painel
-    GLUI_Listbox *color_listbox = glui->add_listbox_to_panel (obj_panel, "Color", &listbox_item_id, COLOR_LISTBOX, control_callback);
-
-    ///  Adiciona itens no listbox
-    color_listbox->add_item (1, "Preto");
-    color_listbox->add_item (2, "Azul");
-    color_listbox->add_item (3, "Vermelho");
-    color_listbox->add_item (4, "Amarelo");
-    color_listbox->add_item (5, "Verde");
-    color_listbox->add_item (6, "Branco");
-    */
+    ///Speed
+    obj_panel_speed = new GLUI_Rollout(glui, "Velocidade", true );
+    GLUI_Spinner *spinnerS = new GLUI_Spinner( obj_panel_speed, "speed:", &speed);
+    spinnerS->set_float_limits(0.0,10.0);
 
     ///Cores
     obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
@@ -228,9 +240,8 @@ int main(int argc,char *argv[])
     new GLUI_RadioButton( radio_colors, "Vermelho" );
     new GLUI_RadioButton( radio_colors, "Amarelo" );
     new GLUI_RadioButton( radio_colors, "Verde" );
-    new GLUI_RadioButton( radio_colors, "Branco" );
-//    new GLUI_RadioButton( radio_colors, "Automatico" );
 
+    ///Desenhar-Parar desenho e Limpar
     new GLUI_Button(obj_panel, "Desenhar", DISABLE_ID, control_callback );
 
     new GLUI_Button(glui, "Parar desenho", ENABLE_ID, control_callback );
