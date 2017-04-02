@@ -17,7 +17,6 @@
 #define CLEAN_ID 1111
 #define COLOR_LISTBOX 7895
 #define TYPE_ID 123
-#define LIGHT0_INTENSITY_ID  250
 
 
 using namespace std;
@@ -28,7 +27,7 @@ float colorAux [3] = {0.0,0.0,0.0};
 float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
 int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
 int idleOn = 0, main_window,cleanScreen = 0;
-float position = 30.0;
+int position = 30.0;
 
 GLUI *glui;
 GLUI_Panel *obj_panel;
@@ -177,21 +176,6 @@ void control_callback(int control)
 
 }
 
-void mouse(int key, int state, int x, int y)
-{
-    switch(key)
-    {
-    case 3:
-        printf("\nScroll up.");
-        position +=10;
-        break;
-    case 4:
-        printf("\nScroll down.");
-        position -=10;
-        break;
-    }
-
-}
 
 int main(int argc,char *argv[])
 {
@@ -201,7 +185,6 @@ int main(int argc,char *argv[])
     main_window = glutCreateWindow("Espirógrafo");
     init();
     glutKeyboardFunc(keyboard);
-    glutMouseFunc(mouse);
     glutDisplayFunc(display);
 
     ///GLUI code
@@ -212,6 +195,10 @@ int main(int argc,char *argv[])
     radio = new GLUI_RadioGroup(obj_panel,&type,TYPE_ID,control_callback);
     new GLUI_RadioButton(radio,"Epitrochoid");
     new GLUI_RadioButton(radio,"Hypotrochoid");
+
+    ///Zoom
+     GLUI_Spinner *spinnerZoom = new GLUI_Spinner( obj_panel, "Zoom:", &position);
+    spinnerZoom->set_float_limits(0.0,40.0);
 
     ///Raio da esfera maior
     GLUI_Spinner *spinnerBigR = new GLUI_Spinner( obj_panel, "R:", &bigR);
