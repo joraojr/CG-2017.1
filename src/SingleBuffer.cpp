@@ -196,9 +196,9 @@ int main(int argc,char *argv[])
     new GLUI_RadioButton(radio,"Epitrochoid");
     new GLUI_RadioButton(radio,"Hypotrochoid");
 
-    ///Zoom
-     GLUI_Spinner *spinnerZoom = new GLUI_Spinner( obj_panel, "Zoom:", &position);
-    spinnerZoom->set_float_limits(0.0,40.0);
+    ///Escala
+     GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &position);
+    spinnerEscala->set_float_limits(13,50);
 
     ///Raio da esfera maior
     GLUI_Spinner *spinnerBigR = new GLUI_Spinner( obj_panel, "R:", &bigR);
