@@ -17,7 +17,6 @@
 #define CLEAN_ID 1111
 #define COLOR_LISTBOX 7895
 #define TYPE_ID 123
-#define LIGHT0_INTENSITY_ID  250
 
 
 using namespace std;
@@ -28,7 +27,7 @@ float colorAux [3] = {0.0,0.0,0.0};
 float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
 int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
 int idleOn = 0, main_window,cleanScreen = 0;
-float position = 30.0;
+int position = 30.0;
 
 GLUI *glui;
 GLUI_Panel *obj_panel;
@@ -39,6 +38,7 @@ GLUI_RadioGroup *radio_colors;
 
 void idle(void)
 {
+
     if(idleOn)
     {
 
@@ -76,8 +76,13 @@ void idle(void)
 
 void display()
 {
+    ///Para conseguir alterar o ortho
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-position,position,-position,position,-1.0,1.0);
 
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
+    glPointSize(3);
     glColor3fv(color);
     glBegin(GL_POINTS);
     glVertex2f(x,y);
@@ -111,9 +116,6 @@ void init()
     glPointSize(2.0);
 
     glClearColor(1.0,1.0,1.0,0.0);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-position,position,-position,position,-1.0,1.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -129,7 +131,6 @@ void control_callback(int control)
         obj_panel->disable();
         break;
     case ENABLE_ID:
-        setColorToWhite();
         idleOn = 0;
         obj_panel->enable();
         break;
@@ -175,23 +176,6 @@ void control_callback(int control)
 
 }
 
-void mouse(int key, int state, int x, int y)
-{
-    switch(key)
-    {
-    case 3:
-        printf("\nScroll up.");
-
-        position +=10;
-        break;
-    case 4:
-        printf("\nScroll down.");
-
-        position -=10;
-        break;
-    }
-
-}
 
 int main(int argc,char *argv[])
 {
@@ -201,7 +185,6 @@ int main(int argc,char *argv[])
     main_window = glutCreateWindow("Espirógrafo");
     init();
     glutKeyboardFunc(keyboard);
-    glutMouseFunc(mouse);
     glutDisplayFunc(display);
 
     ///GLUI code
@@ -212,6 +195,10 @@ int main(int argc,char *argv[])
     radio = new GLUI_RadioGroup(obj_panel,&type,TYPE_ID,control_callback);
     new GLUI_RadioButton(radio,"Epitrochoid");
     new GLUI_RadioButton(radio,"Hypotrochoid");
+
+    ///Escala
+     GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &position);
+    spinnerEscala->set_float_limits(13,50);
 
     ///Raio da esfera maior
     GLUI_Spinner *spinnerBigR = new GLUI_Spinner( obj_panel, "R:", &bigR);
@@ -225,11 +212,6 @@ int main(int argc,char *argv[])
     GLUI_Spinner *spinnerD = new GLUI_Spinner( obj_panel, "d:", &d);
     spinnerD->set_float_limits(0.0,40.0);
     spinnerBigR->set_float_limits(0.0,40.0);
-
-    ///Speed
-    obj_panel_speed = new GLUI_Rollout(glui, "Velocidade", true );
-    GLUI_Spinner *spinnerS = new GLUI_Spinner( obj_panel_speed, "speed:", &speed);
-    spinnerS->set_float_limits(0.0,10.0);
 
     ///Cores
     obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
