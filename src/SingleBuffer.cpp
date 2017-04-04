@@ -28,6 +28,7 @@ float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
 int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
 int idleOn = 0, main_window,cleanScreen = 0;
 int position = 30.0;
+int scale = 0;
 
 GLUI *glui;
 GLUI_Panel *obj_panel;
@@ -79,7 +80,7 @@ void display()
     ///Para conseguir alterar o ortho
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-position,position,-position,position,-1.0,1.0);
+    glOrtho(-position - scale,position + scale,-position - scale,position + scale,-1.0,1.0);
 
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
     glPointSize(3);
@@ -197,8 +198,8 @@ int main(int argc,char *argv[])
     new GLUI_RadioButton(radio,"Hypotrochoid");
 
     ///Escala
-     GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &position);
-    spinnerEscala->set_float_limits(13,50);
+     GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &scale);
+    spinnerEscala->set_float_limits(0,100);
 
     ///Raio da esfera maior
     GLUI_Spinner *spinnerBigR = new GLUI_Spinner( obj_panel, "R:", &bigR);
@@ -211,7 +212,6 @@ int main(int argc,char *argv[])
     ///Distancia do centro da esfera menor até o ponto de desenho
     GLUI_Spinner *spinnerD = new GLUI_Spinner( obj_panel, "d:", &d);
     spinnerD->set_float_limits(0.0,40.0);
-    spinnerBigR->set_float_limits(0.0,40.0);
 
     ///Cores
     obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
@@ -228,8 +228,6 @@ int main(int argc,char *argv[])
 
     new GLUI_Button(glui, "Parar desenho", ENABLE_ID, control_callback );
     new GLUI_Button(glui, "Limpar desenho", CLEAN_ID, control_callback );
-
-
 
 
     GLUI_Master.set_glutIdleFunc(idle);
