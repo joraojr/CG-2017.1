@@ -1,10 +1,24 @@
 /*
-  Name:        SingleBuffer.cpp
+  Name:        Desenvolvimento1.cpp
   Copyright:   Version 0.1
-  Author:      Rodrigo Luis de Souza da Silva
-  Last Update: 23/03/2017
-  Release:     23/03/2017
-  Description: Use single buffer without clearing window
+  Author:      Jorão Gomes Junior e Lucas Rodrigues Frank
+  Last Update: 05/04/2017
+  Release:     05/04/2017
+  Description: Desenvolvimento 1 da matéria de  Computação Gráfica 2017.01
+*/
+
+/*
+  References :
+    https://sites.google.com/site/computacaograficaufjf/arquivos
+    https://en.wikipedia.org/wiki/Hypotrochoid
+    https://en.wikipedia.org/wiki/Epitrochoid
+    https://pt.wikipedia.org/wiki/RGB
+    https://www.codeproject.com/Articles/20286/GLUI-Window-Template
+    http://www-h.eng.cam.ac.uk/help/tpl/graphics/using_glui.html
+    https://www.experts-exchange.com/questions/23246383/c-opengl-using-Glut.html
+
+  GitHub:
+    https://github.com/joraojr/CG-2017.1
 */
 
 #include <stdio.h>
@@ -38,7 +52,7 @@ GLUI_RadioGroup *radio_colors;
 
 void idle(void)
 {
-
+    ///Desenha Epitrochoid e Hypotrochoid
     if(idleOn)
     {
 
@@ -122,6 +136,8 @@ void init()
 
     glClear(GL_COLOR_BUFFER_BIT);
 }
+
+///Verificação do ID da requisição da callback para realização do procedimento desejado
 void control_callback(int control)
 {
     switch(control)
@@ -187,7 +203,7 @@ int main(int argc,char *argv[])
     glutKeyboardFunc(keyboard);
     glutDisplayFunc(display);
 
-    ///GLUI code
+    ///Criacação da interface GLUI
     glui = GLUI_Master.create_glui_subwindow( main_window,GLUI_SUBWINDOW_RIGHT );
     obj_panel = new GLUI_Rollout(glui, "Parametros", true );
 
@@ -197,7 +213,7 @@ int main(int argc,char *argv[])
     new GLUI_RadioButton(radio,"Hypotrochoid");
 
     ///Escala
-     GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &scale);
+    GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &scale);
     spinnerEscala->set_float_limits(0,100);
 
     ///Raio da esfera maior
@@ -230,7 +246,7 @@ int main(int argc,char *argv[])
 
 
     GLUI_Master.set_glutIdleFunc(idle);
-
+    ///Loop
     glutMainLoop();
     return 0;
 }
