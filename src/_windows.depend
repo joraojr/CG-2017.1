@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1491164202 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
+1491401794 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
@@ -35,7 +35,7 @@
 1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\freeglut_ext.h
 	<stdarg.h>
 
-1491165481 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\singlebuffer.cpp
+1491405424 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\singlebuffer.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>

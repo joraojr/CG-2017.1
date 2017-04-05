@@ -1,10 +1,24 @@
 /*
-  Name:        SingleBuffer.cpp
+  Name:        Desenvolvimento1.cpp
   Copyright:   Version 0.1
-  Author:      Rodrigo Luis de Souza da Silva
-  Last Update: 23/03/2017
-  Release:     23/03/2017
-  Description: Use single buffer without clearing window
+  Author:      Jorão Gomes Junior e Lucas Rodrigues Frank
+  Last Update: 05/04/2017
+  Release:     05/04/2017
+  Description: Desenvolvimento 1 da matéria de  Computação Gráfica 2017.01
+*/
+
+/*
+  References :
+    https://sites.google.com/site/computacaograficaufjf/arquivos
+    https://en.wikipedia.org/wiki/Hypotrochoid
+    https://en.wikipedia.org/wiki/Epitrochoid
+    https://pt.wikipedia.org/wiki/RGB
+    https://www.codeproject.com/Articles/20286/GLUI-Window-Template
+    http://www-h.eng.cam.ac.uk/help/tpl/graphics/using_glui.html
+    https://www.experts-exchange.com/questions/23246383/c-opengl-using-Glut.html
+
+  GitHub:
+    https://github.com/joraojr/CG-2017.1
 */
 
 #include <stdio.h>
@@ -28,17 +42,17 @@ float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
 int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
 int idleOn = 0, main_window,cleanScreen = 0;
 int position = 30.0;
+int scale = 0;
 
 GLUI *glui;
 GLUI_Panel *obj_panel;
 GLUI_Panel *obj_panel_color;
-GLUI_Panel *obj_panel_speed;
 GLUI_RadioGroup *radio;
 GLUI_RadioGroup *radio_colors;
 
 void idle(void)
 {
-
+    ///Desenha Epitrochoid e Hypotrochoid
     if(idleOn)
     {
 
@@ -79,7 +93,7 @@ void display()
     ///Para conseguir alterar o ortho
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-position,position,-position,position,-1.0,1.0);
+    glOrtho(-position - scale,position + scale,-position - scale,position + scale,-1.0,1.0);
 
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
     glPointSize(3);
@@ -122,6 +136,8 @@ void init()
 
     glClear(GL_COLOR_BUFFER_BIT);
 }
+
+///Verificação do ID da requisição da callback para realização do procedimento desejado
 void control_callback(int control)
 {
     switch(control)
@@ -187,7 +203,7 @@ int main(int argc,char *argv[])
     glutKeyboardFunc(keyboard);
     glutDisplayFunc(display);
 
-    ///GLUI code
+    ///Criacação da interface GLUI
     glui = GLUI_Master.create_glui_subwindow( main_window,GLUI_SUBWINDOW_RIGHT );
     obj_panel = new GLUI_Rollout(glui, "Parametros", true );
 
@@ -197,8 +213,8 @@ int main(int argc,char *argv[])
     new GLUI_RadioButton(radio,"Hypotrochoid");
 
     ///Escala
-     GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &position);
-    spinnerEscala->set_float_limits(13,50);
+    GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &scale);
+    spinnerEscala->set_float_limits(0,100);
 
     ///Raio da esfera maior
     GLUI_Spinner *spinnerBigR = new GLUI_Spinner( obj_panel, "R:", &bigR);
@@ -211,7 +227,6 @@ int main(int argc,char *argv[])
     ///Distancia do centro da esfera menor até o ponto de desenho
     GLUI_Spinner *spinnerD = new GLUI_Spinner( obj_panel, "d:", &d);
     spinnerD->set_float_limits(0.0,40.0);
-    spinnerBigR->set_float_limits(0.0,40.0);
 
     ///Cores
     obj_panel_color = new GLUI_Rollout(glui, "Cores", true );
@@ -230,10 +245,8 @@ int main(int argc,char *argv[])
     new GLUI_Button(glui, "Limpar desenho", CLEAN_ID, control_callback );
 
 
-
-
     GLUI_Master.set_glutIdleFunc(idle);
-
+    ///Loop
     glutMainLoop();
     return 0;
 }
