@@ -16,6 +16,7 @@
     https://www.codeproject.com/Articles/20286/GLUI-Window-Template
     http://www-h.eng.cam.ac.uk/help/tpl/graphics/using_glui.html
     https://www.experts-exchange.com/questions/23246383/c-opengl-using-Glut.html
+    http://techtutorials95.blogspot.com.br/2015/05/making-cool-spirograph-visualization.html
 
   GitHub:
     https://github.com/joraojr/CG-2017.1
@@ -26,11 +27,13 @@
 #include <GL/glui.h>
 #include <math.h>
 #include <iostream>
+///ID CALLBACK
 #define DISABLE_ID 1234
 #define ENABLE_ID 4321
 #define CLEAN_ID 1111
 #define COLOR_LISTBOX 7895
 #define TYPE_ID 123
+#define SCALE_ID 321
 
 
 using namespace std;
@@ -38,12 +41,18 @@ int listbox_item_id = 0;
 float color [3] = {1.0,1.0,1.0} ;
 float colorAux [3] = {0.0,0.0,0.0};
 
-float theta = 0, minorR = 3, bigR = 5, d = 5, x, y, speed = 0.005;
+float theta = 0,///angulo de variação
+      minorR = 3,/// raio da esfera menor
+      bigR = 5,/// raio da esfera maior
+      d = 5,/// distancia do centro da esfera menor ao ponto de desenho
+      x, y,/// valores x e y usado para coordenadas de desenho da curva
+      speed = 0.005;/// velocidade em que o angulo varia
 int type = 0; /// 0 - Epitrochoid 1 - Hypotrochoid
-int idleOn = 0, main_window,cleanScreen = 0;
-int position = 30.0;
-int scale = 0;
+int idleOn = 0, main_window,cleanScreen = 0;///variaveis de controle de desenho e limpar tela
+int position = 30.0;///posição do ortho
+int scale = 0;///escala de desenho
 
+///criação da interface
 GLUI *glui;
 GLUI_Panel *obj_panel;
 GLUI_Panel *obj_panel_color;
@@ -75,7 +84,7 @@ void idle(void)
         if(theta > 360)
             theta = 0;
     }
-
+    ///seta a janela para poder desenhar
     if (glutGetWindow() != main_window)
         glutSetWindow(main_window);
 
@@ -94,7 +103,7 @@ void display()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-position - scale,position + scale,-position - scale,position + scale,-1.0,1.0);
-
+    ///viewport utilizada para posicionar a tela a esquerda da interface
     glViewport ((int) 0, (int) 0, (int) 680, (int) 680);
     glPointSize(3);
     glColor3fv(color);
@@ -111,6 +120,7 @@ void keyboard(unsigned char key, int x, int y)
     switch (key)
     {
     case 27:
+        ///exit do programa
         exit(0);
         break;
     default:
@@ -165,26 +175,29 @@ void control_callback(int control)
         case 1:
             colorAux[0] = 0.0;
             colorAux[1] = 0.0;
-            colorAux[2] = 255.0;
+            colorAux[2] = 1.0;
             break;
         case 2:
-            colorAux[0] = 255.0;
+            colorAux[0] = 1.0;
             colorAux[1] = 0.0;
             colorAux[2] = 0.0;
             break;
         case 3:
-            colorAux[0] = 255.0;
-            colorAux[1] = 255.0;
+            colorAux[0] = 1.0;
+            colorAux[1] = 1.0;
             colorAux[2] = 0.0;
             break;
         case 4:
             colorAux[0] = 0.0;
-            colorAux[1] = 255.0;
+            colorAux[1] = 1.0;
             colorAux[2] = 0.0;
             break;
         default:
             break;
         }
+        break;
+    case SCALE_ID:
+        setColorToWhite();
         break;
     default:
         break;
@@ -213,7 +226,7 @@ int main(int argc,char *argv[])
     new GLUI_RadioButton(radio,"Hypotrochoid");
 
     ///Escala
-    GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &scale);
+    GLUI_Spinner *spinnerEscala = new GLUI_Spinner( obj_panel, "Escala:", &scale,SCALE_ID,control_callback);
     spinnerEscala->set_float_limits(0,100);
 
     ///Raio da esfera maior

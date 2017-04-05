@@ -37,7 +37,7 @@
 			<Add library="libglew32.dll.a" />
 			<Add directory="../lib" />
 		</Linker>
-		<Unit filename="SingleBuffer.cpp" />
+		<Unit filename="Desenvolvimento1.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

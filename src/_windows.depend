@@ -79,3 +79,10 @@
 
 1491158500 source:c:\users\jorgo\downloads\cg\04_mousekeyboard.cpp
 
+1491413251 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento1.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<math.h>
+	<iostream>
+
