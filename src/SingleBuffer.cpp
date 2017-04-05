@@ -33,7 +33,6 @@ int scale = 0;
 GLUI *glui;
 GLUI_Panel *obj_panel;
 GLUI_Panel *obj_panel_color;
-GLUI_Panel *obj_panel_speed;
 GLUI_RadioGroup *radio;
 GLUI_RadioGroup *radio_colors;
 
