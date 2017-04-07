@@ -185,7 +185,7 @@ void control_callback(int control)
         case 3:
             colorAux[0] = 1.0;
             colorAux[1] = 1.0;
-            colorAux[2] = 0.0;
+            colorAux[2] = 0.0;https://github.com/joraojr/CG-2017.1.git
             break;
         case 4:
             colorAux[0] = 0.0;

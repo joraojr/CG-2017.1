@@ -81,3 +81,59 @@
 1490840850 /home/jorao/Documentos/CG/CG-2017.1/include/GL/freeglut_ext.h
 	<stdarg.h>
 
+1491592589 source:/ice/CG-2017.1/src/Desenvolvimento1.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<math.h>
+	<iostream>
+
+1491592518 /ice/CG-2017.1/include/GL/glut.h
+	"freeglut_std.h"
+
+1491592518 /ice/CG-2017.1/include/GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1491592518 /ice/CG-2017.1/include/GL/glui.h
+	<GL/freeglut.h>
+	<GL/openglut.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdlib>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1491592518 /ice/CG-2017.1/include/GL/freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1491592518 /ice/CG-2017.1/include/GL/freeglut_ext.h
+	<stdarg.h>
+
+1491598015 source:/ice/CG-2017.1/src/Trabalho1.cpp
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+
+1491595763 source:/ice/CG-2017.1/src/src/Cube.cpp
+	"Cube.h"
+
+1491595581 /ice/CG-2017.1/src/include/Cube.h
+
+1491595217 source:/ice/CG-2017.1/src/src/Piece.cpp
+	"Piece.h"
+
+1491595276 /ice/CG-2017.1/src/include/Piece.h
+
+1491597892 source:/ice/CG-2017.1/src/src/Game.cpp
+	"Game.h"
+
+1491597892 /ice/CG-2017.1/src/include/Game.h
+
