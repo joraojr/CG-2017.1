@@ -6,7 +6,7 @@ class Game{
     private:
         int field[15][7] ;
         addFieldColor();
-        drawCubeColor(int i, int j);
+        drawCubeColor(int i, int j,float positionX, float positionY);
 
     public:
         drawField();

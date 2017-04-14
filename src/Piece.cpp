@@ -24,3 +24,12 @@ void Piece::shiftColor(){
     c[1]->setColor(c[2]->getColor());
     c[2]->setColor(aux);
 }
+
+float ** Piece::getCubesColor(){
+    float* colors[3];
+    for(int i =0 ; i <3 ; i ++)
+        colors[i] = c[i]->getColor();
+    return colors;
+}
+
+

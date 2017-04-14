@@ -11,6 +11,8 @@ class Piece{
         ~Piece();
         void drawPiece(float moveX,float moveY);
         void shiftColor();
-};
+        float ** getCubesColor();
+}
+;
 
 #endif // PIECE_H_INCLUDED

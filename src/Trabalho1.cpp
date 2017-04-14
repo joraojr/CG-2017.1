@@ -17,7 +17,6 @@ Game *game = new Game();
 
 void drawField()
 {
-    glColor3f(0.0,0.0,0.3);
     game->drawField();
 
 }
