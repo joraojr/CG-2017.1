@@ -2,95 +2,137 @@
 #include <GL/glui.h>
 #include <iostream>
 #include "Piece.h"
+#include "Game.h"
 
 using namespace std;
 float moveX = 0.0,moveY = 0.0;
+float yMin=-84.0;
+float linha=3, coluna=0;
 int time = 500.0;
 bool shift = false;
 Piece *p = new Piece();
+Game *game = new Game();
 
 
-void drawField(){
+
+void drawField()
+{
     glColor3f(0.0,0.0,0.3);
+    game->drawField();
 
-    float x = 0.0;
-    float y = 0.0;
-    for(int i = 0; i < 15; i++){
-        for(int j = 0; j < 7; j++){
-            glBegin(GL_LINE_LOOP);
-                glVertex3f(x,y,0.0);
-                glVertex3f(x + 7.0,y,0.0);
-                glVertex3f(x + 7.0,y + 7.0,0.0);
-                glVertex3f(x,y + 7.0,0.0);
-            glEnd();
-            x += 7.0;
-        }
-        y += 7.0;
-        x = 0.0;
-    }
 }
 
-void display(){
+void display()
+{
     glClear (GL_COLOR_BUFFER_BIT);
 
     drawField();
 
-    if(shift){
+    if(shift)
+    {
         p->shiftColor();
         shift = false;
     }
+
     p->drawPiece(moveX,moveY);
 
     glutSwapBuffers();
 }
 
-void timer(int value){
-    if(moveY > -84.0)
+void timer(int value)
+{
+    if(moveY > yMin)
+    {
         moveY -= 3.5;
+        coluna +=0.5;
+    }
+    else
+    {
+        moveX=0.0;
+        moveY=0.0;
+    }
     glutPostRedisplay();
     glutTimerFunc(time,timer,1);
 }
 
-void keyboard(unsigned char key, int x, int y){
-    switch (key){
-        case 27:
-            exit(0);
+void keyboard(unsigned char key, int x, int y)
+{
+    switch (key)
+    {
+    case 27:
+        exit(0);
+        break;
+    }
+    glutPostRedisplay();
+}
+void specialKeysRelease(int key, int x, int y)
+{
+    switch (key)
+    {
+    case GLUT_KEY_DOWN:
+        time = 500.0;
+        break;
+
+    default:
+        cout << "Tecla sem função" << endl;
+        break;
+    }
+}
+void specialKey(int key, int x, int y)
+{
+    switch (key)
+    {
+    case GLUT_KEY_LEFT:
+        if(moveX > -21.0 && moveY > yMin)
+        {
+            moveX -= 7;
+            coluna -=1;
+        }
+        break;
+    case GLUT_KEY_RIGHT:
+        if(moveX < 21 && moveY > yMin)
+        {
+            moveX += 7;
+            coluna +=1;
+
+        }
+        break;
+    case GLUT_KEY_DOWN:
+        time = 100;
+        break;
+
+    case GLUT_KEY_UP:
+        shift = true;
+        break;
+
+    default:
+        cout << "Tecla sem função" << endl;
         break;
     }
     glutPostRedisplay();
 }
 
-void specialKey(int key, int x, int y){
-    switch (key){
-        case GLUT_KEY_LEFT:
-            if(moveX > -21.0 && moveY > -84)
-                moveX -= 7;
+void mouse(int button, int state, int x, int y)
+{
+    switch(button)
+    {
+    case 3:
+        shift = true;
         break;
-        case GLUT_KEY_RIGHT:
-            if(moveX < 21 && moveY > -84)
-                moveX += 7;
-        break;
-        case GLUT_KEY_DOWN:
+    case GLUT_LEFT_BUTTON:
+        if(state==GLUT_DOWN)
             time = 100;
+        else
+            time = 500;
         break;
 
-        case GLUT_KEY_UP:
-            shift = true;
-            time = 500;///Apenas para teste
-        break;
-
-        default:
-            cout << "Tecla sem função" << endl;
-        break;
     }
-    glutPostRedisplay();
 }
 
-void mouse(){}
+void controlCallback(int control) {}
 
-void controlCallback(int control){}
-
-void init(){
+void init()
+{
 
     glClearColor(0.0,0.0,0.0,0.0);
 
@@ -102,7 +144,8 @@ void init(){
     glLoadIdentity();
 }
 
-int main (int argc,char *argv[]){
+int main (int argc,char *argv[])
+{
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(860,680);
@@ -111,7 +154,11 @@ int main (int argc,char *argv[]){
     init();
 
     glutKeyboardFunc(keyboard);
+//    glutKeyboardUpFunc( keyboardRelease );
     glutSpecialFunc(specialKey);
+    glutSpecialUpFunc( specialKeysRelease );
+    glutMouseFunc(mouse);
+
     glutTimerFunc(time,timer,1);
     glutDisplayFunc(display);
 
