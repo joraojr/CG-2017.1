@@ -37,7 +37,13 @@
 			<Add library="libglew32.dll.a" />
 			<Add directory="../lib" />
 		</Linker>
-		<Unit filename="Desenvolvimento1.cpp" />
+		<Unit filename="Trabalho1.cpp" />
+		<Unit filename="include/Cube.h" />
+		<Unit filename="include/Game.h" />
+		<Unit filename="include/Piece.h" />
+		<Unit filename="src/Cube.cpp" />
+		<Unit filename="src/Game.cpp" />
+		<Unit filename="src/Piece.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
