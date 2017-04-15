@@ -11,7 +11,7 @@ class Piece{
         ~Piece();
         void drawPiece(float moveX,float moveY);
         void shiftColor();
-        float ** getCubesColor();
+        int * getCubesColor();
 }
 ;
 

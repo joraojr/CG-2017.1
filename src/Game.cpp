@@ -10,7 +10,7 @@ Game::Game()
     }
 }
 
-Game::drawCubeColor(int i, int j, float positionX, float positionY)
+void Game::drawCubeColor(int i, int j, float positionX, float positionY)
 {
     ///desenhar a cor do cubo
     switch(this->field[i][j])
@@ -52,7 +52,7 @@ Game::drawCubeColor(int i, int j, float positionX, float positionY)
 
 }
 
-Game::drawField()
+void Game::drawField()
 {
     float x = 0.0;
     float y = 0.0;
@@ -73,6 +73,9 @@ Game::drawField()
         y += 7.0;
         x = 0.0;
     }
-
-
 }
+
+void Game::addColor(int i, int j, int color){
+    this->field[i][j] = color ;
+}
+

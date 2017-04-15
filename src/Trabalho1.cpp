@@ -7,7 +7,7 @@
 using namespace std;
 float moveX = 0.0,moveY = 0.0;
 float yMin=-84.0;
-float linha=3, coluna=0;
+float linha=0, coluna=3;
 int time = 500.0;
 bool shift = false;
 Piece *p = new Piece();
@@ -47,6 +47,10 @@ void timer(int value)
     }
     else
     {
+        int* cubeColors = p->getCubesColor();
+        game->addColor(linha,coluna,cubeColors[2]);
+        game->addColor(linha + 1, coluna,cubeColors[1]);
+        game->addColor(linha + 2,coluna,cubeColors[0]);
         moveX=0.0;
         moveY=0.0;
     }

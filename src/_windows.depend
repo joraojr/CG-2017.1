@@ -126,7 +126,7 @@
 	"Piece.h"
 	"Game.h"
 
-1492214349 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.h
+1492215512 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.h
 	"Cube.h"
 
 1492200931 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\cube.h
@@ -135,13 +135,13 @@
 	"Cube.h"
 	<GL/glui.h>
 
-1492213574 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
+1492216929 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
 	"Game.h"
 
-1492213053 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
+1492216935 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
 	<GL/glui.h>
 
-1492205523 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.cpp
+1492217063 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.cpp
 	"Piece.h"
 	<GL/glut.h>
 
