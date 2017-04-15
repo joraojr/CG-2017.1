@@ -119,7 +119,7 @@
 
 1492191201 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
 
-1492217415 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
+1492275617 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
@@ -135,10 +135,10 @@
 	"Cube.h"
 	<GL/glui.h>
 
-1492216929 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
+1492275270 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
 	"Game.h"
 
-1492216935 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
+1492275177 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
 	<GL/glui.h>
 
 1492217063 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.cpp

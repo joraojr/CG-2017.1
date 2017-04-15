@@ -40,7 +40,7 @@ void display()
 
 void timer(int value)
 {
-    if(moveY > yMin)
+    if(game->getColor(linha - 1,coluna) == 0)///mudar esse if para verificar se há cor na paraada toda
     {
         moveY -= 3.5;
         linha -=0.5;

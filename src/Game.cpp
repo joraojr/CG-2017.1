@@ -79,3 +79,6 @@ void Game::addColor(int i, int j, int color){
     this->field[i][j] = color ;
 }
 
+int Game::getColor(int i, int j){
+    return this->field[i][j];
+}

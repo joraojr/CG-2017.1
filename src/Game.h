@@ -11,9 +11,9 @@ private:
 public:
     void drawField();
     void addColor(int i, int j, int color);
-
     Game();
     ~Game();
+    int getColor(int i, int j);
 };
 
 #endif // GAME_H_INCLUDED
