@@ -13,6 +13,7 @@ Game::Game()
     }
     lineCount = 0;
     columnCount = 0;
+    points = 0 ;
     clearTrashListColumn();
     clearTrashListLine();
 }
@@ -89,25 +90,32 @@ void Game::drawField()
         y += 7.0;
         x = 0.0;
     }
+
+//    cout<<"Points: "<<points;
 }
 
-void Game::addColor(int i, int j, int color){
+void Game::addColor(int i, int j, int color)
+{
     this->field[i][j] = color ;
 }
 
-int Game::getColor(int i, int j){
+int Game::getColor(int i, int j)
+{
     return this->field[i][j];
 }
 
-bool Game::isGameOver(){
-    for(int i = 0;i < 7;i++){
+bool Game::isGameOver()
+{
+    for(int i = 0; i < 7; i++)
+    {
         if(field[15][i] != 0)
             return true;
     }
     return false;
 }
 
-void Game::printMatrix(){
+void Game::printMatrix()
+{
     for(int i = 0; i < 18; i++)
     {
         for(int j =0; j < 7; j++)
@@ -117,20 +125,24 @@ void Game::printMatrix(){
 
 }
 
-bool Game::verifyMoveLeft(int line,int column){
+bool Game::verifyMoveLeft(int line,int column)
+{
     if(field[line][column-1] == 0)
         return true;
     return false;
 }
 
-bool Game::verifyMoveRight(int line,int column){
+bool Game::verifyMoveRight(int line,int column)
+{
     if(field[line][column+1] == 0)
         return true;
     return false;
 }
 ///verificar em linha
-int Game::verifyLineLeft(int color,int line, int column){
-    if(color == field[line][column - 1]){
+int Game::verifyLineLeft(int color,int line, int column)
+{
+    if(color == field[line][column - 1])
+    {
         trashListLine[lineCount][0] = line;
         trashListLine[lineCount][1] = column - 1;
         lineCount++;
@@ -139,8 +151,10 @@ int Game::verifyLineLeft(int color,int line, int column){
     return 0;
 }
 
-int Game::verifyLineRight(int color,int line, int column){
-    if(color == field[line][column + 1]){
+int Game::verifyLineRight(int color,int line, int column)
+{
+    if(color == field[line][column + 1])
+    {
         trashListLine[lineCount][0] = line;
         trashListLine[lineCount][1] = column + 1;
         lineCount++;
@@ -149,7 +163,8 @@ int Game::verifyLineRight(int color,int line, int column){
     return 0;
 }
 
-void Game::verifyLine(int line, int column){
+void Game::verifyLine(int line, int column)
+{
     int countC = 1;
     trashListLine[lineCount][0] = line;
     trashListLine[lineCount][1] = column;
@@ -158,28 +173,36 @@ void Game::verifyLine(int line, int column){
     countC += verifyLineRight(field[line][column],line,column);
     if(countC < 3)
         clearTrashListLine();
+    else
+        points += fatorialPoints(countC-2);
     clearLine();
 }
 ///apaga a linha
-void Game::clearLine(){
-    for(int i = 0; i < 7; i++){
+void Game::clearLine()
+{
+    for(int i = 0; i < 7; i++)
+    {
         if(trashListLine[i][0] != -1 && trashListLine[i][1] != -1)
             addColor(trashListLine[i][0],trashListLine[i][1],0);
     }
     clearTrashListLine();
 }
 ///reseta a matriz com as coordenadas
-void Game::clearTrashListLine(){
-    for(int i = 0; i < 7;i++){
-        for(int j = 0;j < 2;j++)
+void Game::clearTrashListLine()
+{
+    for(int i = 0; i < 7; i++)
+    {
+        for(int j = 0; j < 2; j++)
             trashListLine[i][j] = -1;
     }
     lineCount = 0;
 }
 
 ///verifica em coluna
-int Game::verifyColumnDown(int color,int line,int column){
-    if(color == field[line - 1][column]){
+int Game::verifyColumnDown(int color,int line,int column)
+{
+    if(color == field[line - 1][column])
+    {
         trashListColumn[columnCount][0] = line - 1;
         trashListColumn[columnCount][1] = column;
         columnCount++;
@@ -188,8 +211,10 @@ int Game::verifyColumnDown(int color,int line,int column){
     return 0;
 }
 
-int Game::verifyColumnUp(int color,int line,int column){
-    if(color == field[line + 1][column]){
+int Game::verifyColumnUp(int color,int line,int column)
+{
+    if(color == field[line + 1][column])
+    {
         trashListColumn[columnCount][0] = line + 1;
         trashListColumn[columnCount][1] = column;
         columnCount++;
@@ -198,44 +223,58 @@ int Game::verifyColumnUp(int color,int line,int column){
     return 0;
 }
 
-void Game::verifyColumn(int line, int column){
+void Game::verifyColumn(int line, int column)
+{
     int countC = 1;
     trashListColumn[columnCount][0] = line;
     trashListColumn[columnCount][1] = column;
     columnCount++;
     countC += verifyColumnDown(field[line][column],line,column);
     countC += verifyColumnUp(field[line][column],line,column);
+    cout<<countC;
     if(countC < 3)
         clearTrashListColumn();
+    else
+        points += fatorialPoints(countC-2);
     clearColumn();
 }
 
-void Game::clearColumn(){
-    for(int i = 0; i < 15; i++){
+void Game::clearColumn()
+{
+    for(int i = 0; i < 15; i++)
+    {
         if(trashListColumn[i][0] != -1 && trashListColumn[i][1] != -1)
             addColor(trashListColumn[i][0],trashListColumn[i][1],0);
     }
     clearTrashListColumn();
 }
 
-void Game::clearTrashListColumn(){
-    for(int i = 0; i < 15;i++){
-        for(int j = 0;j < 2;j++)
+void Game::clearTrashListColumn()
+{
+    for(int i = 0; i < 15; i++)
+    {
+        for(int j = 0; j < 2; j++)
             trashListColumn[i][j] = -1;
     }
     columnCount = 0;
 }
 
-void Game::readjust(){
+void Game::readjust()
+{
     bool aux = false;
-    for(int i = 0; i < 7; i++){
-        for(int k = 0; k < 15; k++){
-            for(int j = 0; j < 17; j++){
-                if(field[j][i] == 0){
+    for(int i = 0; i < 7; i++)
+    {
+        for(int k = 0; k < 15; k++)
+        {
+            for(int j = 0; j < 17; j++)
+            {
+                if(field[j][i] == 0)
+                {
                     field[j][i] = field[j + 1][i];
                     aux = true;
                 }
-                if(aux){
+                if(aux)
+                {
                     field[j][i] = field[j + 1][i];
                 }
             }
@@ -245,10 +284,17 @@ void Game::readjust(){
     }
 }
 
-int Game::fatorialPoints(int i){
-    if(i < 2)
+int Game::fatorialPoints(int i)
+{
+    if(i = 1)
         return 1;
     else
         return i*fatorialPoints(i - 1);
 }
+int Game::getPoints(){
+    return this->points;
+}
+void Game::drawMenu()
+{
 
+}

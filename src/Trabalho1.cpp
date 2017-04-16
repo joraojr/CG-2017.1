@@ -7,6 +7,7 @@
 
 using namespace std;
 
+void *font = GLUT_BITMAP_TIMES_ROMAN_24;
 float moveX = 0.0,moveY = 0.0;
 float yMin = -105.0;
 float linha = 15, coluna = 3;
@@ -20,6 +21,18 @@ Piece* nextPiece;
 void drawField()
 {
     game->drawField();
+
+}
+
+void output(int x, int y, char *string)
+{
+  int len, z;
+
+//  glTranslatef(x,y,0.0);
+  len = (int) strlen(string);
+  for (z = 0; z < len; z++) {
+    glutBitmapCharacter(font, string[z]);
+  }
 
 }
 
@@ -38,7 +51,8 @@ void display()
 
 
     drawField();
-    if(shift){
+    if(shift)
+    {
         if(typeShift == 0)
             p->shiftColor();
         else
@@ -59,6 +73,9 @@ void display()
 
     nextPiece->drawPiece(0,-80);
 
+//    glColor3f(1.0,0.0,0.0);
+    output(100, 100, "This is written in a GLUT bitmap font.");
+
     glutSwapBuffers();
 }
 
@@ -69,7 +86,8 @@ void init()
 
 void timer(int value)
 {
-    if(!game->isGameOver()){
+    if(!game->isGameOver())
+    {
         if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)///mudar esse if para verificar se há cor na paraada toda
         {
             moveY -= 3.5;
@@ -97,7 +115,9 @@ void timer(int value)
 
         glutPostRedisplay();
         glutTimerFunc(animationTime,timer,1);
-    }else{
+    }
+    else
+    {
         cout << "acabou";
     }
 }
@@ -189,15 +209,18 @@ int main (int argc,char *argv[])
     p = new Piece();
     nextPiece = new Piece();
 
+
+
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(860,680);
     glutInitWindowPosition(0,0);
     glutCreateWindow("TetrisCrush");
+
+
     init();
 
     glutKeyboardFunc(keyboard);
-//    glutKeyboardUpFunc( keyboardRelease );
     glutSpecialFunc(specialKey);
     glutSpecialUpFunc( specialKeysRelease );
     glutMouseFunc(mouse);
