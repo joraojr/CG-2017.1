@@ -77,7 +77,7 @@
 
 1491157563 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\gluiexample.cpp
 
-1491158500 source:c:\users\jorgo\downloads\cg\04_mousekeyboard.cpp
+1492205378 source:c:\users\jorgo\downloads\cg\04_mousekeyboard.cpp
 
 1491413251 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento1.cpp
 	<stdio.h>
@@ -85,4 +85,63 @@
 	<GL/glui.h>
 	<math.h>
 	<iostream>
+
+1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\cube.cpp
+	"Cube.h"
+
+1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\game.cpp
+	"Game.h"
+
+1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\piece.cpp
+	"Piece.h"
+
+1492191919 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Piece.h"
+
+1492191318 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.cpp
+	"Cube.h"
+	<GL/glui.h>
+
+1492191259 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.h
+
+1492191793 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.cpp
+	"Piece.h"
+	<GL/glut.h>
+
+1492191801 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.h
+	"Cube.h"
+
+1492190692 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
+	"Game.h"
+
+1492191201 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
+
+1492275617 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Piece.h"
+	"Game.h"
+
+1492215512 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.h
+	"Cube.h"
+
+1492200931 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\cube.h
+
+1492205765 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\cube.cpp
+	"Cube.h"
+	<GL/glui.h>
+
+1492275270 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
+	"Game.h"
+
+1492275177 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
+	<GL/glui.h>
+
+1492217063 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.cpp
+	"Piece.h"
+	<GL/glut.h>
 
