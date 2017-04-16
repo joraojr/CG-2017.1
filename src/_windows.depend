@@ -95,29 +95,37 @@
 1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\piece.cpp
 	"Piece.h"
 
-1492191919 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
+1492314574 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
 	"Piece.h"
+	"Game.h"
+	<time.h>
 
-1492191318 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.cpp
+1492291459 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.cpp
 	"Cube.h"
 	<GL/glui.h>
+	<cstdlib>
+	<iostream>
+	<time.h>
 
-1492191259 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.h
+1492286788 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.h
 
-1492191793 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.cpp
+1492300878 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.cpp
 	"Piece.h"
 	<GL/glut.h>
+	<ctime>
 
-1492191801 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.h
+1492300849 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.h
 	"Cube.h"
 
-1492190692 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
+1492314561 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
 	"Game.h"
+	<iostream>
 
-1492191201 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
+1492314467 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
+	<GL/glui.h>
 
 1492275617 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>

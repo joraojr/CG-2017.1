@@ -7,11 +7,12 @@ class Cube{
         int size;
         float* color;
     public:
-        Cube(float r,float g,float b);
+        Cube();
         ~Cube();
         void drawCube(float positionX,float positionY);
         float* getColor();
         void setColor(float* color);
+        float* randomColor();
 };
 
 
