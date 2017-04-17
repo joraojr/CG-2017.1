@@ -13,9 +13,15 @@ Game::Game()
     }
     lineCount = 0;
     columnCount = 0;
+    mainDiagCount = 0;
+    secondDiagCount = 0;
     points = 0 ;
+    trashCount = 0;
     clearTrashListColumn();
     clearTrashListLine();
+    clearTrashList();
+    clearTrashListMainDiag();
+    clearTrashListSecondDiag();
 }
 
 void Game::drawCubeColor(int i, int j, float positionX, float positionY)
@@ -171,23 +177,28 @@ void Game::verifyLine(int line, int column)
     lineCount++;
     countC += verifyLineLeft(field[line][column],line,column);
     countC += verifyLineRight(field[line][column],line,column);
+    cout << countC <<  endl;
     if(countC < 3)
         clearTrashListLine();
-    else
+    else{
+        copyLineToTrashList(trashListLine,countC);
         points += fatorialPoints(countC-2);
-    clearLine();
+    }
+
 }
-///apaga a linha
-void Game::clearLine()
-{
-    for(int i = 0; i < 7; i++)
-    {
-        if(trashListLine[i][0] != -1 && trashListLine[i][1] != -1)
-            addColor(trashListLine[i][0],trashListLine[i][1],0);
+
+void Game::copyLineToTrashList(int matriz[7][2],int c){
+    for(int i = 0;i < c;i++){
+        if(!verifyCoord(matriz[i][0],matriz[i][1])){
+            trashList[trashCount][0] = matriz[i][0];
+            trashList[trashCount][1] = matriz[i][1];
+            trashCount++;
+        }
     }
     clearTrashListLine();
 }
-///reseta a matriz com as coordenadas
+
+//reseta a matriz com as coordenadas
 void Game::clearTrashListLine()
 {
     for(int i = 0; i < 7; i++)
@@ -196,7 +207,7 @@ void Game::clearTrashListLine()
             trashListLine[i][j] = -1;
     }
     lineCount = 0;
-}
+}///FIM verifica Linha
 
 ///verifica em coluna
 int Game::verifyColumnDown(int color,int line,int column)
@@ -231,32 +242,189 @@ void Game::verifyColumn(int line, int column)
     columnCount++;
     countC += verifyColumnDown(field[line][column],line,column);
     countC += verifyColumnUp(field[line][column],line,column);
-    cout<<countC;
     if(countC < 3)
         clearTrashListColumn();
-    else
+    else{
+        copyColumnToTrashList(trashListColumn,countC);
         points += fatorialPoints(countC-2);
-    clearColumn();
+    }
 }
 
-void Game::clearColumn()
-{
-    for(int i = 0; i < 15; i++)
-    {
-        if(trashListColumn[i][0] != -1 && trashListColumn[i][1] != -1)
-            addColor(trashListColumn[i][0],trashListColumn[i][1],0);
+void Game::copyColumnToTrashList(int matriz[15][2],int c){
+    for(int i = 0;i < c;i++){
+        if(!verifyCoord(matriz[i][0],matriz[i][1])){
+            trashList[trashCount][0] = matriz[i][0];
+            trashList[trashCount][1] = matriz[i][1];
+            trashCount++;
+        }
     }
     clearTrashListColumn();
 }
 
-void Game::clearTrashListColumn()
-{
-    for(int i = 0; i < 15; i++)
-    {
+void Game::clearTrashListColumn(){
+    for(int i = 0; i < 15; i++){
         for(int j = 0; j < 2; j++)
             trashListColumn[i][j] = -1;
     }
     columnCount = 0;
+}///FIM verifica em coluna
+
+///verificar em diagonal primaria
+void Game::clearTrashListMainDiag(){
+    for(int i = 0; i < 7; i++){
+        for(int j = 0; j < 2; j++)
+            trashListMainDiag[i][j] = -1;
+    }
+    mainDiagCount = 0;
+}
+
+void Game::copyMainDiagToTrashList(int matriz[7][2],int c){
+    for(int i = 0;i < c;i++){
+        if(!verifyCoord(matriz[i][0],matriz[i][1])){
+            trashList[trashCount][0] = matriz[i][0];
+            trashList[trashCount][1] = matriz[i][1];
+            trashCount++;
+        }
+    }
+    clearTrashListMainDiag();
+}
+
+void Game::verifyMainDiag(int line, int column){
+    int countC = 1;
+    trashListMainDiag[mainDiagCount][0] = line;
+    trashListMainDiag[mainDiagCount][1] = column;
+    mainDiagCount++;
+    countC += verifyMainDiagUp(field[line][column],line,column);
+    countC += verifyMainDiagDown(field[line][column],line,column);
+    if(countC < 3)
+        clearTrashListMainDiag();
+    else{
+        copyMainDiagToTrashList(trashListMainDiag,countC);
+        points += fatorialPoints(countC-2);
+    }
+}
+
+int Game::verifyMainDiagUp(int color,int line, int column){
+    if(color == field[line - 1][column + 1])
+    {
+        trashListMainDiag[mainDiagCount][0] = line - 1;
+        trashListMainDiag[mainDiagCount][1] = column + 1;
+        mainDiagCount++;
+        return 1 + verifyMainDiagUp(color,line - 1,column + 1);
+    }
+    return 0;
+}
+
+int Game::verifyMainDiagDown(int color,int line, int column){
+    if(color == field[line + 1][column - 1])
+    {
+        trashListMainDiag[mainDiagCount][0] = line + 1;
+        trashListMainDiag[mainDiagCount][1] = column - 1;
+        mainDiagCount++;
+        return 1 + verifyMainDiagDown(color,line + 1,column - 1);
+    }
+    return 0;
+}///FIM verifica em diagonal primaria
+
+///Verificar em diagonal secundaria
+void Game::clearTrashListSecondDiag(){
+    for(int i = 0; i < 7; i++){
+        for(int j = 0; j < 2; j++)
+            trashListSecondDiag[i][j] = -1;
+    }
+    secondDiagCount = 0;
+}
+
+void Game::copySecondDiagToTrashList(int matriz[7][2],int c){
+    for(int i = 0;i < c;i++){
+        if(!verifyCoord(matriz[i][0],matriz[i][1])){
+            trashList[trashCount][0] = matriz[i][0];
+            trashList[trashCount][1] = matriz[i][1];
+            trashCount++;
+        }
+    }
+    clearTrashListSecondDiag();
+}
+
+void Game::verifySecondDiag(int line,int column){
+    int countC = 1;
+    trashListSecondDiag[secondDiagCount][0] = line;
+    trashListSecondDiag[secondDiagCount][1] = column;
+    secondDiagCount++;
+    countC += verifySecondDiagUp(field[line][column],line,column);
+    countC += verifySecondDiagDown(field[line][column],line,column);
+    if(countC < 3)
+        clearTrashListSecondDiag();
+    else{
+        copySecondDiagToTrashList(trashListSecondDiag,countC);
+        points += fatorialPoints(countC-2);
+    }
+}
+
+int Game::verifySecondDiagDown(int color,int line,int column){
+    if(color == field[line - 1][column - 1]){
+        trashListSecondDiag[secondDiagCount][0] = line - 1;
+        trashListSecondDiag[secondDiagCount][1] = column - 1;
+        secondDiagCount++;
+        return 1 + verifySecondDiagDown(color,line - 1,column - 1);
+    }
+    return 0;
+}
+
+int Game::verifySecondDiagUp(int color,int line,int column){
+    if(color == field[line + 1][column + 1]){
+        trashListSecondDiag[secondDiagCount][0] = line + 1;
+        trashListSecondDiag[secondDiagCount][1] = column + 1;
+        secondDiagCount++;
+        return 1 + verifySecondDiagUp(color,line + 1,column + 1);
+    }
+    return 0;
+}///FIM verifica em diagonal secundaria
+
+void Game::clearTrashList(){
+    for(int i = 0; i < 105; i++){
+        for(int j = 0; j < 2; j++)
+            trashList[i][j] = -1;
+    }
+    trashCount = 0;
+}
+
+bool Game::verifyCoord(int x,int y){
+    for(int  i = 0; i < 105;i++){
+        if(trashList[i][0] == x && trashList[i][1] == y)
+            return true;
+    }
+    return false;
+}
+
+void Game::clear(){
+    for(int i = 0; i < trashCount; i++){
+        if(trashList[i][0] != -1 && trashList[i][1] != -1)
+            addColor(trashList[i][0],trashList[i][1],0);
+    }
+    clearTrashList();
+}
+
+void Game::verifyAll(int line, int column){
+    verifyColumn(line,column);
+    verifyLine(line,column);
+    verifyMainDiag(line,column);
+    verifySecondDiag(line,column);
+    clear();
+}
+
+void Game::runVerification(){
+    for(int k = 0; k < 10; k++){
+        for(int i = 0;i < 15; i++){
+            for(int j = 0; j < 7; j++){
+                if(field[i][j] != 0){
+                    verifyAll(i,j);
+                    readjust();
+                }
+            }
+        }
+        drawField();
+    }
 }
 
 void Game::readjust()
@@ -286,7 +454,7 @@ void Game::readjust()
 
 int Game::fatorialPoints(int i)
 {
-    if(i = 1)
+    if(i < 2)
         return 1;
     else
         return i*fatorialPoints(i - 1);

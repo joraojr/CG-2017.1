@@ -26,13 +26,13 @@ void drawField()
 
 void output(int x, int y, char *string)
 {
-  int len, z;
+    int len, z;
 
-//  glTranslatef(x,y,0.0);
-  len = (int) strlen(string);
-  for (z = 0; z < len; z++) {
-    glutBitmapCharacter(font, string[z]);
-  }
+    //  glTranslatef(x,y,0.0);
+    len = (int) strlen(string);
+    for (z = 0; z < len; z++) {
+        glutBitmapCharacter(font, string[z]);
+    }
 
 }
 
@@ -48,8 +48,6 @@ void display()
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) 480, (int) 680);
 
-
-
     drawField();
     if(shift)
     {
@@ -59,7 +57,6 @@ void display()
             p->shiftColorMouse();
         shift = false;
     }
-
 
     p->drawPiece(moveX,moveY);
 
@@ -74,7 +71,7 @@ void display()
     nextPiece->drawPiece(0,-80);
 
 //    glColor3f(1.0,0.0,0.0);
-    output(100, 100, "This is written in a GLUT bitmap font.");
+    output(200,200, "This is written in a GLUT bitmap font.");
 
     glutSwapBuffers();
 }
@@ -100,12 +97,7 @@ void timer(int value)
             game->addColor(linha,coluna,cubeColors[2]);
             game->addColor(linha + 1,coluna,cubeColors[1]);
             game->addColor(linha + 2,coluna,cubeColors[0]);
-            game->verifyLine(linha,coluna);
-            game->verifyLine(linha + 1,coluna);
-            game->verifyLine(linha + 2,coluna);
-            game->verifyColumn(linha,coluna);
-
-            game->readjust();
+            game->runVerification();
             moveX = 0.0;
             moveY = 0.0;
             linha = 15, coluna = 3;
@@ -219,7 +211,6 @@ int main (int argc,char *argv[])
 
 
     init();
-
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(specialKey);
     glutSpecialUpFunc( specialKeysRelease );
