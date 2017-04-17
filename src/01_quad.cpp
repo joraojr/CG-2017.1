@@ -1,75 +1,60 @@
-/*
-  Name:        quad.cpp
-  Copyright:   Version 0.1
-  Author:      Rodrigo Luis de Souza da Silva
-  Last Update: 03/09/2014
-  Release:     18/09/2004
-  Description: Simple opengl program
-*/
-
-#include <stdio.h>
+#include <windows.h>
 #include <GL/glut.h>
-
-void display(void);
-void init (void);
-void keyboard(unsigned char key, int x, int y);
-
-int main(int argc, char** argv)
-{
-   glutInit(&argc, argv);
-   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-   glutInitWindowSize (250, 250);
-   glutInitWindowPosition (100, 100);
-   glutCreateWindow ("Quad Test");
-   init ();
-   glutDisplayFunc(display);
-   glutKeyboardFunc(keyboard);
-
-	printf("Pressione ESC para fechar.\n");
-
-   glutMainLoop();
-
-   return 0;
+static int window;
+static int menu_id;
+static int submenu_id;
+static int value = 0;
+void menu(int num){
+  if(num == 0){
+    glutDestroyWindow(window);
+    exit(0);
+  }else{
+    value = num;
+  }
+  glutPostRedisplay();
 }
-
-void display(void)
-{
-   // Limpar todos os pixels
-   glClear (GL_COLOR_BUFFER_BIT);
-
-   // Desenhar um polígono branco (retângulo)
-   glColor3f (1.0, 1.0, 1.0);
-   glBegin(GL_POLYGON);
-      glVertex3f (0.25, 0.25, 0.0);
-      glVertex3f (0.75, 0.25, 0.0);
-      glVertex3f (0.75, 0.75, 0.0);
-      glVertex3f (0.25, 0.75, 0.0);
-   glEnd();
-
-   glutSwapBuffers ();
+void createMenu(void){     submenu_id = glutCreateMenu(menu);
+    glutAddMenuEntry("Sphere", 2);
+    glutAddMenuEntry("Cone", 3);
+    glutAddMenuEntry("Torus", 4);
+    glutAddMenuEntry("Teapot", 5);     menu_id = glutCreateMenu(menu);
+    glutAddMenuEntry("Clear", 1);
+    glutAddSubMenu("Draw", submenu_id);
+    glutAddMenuEntry("Quit", 0);     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
-
-
-void init (void)
-{
-   // selecionar cor de fundo (preto)
-   glClearColor (0.0, 0.0, 0.0, 0.0);
-
-   // inicializar sistema de viz.
-   glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Projeção
-   glLoadIdentity();
-   glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
-
-   glMatrixMode(GL_MODELVIEW); // Select The Modelview Matrix
-   glLoadIdentity();           // Inicializa com matriz identidade
+void display(void){
+  glClear(GL_COLOR_BUFFER_BIT);   if(value == 1){
+    return; //glutPostRedisplay();
+  }else if(value == 2){
+    glPushMatrix();
+    glColor3d(1.0, 0.0, 0.0);
+    glutWireSphere(0.5, 50, 50);
+    glPopMatrix();
+  }else if(value == 3){
+    glPushMatrix();
+    glColor3d(0.0, 1.0, 0.0);
+    glRotated(65, -1.0, 0.0, 0.0);
+    glutWireCone(0.5, 1.0, 50, 50);
+    glPopMatrix();
+  }else if(value == 4){
+    glPushMatrix();
+    glColor3d(0.0, 0.0, 1.0);
+    glutWireTorus(0.3,0.6,100,100);
+    glPopMatrix();
+  }else if(value == 5){
+    glPushMatrix();
+    glColor3d(1.0, 0.0, 1.0);
+    glutSolidTeapot(0.5);
+    glPopMatrix();
+  }
+  glFlush();
 }
-
-void keyboard(unsigned char key, int x, int y)
-{
-   switch (key)
-   {
-      case 27:
-         exit(0);
-      break;
-   }
+int main(int argc, char **argv){     glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE);
+    glutInitWindowSize(500,500);
+    glutInitWindowPosition(100,100);
+    window = glutCreateWindow("Menus and Submenus - Programming Techniques");
+    createMenu();     glClearColor(0.0,0.0,0.0,0.0);
+    glutDisplayFunc(display);     glutMainLoop();
+    return EXIT_SUCCESS;
 }

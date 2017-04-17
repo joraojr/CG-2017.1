@@ -5,14 +5,13 @@
 class Piece{
     private:
         Cube* c[3];
-        int shiftCount;
     public:
         Piece();
         ~Piece();
         void drawPiece(float moveX,float moveY);
         void shiftColor();
+        void shiftColorMouse();
         int * getCubesColor();
-}
-;
+};
 
 #endif // PIECE_H_INCLUDED
