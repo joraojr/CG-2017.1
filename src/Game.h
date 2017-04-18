@@ -22,6 +22,7 @@ private:
     int secondDiagCount;
     int points;
     int gameState;
+    int brokenBlocks;
     Ranking *ranking;
 
 public:
@@ -30,7 +31,7 @@ public:
     Game();
     ~Game();
     int getColor(int i, int j);
-    void isGameOver();
+    bool isGameOver();
     void printMatrix();///para teste
     void printMatrix2();
     bool verifyMoveLeft(int i,int j);
@@ -73,6 +74,7 @@ public:
     void displayGameOver();
     void scoredisplay (int posx, int posy, int posz, int space_char, int scorevar);
     void displayRanking();
+    void drawPoints();
 };
 
 #endif // GAME_H_INCLUDED

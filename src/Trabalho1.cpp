@@ -50,7 +50,8 @@ void drawState()
 
 }
 
-void displayGame(){
+void displayGame()
+{
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -60,8 +61,7 @@ void displayGame(){
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    if(game->getGameState() == 1)
-        glViewport ((int) 0, (int) 0, (int) 480, (int) 680);
+    glViewport ((int) 0, (int) 0, (int) 480, (int) 680);
 
     game->drawField();
     p->drawPiece(moveX,moveY);
@@ -73,6 +73,8 @@ void displayGame(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 680, (int) 480, (int) 180, (int) 200);
+
+    game->drawPoints();///ajustar essa função
 
     nextPiece->drawPiece(0,-80);
 
@@ -105,30 +107,37 @@ void init()
 
 void timer(int value)
 {
-
-    if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)///mudar esse if para verificar se há cor na paraada toda
+    if (!game->isGameOver())
     {
-        moveY -= 3.5;
-        linha -=0.5;
+        if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)///mudar esse if para verificar se há cor na paraada toda
+        {
+            moveY -= 3.5;
+            linha -=0.5;
 
+        }
+        else
+        {
+            int* cubeColors = p->getCubesColor();
+            game->addColor(linha,coluna,cubeColors[2]);
+            game->addColor(linha + 1,coluna,cubeColors[1]);
+            game->addColor(linha + 2,coluna,cubeColors[0]);
+            game->runVerification();
+            moveX = 0.0;
+            moveY = 0.0;
+            linha = 15, coluna = 3;
+            p = nextPiece;
+            nextPiece = new Piece();
+        }
+
+        glutPostRedisplay();
+        glutTimerFunc(animationTime,timer,1);
     }
+
     else
     {
-        int* cubeColors = p->getCubesColor();
-        game->addColor(linha,coluna,cubeColors[2]);
-        game->addColor(linha + 1,coluna,cubeColors[1]);
-        game->addColor(linha + 2,coluna,cubeColors[0]);
-        game->runVerification();
-        moveX = 0.0;
-        moveY = 0.0;
-        linha = 15, coluna = 3;
-        p = nextPiece;
-        nextPiece = new Piece();
+        game->setGameState(3);
     }
-
-    glutPostRedisplay();
-    glutTimerFunc(animationTime,timer,1);
-    }
+}
 
 
 
@@ -144,9 +153,16 @@ void keyboard(unsigned char key, int x, int y)
         moveX = 0.0;
         moveY = 0.0;
         linha = 15, coluna = 3;
+        timeOn = true;
         break;
+
+    case 'a' ... 'z':
+    case 'A' ... 'Z':
+        if (game->getGameState() == 3)
+            addChar(key);
+        break;
+        glutPostRedisplay();
     }
-    glutPostRedisplay();
 }
 
 void specialKeysRelease(int key, int x, int y)
@@ -217,7 +233,8 @@ void mouse(int button, int state, int x, int y)
                 {
                     game->setGameState(1);
                 }
-                if (y < 293 && y > 220){
+                if (y < 293 && y > 220)
+                {
                     game->setGameState(2);
                 }
                 if (y < 379 && y> 303)
