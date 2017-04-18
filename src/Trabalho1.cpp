@@ -11,7 +11,7 @@ void *font = GLUT_BITMAP_TIMES_ROMAN_24;
 float moveX = 0.0,moveY = 0.0;
 float yMin = -105.0;
 float linha = 15, coluna = 3;
-bool idleOn = 0;
+bool timeOn = true;
 int animationTime = 500.0;
 int typeShift = 0;
 bool shift = false,shiftMouse = false;
@@ -42,14 +42,20 @@ void drawState()
 
         nextPiece->drawPiece(0,-80);
 
-
+        if(timeOn)
+        {
+            glutTimerFunc(animationTime,timer,1);
+            timeOn = false;
+        }
 
         break;
-//    case 2:
-//        displayRanking();
+    case 2:
+       game->displayRanking();
+       break;
 
-//        displayGameOver();
-//        break;
+    case 3:
+         game->displayGameOver();
+        break;
     }
 
 }
@@ -89,7 +95,7 @@ void init()
 
 void timer(int value)
 {
-    cout << value;
+    game->isGameOver();
     if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)///mudar esse if para verificar se há cor na paraada toda
     {
         moveY -= 3.5;
@@ -112,17 +118,11 @@ void timer(int value)
 
     glutPostRedisplay();
     glutTimerFunc(animationTime,timer,1);
-}
+    }
 
-void idle()
-{
-    if(game->getGameState() == 1)
-        if(idleOn)
-        {
-            glutTimerFunc(animationTime,timer,1);
-            idleOn = false;
-        }
-}
+
+
+
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -195,18 +195,19 @@ void mouse(int button, int state, int x, int y)
         typeShift = 1;
         break;
     case GLUT_LEFT_BUTTON:
-        cout << y;
         if(state==GLUT_DOWN && game->getGameState() == 0)
         {
             if (x > 199 && x < 277)
             {
                 if (y > 133 && y < 215)
                 {
-                    cout << "aqui";
                     game->setGameState(1);
                 }
-                if (y < -30 && y > -60) //setGameState(RANKING_SCREEN);
-                    if (y < -60 && y> -90) exit(1);
+                if (y < 293 && y > 220){
+                    game->setGameState(2);
+                }
+                if (y < 379 && y> 303)
+                    exit(1);
             }
 
         }
@@ -241,7 +242,6 @@ int main (int argc,char *argv[])
     glutSpecialUpFunc( specialKeysRelease );
     glutMouseFunc(mouse);
 
-    glutIdleFunc(idle);
     glutDisplayFunc(display);
 
     glutMainLoop();

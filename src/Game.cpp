@@ -23,6 +23,7 @@ Game::Game()
     clearTrashList();
     clearTrashListMainDiag();
     clearTrashListSecondDiag();
+    ranking = new Ranking();
 }
 
 void Game::drawCubeColor(int i, int j, float positionX, float positionY)
@@ -604,6 +605,83 @@ void Game::drawStartScreen(){
     for (int i = 0; i < 4; i++){
         glRasterPos3f (posX + i*6,-80, 0);
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, sair[i]);
+    }
+
+}
+void Game :: scoredisplay (int posx, int posy, int posz, int space_char, int scorevar){
+    int j=0,p,k;
+    GLvoid *font_style1 = GLUT_BITMAP_TIMES_ROMAN_24;
+
+    p = scorevar;
+    j = 0;
+    k = 0;
+    while(p > 9){
+        k = p % 10;
+        glRasterPos3f ((posx-(j*space_char)),posy, posz);
+        glutBitmapCharacter(font_style1,48+k);
+        j++;
+        p /= 10;
+    }
+    glRasterPos3f ((posx-(j*space_char)), posy, posz);
+    glutBitmapCharacter(font_style1,48+p);
+
+}
+
+void Game:: displayGameOver(){
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Projeção
+    glLoadIdentity();
+    glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
+    glClearColor(0.19,0.19,0.80,1.0);
+    char gameover[] = "GAME OVER";
+
+    glColor3f(1,1,1);
+
+    for (int i = 0; i < 9; i++){
+        glRasterPos3f (125 + i*5,-20, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, gameover[i]);
+    }
+
+    char time_1[] = "Your time was  ";
+
+    for (int i = 0; i < 14; i++){
+        glRasterPos3f (110 + i*5,-40, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, time_1[i]);
+    }
+
+    scoredisplay(190,-40,0,5,1);
+
+    char enterName[] = "Enter your name:";
+    for (int i = 0; i < 16; i++){
+        glRasterPos3f (110 + i*5,-60, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, enterName[i]);
+    }
+
+    for (int i = 0; ranking->getCurrentName(i); i++){
+        glRasterPos3f (125 + i*5,-80, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ranking->getCurrentName(i));
+    }
+}
+
+void Game::displayRanking(){
+    glClearColor(0.19,0.19,0.80,1.0);
+    char rankingText[] = "TOP SCORES";
+
+    glColor3f(1,1,1);
+
+    for (int i = 0; i < 10; i++){
+        glRasterPos3f (125 + i*5,-20, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingText[i]);
+    }
+
+    for (int i = 0; i < 10; i++){
+
+        for (int j = 0; ranking->getScores()[i].name[j]; j++){
+            glRasterPos3f (100 + j*5,-130+i*10, 0);
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ranking->getScores()[i].name[j]);
+        }
+        scoredisplay(200,-130+i*10,0,5,ranking->getScores()[i].score);
     }
 
 }

@@ -2,6 +2,7 @@
 #define GAME_H_INCLUDED
 #include <GL/glui.h>
 #include <GL/glut.h>
+#include "Ranking.h"
 
 
 class Game
@@ -21,6 +22,7 @@ private:
     int secondDiagCount;
     int points;
     int gameState;
+    Ranking *ranking;
 
 public:
     void drawField();
@@ -68,6 +70,9 @@ public:
     int getGameState();
     void setGameState(int gameState);
     void drawStartScreen();
+    void displayGameOver();
+    void scoredisplay (int posx, int posy, int posz, int space_char, int scorevar);
+    void displayRanking();
 };
 
 #endif // GAME_H_INCLUDED
