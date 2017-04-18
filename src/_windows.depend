@@ -128,7 +128,7 @@
 	<GL/glui.h>
 	<GL/glut.h>
 
-1492381094 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
+1492477785 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
@@ -148,11 +148,11 @@
 	<iostream>
 	<time.h>
 
-1492374635 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
+1492478723 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
 	"Game.h"
 	<iostream>
 
-1492374610 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
+1492474588 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
 	<GL/glui.h>
 	<GL/glut.h>
 
@@ -166,4 +166,10 @@
 	<GL/glut.h>
 
 1492373753 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\desenvolvimento1.cpp
+
+1492454550 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\src\startscreen.cpp
+	"StartScreen.h"
+	<GL/glut.h>
+
+1492454624 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\include\startscreen.h
 

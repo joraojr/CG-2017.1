@@ -20,6 +20,7 @@ private:
     int mainDiagCount;
     int secondDiagCount;
     int points;
+    int gameState;
 
 public:
     void drawField();
@@ -27,7 +28,7 @@ public:
     Game();
     ~Game();
     int getColor(int i, int j);
-    bool isGameOver();
+    void isGameOver();
     void printMatrix();///para teste
     void printMatrix2();
     bool verifyMoveLeft(int i,int j);
@@ -64,6 +65,9 @@ public:
     void clearTrashListSecondDiag();
     void clear();
     void runVerification();
+    int getGameState();
+    void setGameState(int gameState);
+    void drawStartScreen();
 };
 
 #endif // GAME_H_INCLUDED

@@ -1,0 +1,6 @@
+#ifndef STARTSCREEN_H_INCLUDED
+#define STARTSCREEN_H_INCLUDED
+
+void drawStartScreen();
+
+#endif // STARTSCREEN_H_INCLUDED
