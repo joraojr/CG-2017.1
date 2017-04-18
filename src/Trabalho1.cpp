@@ -11,6 +11,7 @@ void *font = GLUT_BITMAP_TIMES_ROMAN_24;
 float moveX = 0.0,moveY = 0.0;
 float yMin = -105.0;
 float linha = 15, coluna = 3;
+bool timeOn = true;
 int animationTime = 500.0;
 int typeShift = 0;
 bool shift = false,shiftMouse = false;
@@ -18,23 +19,49 @@ Game* game = new Game();
 Piece* p;
 Piece* nextPiece;
 
-void drawField()
+void timer (int value);
+
+void drawState()
 {
-    game->drawField();
+    switch (game->getGameState())
+    {
+    case 0:
+        game->drawStartScreen();
+        break;
+    case 1:
+        game->drawField();
+        p->drawPiece(moveX,moveY);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(20.0,55.0,20,60.0,0.0,10.0);
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glViewport ((int) 680, (int) 480, (int) 180, (int) 200);
+
+        nextPiece->drawPiece(0,-80);
+
+        if(timeOn)
+        {
+            glutTimerFunc(animationTime,timer,1);
+            timeOn = false;
+        }
+
+        break;
+    case 2:
+
+       game->displayRanking();
+       break;
+
+    case 3:
+         game->displayGameOver();
+        break;
+    }
 
 }
 
-void output(int x, int y, char *string)
-{
-  int len, z;
 
-//  glTranslatef(x,y,0.0);
-  len = (int) strlen(string);
-  for (z = 0; z < len; z++) {
-    glutBitmapCharacter(font, string[z]);
-  }
-
-}
 
 void display()
 {
@@ -48,9 +75,7 @@ void display()
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) 480, (int) 680);
 
-
-
-    drawField();
+    drawState();
     if(shift)
     {
         if(typeShift == 0)
@@ -60,21 +85,6 @@ void display()
         shift = false;
     }
 
-
-    p->drawPiece(moveX,moveY);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(20.0,55.0,20,60.0,0.0,10.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glViewport ((int) 680, (int) 480, (int) 180, (int) 200);
-
-    nextPiece->drawPiece(0,-80);
-
-//    glColor3f(1.0,0.0,0.0);
-    output(100, 100, "This is written in a GLUT bitmap font.");
 
     glutSwapBuffers();
 }
@@ -86,41 +96,34 @@ void init()
 
 void timer(int value)
 {
-    if(!game->isGameOver())
+    game->isGameOver();
+    if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)///mudar esse if para verificar se há cor na paraada toda
     {
-        if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)///mudar esse if para verificar se há cor na paraada toda
-        {
-            moveY -= 3.5;
-            linha -=0.5;
+        moveY -= 3.5;
+        linha -=0.5;
 
-        }
-        else
-        {
-            int* cubeColors = p->getCubesColor();
-            game->addColor(linha,coluna,cubeColors[2]);
-            game->addColor(linha + 1,coluna,cubeColors[1]);
-            game->addColor(linha + 2,coluna,cubeColors[0]);
-            game->verifyLine(linha,coluna);
-            game->verifyLine(linha + 1,coluna);
-            game->verifyLine(linha + 2,coluna);
-            game->verifyColumn(linha,coluna);
-
-            game->readjust();
-            moveX = 0.0;
-            moveY = 0.0;
-            linha = 15, coluna = 3;
-            p = nextPiece;
-            nextPiece = new Piece();
-        }
-
-        glutPostRedisplay();
-        glutTimerFunc(animationTime,timer,1);
     }
     else
     {
-        cout << "acabou";
+        int* cubeColors = p->getCubesColor();
+        game->addColor(linha,coluna,cubeColors[2]);
+        game->addColor(linha + 1,coluna,cubeColors[1]);
+        game->addColor(linha + 2,coluna,cubeColors[0]);
+        game->runVerification();
+        moveX = 0.0;
+        moveY = 0.0;
+        linha = 15, coluna = 3;
+        p = nextPiece;
+        nextPiece = new Piece();
     }
-}
+
+    glutPostRedisplay();
+    glutTimerFunc(animationTime,timer,1);
+    }
+
+
+
+
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -193,9 +196,25 @@ void mouse(int button, int state, int x, int y)
         typeShift = 1;
         break;
     case GLUT_LEFT_BUTTON:
-        if(state==GLUT_DOWN)
+        if(state==GLUT_DOWN && game->getGameState() == 0)
+        {
+            if (x > 199 && x < 277)
+            {
+                if (y > 133 && y < 215)
+                {
+                    game->setGameState(1);
+                }
+                if (y < 293 && y > 220){
+                    game->setGameState(2);
+                }
+                if (y < 379 && y> 303)
+                    exit(1);
+            }
+
+        }
+        else if (state==GLUT_DOWN && game->getGameState() == 1)
             animationTime = 100;
-        else
+        else if (state==GLUT_UP &&game->getGameState() == 1)
             animationTime = 500;
         break;
     }
@@ -219,13 +238,11 @@ int main (int argc,char *argv[])
 
 
     init();
-
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(specialKey);
     glutSpecialUpFunc( specialKeysRelease );
     glutMouseFunc(mouse);
 
-    glutTimerFunc(animationTime,timer,1);
     glutDisplayFunc(display);
 
     glutMainLoop();
