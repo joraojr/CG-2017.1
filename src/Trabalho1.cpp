@@ -50,6 +50,7 @@ void drawState()
 
         break;
     case 2:
+
        game->displayRanking();
        break;
 
