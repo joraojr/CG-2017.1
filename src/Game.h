@@ -3,7 +3,7 @@
 #include <GL/glui.h>
 #include <GL/glut.h>
 #include "Ranking.h"
-
+#include "Piece.h"
 
 class Game
 {
@@ -24,6 +24,33 @@ private:
     int gameState;
     int brokenBlocks;
     Ranking *ranking;
+    Piece* piece;
+    Piece* nextPiece;
+
+    ///verificar em linha
+    int verifyLineLeft(int color,int line, int column);
+    int verifyLineRight(int color,int line, int column);
+    int verifyLine(int line,int column);
+    void clearTrashListLine();
+    ///verificar em coluna
+    int verifyColumnUp(int color,int line, int column);
+    int verifyColumnDown(int color,int line, int column);
+    void clearTrashListColumn();
+    int verifyColumn(int line,int column);
+    ///verifica em diagonal principal e secundaria
+    int verifyMainDiagUp(int color,int line, int column);
+    int verifyMainDiagDown(int color,int line, int column);
+    int verifySecondDiagUp(int color,int line, int column);
+    int verifySecondDiagDown(int color,int line, int column);
+    int verifyMainDiag(int line,int column);
+    int verifySecondDiag(int line,int column);
+    bool verifyCoord(int x,int y);
+    void clearTrashListMainDiag();
+    void clearTrashListSecondDiag();
+    void copyColumnToTrashList(int matriz[15][2],int c);
+    void copyLineToTrashList(int matriz[7][2],int c);
+    void copyMainDiagToTrashList(int matriz[7][2],int c);
+    void copySecondDiagToTrashList(int matriz[7][2],int c);
 
 public:
     void drawField();
@@ -36,45 +63,29 @@ public:
     void printMatrix2();
     bool verifyMoveLeft(int i,int j);
     bool verifyMoveRight(int i,int j);
-    ///verificar em linha
-    int verifyLineLeft(int color,int line, int column);
-    int verifyLineRight(int color,int line, int column);
-    void verifyLine(int line,int column);
-    void clearTrashListLine();
     void readjust();
-    ///verificar em coluna
-    int verifyColumnUp(int color,int line, int column);
-    int verifyColumnDown(int color,int line, int column);
-    void clearTrashListColumn();
-    void verifyColumn(int line,int column);
-    void verifyAll(int line,int column);
+    int verifyAll(int line,int column);
     int fatorialPoints(int i);
     void drawMenu();
     int getPoints();
     void clearTrashList();
-    void copyColumnToTrashList(int matriz[15][2],int c);
-    void copyLineToTrashList(int matriz[7][2],int c);
-    void copyMainDiagToTrashList(int matriz[7][2],int c);
-    void copySecondDiagToTrashList(int matriz[7][2],int c);
-    ///verifica em diagonal principal e secundaria
-    int verifyMainDiagUp(int color,int line, int column);
-    int verifyMainDiagDown(int color,int line, int column);
-    int verifySecondDiagUp(int color,int line, int column);
-    int verifySecondDiagDown(int color,int line, int column);
-    void verifyMainDiag(int line,int column);
-    void verifySecondDiag(int line,int column);
-    bool verifyCoord(int x,int y);
-    void clearTrashListMainDiag();
-    void clearTrashListSecondDiag();
     void clear();
     void runVerification();
     int getGameState();
     void setGameState(int gameState);
     void drawStartScreen();
     void displayGameOver();
-    void scoredisplay (int posx, int posy, int posz, int space_char, int scorevar);
+    void scoreDisplay (int posx, int posy, int posz, int space_char, int scorevar);
     void displayRanking();
     void drawPoints();
+    Ranking* getRanking();
+    Piece* getPiece();
+    Piece* getNextPiece();
+    void setPiece(Piece* p);
+    void setNextPiece(Piece* p);
+    void createNextPiece();
+    void resetGame();
+
 };
 
 #endif // GAME_H_INCLUDED

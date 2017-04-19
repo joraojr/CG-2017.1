@@ -28,6 +28,10 @@ public:
     char getCurrentName(int i);
     void writeOnFile();
     Score* getScores();
+    void printRanking();
+    void ordering();
+    void swapName(char name1[21],char name2[21]);
+    void addPointsToCurrentRanking(int points);
 private:
     Score scores[10];
 
