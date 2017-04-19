@@ -1,0 +1,10 @@
+10 Clara
+15 Pedro
+20 Felipe
+20 Fernando
+25 Rodrigo
+35 Gerson
+35 Jair
+40 Fernanda
+50 Lucas
+55 Vanessa

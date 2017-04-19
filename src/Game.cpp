@@ -25,6 +25,8 @@ Game::Game()
     clearTrashListSecondDiag();
     ranking = new Ranking();
     brokenBlocks = 0;
+    piece = new Piece();
+    nextPiece = new Piece();
 }
 
 void Game::drawCubeColor(int i, int j, float positionX, float positionY)
@@ -36,7 +38,7 @@ void Game::drawCubeColor(int i, int j, float positionX, float positionY)
         glColor3f(0,0,0);
         glPushMatrix();
         glTranslatef(positionX,positionY,0.0);
-        glutSolidCube(6.9);
+        glutSolidCube(7.0);
         glPopMatrix();
         break;
     case 1:
@@ -99,29 +101,35 @@ void Game::drawField()
         y += 7.0;
         x = 0.0;
     }
-
-
-//    cout<<"Points: "<<points;
 }
 
 void Game:: drawPoints(){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-100.0,1100.0,-300,200.0,0.0,10.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) 400, (int) 300, (int) 480, (int) 200);
+
     glColor3f(1,1,1);
+    int x  = 100;
     char rankingPoints [] = "POINTS: ";
     for ( int i = 0; i < 8; i++){
-        glRasterPos3f ( 0 + i*5,-80, 0);///arrumar aqui
+        glRasterPos3f ( x + i*40,-150, 0);///arrumar aqui
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingPoints[i]);
     }
 
-    scoredisplay(190,-40,0,5,this->points);///arrumar aqui
+    scoreDisplay(650,-150,0,25,this->points);///arrumar aqui
 
     char rankingBlocks [] = "BROKEN BLOCKS: ";
 
     for ( int i = 0; i < 15; i++){
-        glRasterPos3f ( 0 + i*5,-80, 0);///arrumar aqui
+        glRasterPos3f ( x + i*40,-50, 0);///arrumar aqui
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingBlocks[i]);
     }
 
-    scoredisplay(190,-40,0,5,this->brokenBlocks); ///arrumar aqui
+    scoreDisplay(800,-50,0,25,this->brokenBlocks); ///arrumar aqui
 
 
 
@@ -195,7 +203,7 @@ int Game::verifyLineRight(int color,int line, int column)
     return 0;
 }
 
-void Game::verifyLine(int line, int column)
+int Game::verifyLine(int line, int column)
 {
     int countC = 1;
     trashListLine[lineCount][0] = line;
@@ -208,10 +216,9 @@ void Game::verifyLine(int line, int column)
     else
     {
         copyLineToTrashList(trashListLine,countC);
-        points += fatorialPoints(countC-2);
-        this->brokenBlocks += countC;
+        return 1;
     }
-
+    return 0;
 }
 
 void Game::copyLineToTrashList(int matriz[7][2],int c)
@@ -264,7 +271,7 @@ int Game::verifyColumnUp(int color,int line,int column)
     return 0;
 }
 
-void Game::verifyColumn(int line, int column)
+int Game::verifyColumn(int line, int column)
 {
     int countC = 1;
     trashListColumn[columnCount][0] = line;
@@ -277,9 +284,9 @@ void Game::verifyColumn(int line, int column)
     else
     {
         copyColumnToTrashList(trashListColumn,countC);
-        points += fatorialPoints(countC-2);
-        this->brokenBlocks += countC;
+        return 1;
     }
+    return 0;
 }
 
 void Game::copyColumnToTrashList(int matriz[15][2],int c)
@@ -331,7 +338,7 @@ void Game::copyMainDiagToTrashList(int matriz[7][2],int c)
     clearTrashListMainDiag();
 }
 
-void Game::verifyMainDiag(int line, int column)
+int Game::verifyMainDiag(int line, int column)
 {
     int countC = 1;
     trashListMainDiag[mainDiagCount][0] = line;
@@ -345,7 +352,9 @@ void Game::verifyMainDiag(int line, int column)
     {
         copyMainDiagToTrashList(trashListMainDiag,countC);
         points += fatorialPoints(countC-2);
+        return 1;
     }
+    return 0;
 }
 
 int Game::verifyMainDiagUp(int color,int line, int column)
@@ -397,7 +406,7 @@ void Game::copySecondDiagToTrashList(int matriz[7][2],int c)
     clearTrashListSecondDiag();
 }
 
-void Game::verifySecondDiag(int line,int column)
+int Game::verifySecondDiag(int line,int column)
 {
     int countC = 1;
     trashListSecondDiag[secondDiagCount][0] = line;
@@ -411,7 +420,9 @@ void Game::verifySecondDiag(int line,int column)
     {
         copySecondDiagToTrashList(trashListSecondDiag,countC);
         points += fatorialPoints(countC-2);
+        return 1;
     }
+    return 0;
 }
 
 int Game::verifySecondDiagDown(int color,int line,int column)
@@ -468,32 +479,40 @@ void Game::clear()
     clearTrashList();
 }
 
-void Game::verifyAll(int line, int column)
+int Game::verifyAll(int line, int column)
 {
-    verifyColumn(line,column);
-    verifyLine(line,column);
-    verifyMainDiag(line,column);
-    verifySecondDiag(line,column);
+    int trash = 0;
+    int trashColumn = verifyColumn(line,column);
+    int trashLine = verifyLine(line,column);
+    int trashMainDiag = verifyMainDiag(line,column);
+    int trashSecondDiag = verifySecondDiag(line,column);
+    if(trashColumn == 1 || trashLine == 1 || trashMainDiag == 1 || trashSecondDiag == 1){
+        trash = 1;
+        points += fatorialPoints(trashCount);
+        brokenBlocks += trashCount;
+    }
     clear();
+
+    return trash;
 }
 
-void Game::runVerification()
-{
-    for(int k = 0; k < 10; k++)
-    {
-        for(int i = 0; i < 15; i++)
-        {
-            for(int j = 0; j < 7; j++)
-            {
-                if(field[i][j] != 0)
-                {
+void Game::runVerification(){
+    int trash = 0;
+    for(int i = 0; i < 15; i++){
+        for(int j = 0; j < 7; j++){
+            if(field[i][j] != 0){
+                if(trash == 0){
+                    trash = verifyAll(i,j);
+                }else{
                     verifyAll(i,j);
-                    readjust();
                 }
+                readjust();
             }
         }
-        drawField();
     }
+    drawField();
+    if(trash == 1)
+        runVerification();
 }
 
 void Game::readjust()
@@ -549,7 +568,7 @@ void Game::drawStartScreen(){
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Projeção
     glLoadIdentity();
     glOrtho(0.0,300.0, -200.0, 50.0, -1.0, 1.0);
-    glColor3f(0.2549,0.4117,1);
+    glColor3f(1.0,0.0,0.0);
     glViewport ((int) 0, (int) 0, (int) 860, (int) 680);
 
     glBegin(GL_QUADS);
@@ -578,7 +597,7 @@ void Game::drawStartScreen(){
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, start[i]);
     }
 
-     glColor3f(0.2549,0.4117,1);
+     glColor3f(0.0,0.5,0.0);
 
 
     glBegin(GL_QUADS);
@@ -635,7 +654,7 @@ void Game::drawStartScreen(){
     }
 
 }
-void Game::scoredisplay(int posx, int posy, int posz, int space_char, int scorevar){
+void Game::scoreDisplay(int posx, int posy, int posz, int space_char, int scorevar){
     int j=0,p,k;
     GLvoid *font_style1 = GLUT_BITMAP_TIMES_ROMAN_24;
 
@@ -660,8 +679,8 @@ void Game::displayGameOver(){
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Projeção
     glLoadIdentity();
     glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
-    glClearColor(0.19,0.19,0.80,1.0);
-        glViewport ((int) 0, (int) 0, (int) 860, (int) 680);
+
+    glViewport ((int) 0, (int) 0, (int) 860, (int) 680);
     char gameover[] = "GAME OVER";
 
     glColor3f(1,1,1);
@@ -671,14 +690,15 @@ void Game::displayGameOver(){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, gameover[i]);
     }
 
-    char time_1[] = "Your time was  ";
+    char time_1[] = "Your score was  ";
 
     for (int i = 0; i < 14; i++){
         glRasterPos3f (110 + i*5,-40, 0);
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, time_1[i]);
     }
 
-    scoredisplay(190,-40,0,5,this->points);
+    ranking->addPointsToCurrentRanking(points);
+    scoreDisplay(190,-40,0,5,this->points);
 
     char enterName[] = "Enter your name:";
     for (int i = 0; i < 16; i++){
@@ -697,6 +717,8 @@ void Game::displayRanking(){
     glLoadIdentity();
     glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
 
+    ranking->ordering();
+
     char rankingText[] = "TOP SCORES";
     glColor3f(1,1,1);
 
@@ -711,9 +733,53 @@ void Game::displayRanking(){
             glRasterPos3f (100 + j*5,-130+i*10, 0);
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ranking->getScores()[i].name[j]);
         }
-        scoredisplay(200,-130+i*10,0,5,ranking->getScores()[i].score);
+        scoreDisplay(200,-130+i*10,0,5,ranking->getScores()[i].score);
     }
 
+}
+
+Ranking* Game::getRanking(){
+    return ranking;
+}
+
+Piece* Game::getPiece(){
+    return piece;
+}
+
+Piece* Game::getNextPiece(){
+    return nextPiece;
+}
+
+void Game::setPiece(Piece* p){
+    piece = p;
+}
+
+void Game::createNextPiece(){
+    nextPiece = new Piece();
+}
+
+void Game::resetGame(){
+    for(int i = 0; i < 18; i++){
+        for(int j =0; j < 7; j++)
+            field[i][j] = 0 ;
+    }
+
+    lineCount = 0;
+    columnCount = 0;
+    mainDiagCount = 0;
+    secondDiagCount = 0;
+    points = 0 ;
+    trashCount = 0;
+    gameState = 0;
+    clearTrashListColumn();
+    clearTrashListLine();
+    clearTrashList();
+    clearTrashListMainDiag();
+    clearTrashListSecondDiag();
+
+    brokenBlocks = 0;
+    piece = new Piece();
+    nextPiece = new Piece();
 }
 
 Game::~Game(){
