@@ -12,7 +12,7 @@ float moveX = 0.0,moveY = 0.0;
 float yMin = -105.0;
 float linha = 15, coluna = 3;
 bool timeOn = true;
-int animationTime = 500.0;
+int animationTime = 500.0,animationAux = 500,fastSpeed = 10;
 int typeShift = 0;
 bool shift = false,shiftMouse = false;
 Game* game;
@@ -119,6 +119,7 @@ void timer(int value)
             game->addColor(linha + 1,coluna,cubeColors[1]);
             game->addColor(linha + 2,coluna,cubeColors[0]);
             game->runVerification();
+            animationTime = animationAux/game->getLevel();
             moveX = 0.0;
             moveY = 0.0;
             linha = 15, coluna = 3;
@@ -175,7 +176,7 @@ void specialKeysRelease(int key, int x, int y)
     switch (key)
     {
     case GLUT_KEY_DOWN:
-        animationTime = 500.0;
+        animationTime = animationAux;
         break;
 
     default:
@@ -203,7 +204,7 @@ void specialKey(int key, int x, int y)
         }
         break;
     case GLUT_KEY_DOWN:
-        animationTime = 100;
+        animationTime = fastSpeed;
         break;
 
     case GLUT_KEY_UP:
@@ -248,9 +249,9 @@ void mouse(int button, int state, int x, int y)
 
         }
         else if (state==GLUT_DOWN && game->getGameState() == 1)
-            animationTime = 100;
+            animationTime = fastSpeed;
         else if (state==GLUT_UP &&game->getGameState() == 1)
-            animationTime = 500;
+            animationTime = animationAux;
         break;
     }
 }

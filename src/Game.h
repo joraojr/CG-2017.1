@@ -23,6 +23,7 @@ private:
     int points;
     int gameState;
     int brokenBlocks;
+    int level;
     Ranking *ranking;
     Piece* piece;
     Piece* nextPiece;
@@ -85,6 +86,7 @@ public:
     void setNextPiece(Piece* p);
     void createNextPiece();
     void resetGame();
+    int getLevel();
 
 };
 
