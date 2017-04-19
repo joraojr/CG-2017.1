@@ -24,6 +24,7 @@ Game::Game()
     clearTrashListMainDiag();
     clearTrashListSecondDiag();
     ranking = new Ranking();
+    brokenBlocks = 0;
 }
 
 void Game::drawCubeColor(int i, int j, float positionX, float positionY)
@@ -99,9 +100,32 @@ void Game::drawField()
         x = 0.0;
     }
 
+
 //    cout<<"Points: "<<points;
 }
 
+void Game:: drawPoints(){
+    glColor3f(1,1,1);
+    char rankingPoints [] = "POINTS: ";
+    for ( int i = 0; i < 8; i++){
+        glRasterPos3f ( 0 + i*5,-80, 0);///arrumar aqui
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingPoints[i]);
+    }
+
+    scoredisplay(190,-40,0,5,this->points);///arrumar aqui
+
+    char rankingBlocks [] = "BROKEN BLOCKS: ";
+
+    for ( int i = 0; i < 15; i++){
+        glRasterPos3f ( 0 + i*5,-80, 0);///arrumar aqui
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingBlocks[i]);
+    }
+
+    scoredisplay(190,-40,0,5,this->brokenBlocks); ///arrumar aqui
+
+
+
+}
 void Game::addColor(int i, int j, int color)
 {
     this->field[i][j] = color ;
@@ -112,13 +136,14 @@ int Game::getColor(int i, int j)
     return this->field[i][j];
 }
 
-void Game::isGameOver()
+bool Game::isGameOver()
 {
     for(int i = 0; i < 7; i++)
     {
         if(field[15][i] != 0)
-            this->gameState=3;
+            return true;
     }
+    return false;
 }
 
 void Game::printMatrix()
@@ -178,13 +203,13 @@ void Game::verifyLine(int line, int column)
     lineCount++;
     countC += verifyLineLeft(field[line][column],line,column);
     countC += verifyLineRight(field[line][column],line,column);
-    cout << countC <<  endl;
     if(countC < 3)
         clearTrashListLine();
     else
     {
         copyLineToTrashList(trashListLine,countC);
         points += fatorialPoints(countC-2);
+        this->brokenBlocks += countC;
     }
 
 }
@@ -253,6 +278,7 @@ void Game::verifyColumn(int line, int column)
     {
         copyColumnToTrashList(trashListColumn,countC);
         points += fatorialPoints(countC-2);
+        this->brokenBlocks += countC;
     }
 }
 
@@ -522,9 +548,9 @@ void Game::drawStartScreen(){
 
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Projeção
     glLoadIdentity();
-    glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
-   //gluPerspective(1,2,50,500);
+    glOrtho(0.0,300.0, -200.0, 50.0, -1.0, 1.0);
     glColor3f(0.2549,0.4117,1);
+    glViewport ((int) 0, (int) 0, (int) 860, (int) 680);
 
     glBegin(GL_QUADS);
           glVertex3f (125, 0, 0.0);
@@ -542,13 +568,14 @@ void Game::drawStartScreen(){
           glVertex3f (175, 0, 0.0);
     glEnd();
 
+
     int posX = 137;
 
     char start[] = "START";
 
     for (int i = 0; i < 5; i++){
         glRasterPos3f (posX + i*5,-20, 0);
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, start[i]);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, start[i]);
     }
 
      glColor3f(0.2549,0.4117,1);
@@ -576,7 +603,7 @@ void Game::drawStartScreen(){
 
     for (int i = 0; i < 7; i++){
         glRasterPos3f (posX + i*6,-50, 0);
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ranking[i]);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ranking[i]);
     }
 
       glColor3f(0.2549,0.4117,1);
@@ -604,11 +631,11 @@ void Game::drawStartScreen(){
 
     for (int i = 0; i < 4; i++){
         glRasterPos3f (posX + i*6,-80, 0);
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, sair[i]);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, sair[i]);
     }
 
 }
-void Game :: scoredisplay (int posx, int posy, int posz, int space_char, int scorevar){
+void Game::scoredisplay(int posx, int posy, int posz, int space_char, int scorevar){
     int j=0,p,k;
     GLvoid *font_style1 = GLUT_BITMAP_TIMES_ROMAN_24;
 
@@ -627,13 +654,14 @@ void Game :: scoredisplay (int posx, int posy, int posz, int space_char, int sco
 
 }
 
-void Game:: displayGameOver(){
+void Game::displayGameOver(){
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Projeção
     glLoadIdentity();
     glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
     glClearColor(0.19,0.19,0.80,1.0);
+        glViewport ((int) 0, (int) 0, (int) 860, (int) 680);
     char gameover[] = "GAME OVER";
 
     glColor3f(1,1,1);
@@ -650,7 +678,7 @@ void Game:: displayGameOver(){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, time_1[i]);
     }
 
-    scoredisplay(190,-40,0,5,1);
+    scoredisplay(190,-40,0,5,this->points);
 
     char enterName[] = "Enter your name:";
     for (int i = 0; i < 16; i++){
@@ -665,9 +693,11 @@ void Game:: displayGameOver(){
 }
 
 void Game::displayRanking(){
-    glClearColor(0.19,0.19,0.80,1.0);
-    char rankingText[] = "TOP SCORES";
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
 
+    char rankingText[] = "TOP SCORES";
     glColor3f(1,1,1);
 
     for (int i = 0; i < 10; i++){
@@ -686,3 +716,6 @@ void Game::displayRanking(){
 
 }
 
+Game::~Game(){
+
+}

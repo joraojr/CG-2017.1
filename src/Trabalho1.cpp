@@ -20,6 +20,7 @@ Piece* p;
 Piece* nextPiece;
 
 void timer (int value);
+void displayGame();
 
 void drawState()
 {
@@ -29,18 +30,7 @@ void drawState()
         game->drawStartScreen();
         break;
     case 1:
-        game->drawField();
-        p->drawPiece(moveX,moveY);
-
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(20.0,55.0,20,60.0,0.0,10.0);
-
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glViewport ((int) 680, (int) 480, (int) 180, (int) 200);
-
-        nextPiece->drawPiece(0,-80);
+        displayGame();
 
         if(timeOn)
         {
@@ -50,21 +40,19 @@ void drawState()
 
         break;
     case 2:
-
-       game->displayRanking();
-       break;
+        game->displayRanking();
+        break;
 
     case 3:
-         game->displayGameOver();
+        game->displayGameOver();
         break;
     }
 
 }
 
-
-
-void display()
+void displayGame()
 {
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_PROJECTION);
@@ -75,7 +63,21 @@ void display()
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) 480, (int) 680);
 
-    drawState();
+    game->drawField();
+    p->drawPiece(moveX,moveY);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(20.0,55.0,20,60.0,0.0,10.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) 680, (int) 480, (int) 180, (int) 200);
+
+    game->drawPoints();///ajustar essa função
+
+    nextPiece->drawPiece(0,-80);
+
     if(shift)
     {
         if(typeShift == 0)
@@ -84,7 +86,16 @@ void display()
             p->shiftColorMouse();
         shift = false;
     }
+}
 
+void display()
+{
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    drawState();
 
     glutSwapBuffers();
 }
@@ -96,30 +107,37 @@ void init()
 
 void timer(int value)
 {
-    game->isGameOver();
-    if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)///mudar esse if para verificar se há cor na paraada toda
+    if (!game->isGameOver())
     {
-        moveY -= 3.5;
-        linha -=0.5;
+        if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)///mudar esse if para verificar se há cor na paraada toda
+        {
+            moveY -= 3.5;
+            linha -=0.5;
 
+        }
+        else
+        {
+            int* cubeColors = p->getCubesColor();
+            game->addColor(linha,coluna,cubeColors[2]);
+            game->addColor(linha + 1,coluna,cubeColors[1]);
+            game->addColor(linha + 2,coluna,cubeColors[0]);
+            game->runVerification();
+            moveX = 0.0;
+            moveY = 0.0;
+            linha = 15, coluna = 3;
+            p = nextPiece;
+            nextPiece = new Piece();
+        }
+
+        glutPostRedisplay();
+        glutTimerFunc(animationTime,timer,1);
     }
+
     else
     {
-        int* cubeColors = p->getCubesColor();
-        game->addColor(linha,coluna,cubeColors[2]);
-        game->addColor(linha + 1,coluna,cubeColors[1]);
-        game->addColor(linha + 2,coluna,cubeColors[0]);
-        game->runVerification();
-        moveX = 0.0;
-        moveY = 0.0;
-        linha = 15, coluna = 3;
-        p = nextPiece;
-        nextPiece = new Piece();
+        game->setGameState(3);
     }
-
-    glutPostRedisplay();
-    glutTimerFunc(animationTime,timer,1);
-    }
+}
 
 
 
@@ -130,10 +148,21 @@ void keyboard(unsigned char key, int x, int y)
     switch (key)
     {
     case 27:
-        exit(0);
+        game->setGameState(0);
+        game = new Game();
+        moveX = 0.0;
+        moveY = 0.0;
+        linha = 15, coluna = 3;
+        timeOn = true;
         break;
+
+    case 'a' ... 'z':
+    case 'A' ... 'Z':
+        if (game->getGameState() == 3)
+            addChar(key);
+        break;
+        glutPostRedisplay();
     }
-    glutPostRedisplay();
 }
 
 void specialKeysRelease(int key, int x, int y)
@@ -198,13 +227,14 @@ void mouse(int button, int state, int x, int y)
     case GLUT_LEFT_BUTTON:
         if(state==GLUT_DOWN && game->getGameState() == 0)
         {
-            if (x > 199 && x < 277)
+            if (x > 358 && x < 502)
             {
                 if (y > 133 && y < 215)
                 {
                     game->setGameState(1);
                 }
-                if (y < 293 && y > 220){
+                if (y < 293 && y > 220)
+                {
                     game->setGameState(2);
                 }
                 if (y < 379 && y> 303)
@@ -228,14 +258,11 @@ int main (int argc,char *argv[])
     p = new Piece();
     nextPiece = new Piece();
 
-
-
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(860,680);
     glutInitWindowPosition(0,0);
     glutCreateWindow("TetrisCrush");
-
 
     init();
     glutKeyboardFunc(keyboard);
