@@ -130,7 +130,7 @@
 	"Ranking.h"
 	"Piece.h"
 
-1492528757 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
+1492581214 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
@@ -150,14 +150,15 @@
 	<iostream>
 	<time.h>
 
-1492529437 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
+1492578697 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
 	"Game.h"
 	<iostream>
 
-1492529148 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
+1492575718 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
 	<GL/glui.h>
 	<GL/glut.h>
 	"Ranking.h"
+	"Piece.h"
 
 1492363153 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.cpp
 	"Piece.h"
@@ -195,12 +196,13 @@
 	"Ranking.h"
 	<iostream>
 
-1492525474 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\ranking.h
+1492575718 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\ranking.h
 	<fstream>
 	<string.h>
 	<stdio.h>
 	<GL/glut.h>
 
-1492525474 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\ranking.cpp
+1492575718 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\ranking.cpp
 	"Ranking.h"
+	<iostream>
 

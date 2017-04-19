@@ -291,7 +291,6 @@ int Game::verifyColumn(int line, int column)
         clearTrashListColumn();
     else
     {
-        printMatrix();
         copyColumnToTrashList(trashListColumn,countC);
         return 1;
     }
@@ -426,7 +425,6 @@ int Game::verifySecondDiag(int line,int column)
     else
     {
         copySecondDiagToTrashList(trashListSecondDiag,countC);
-        points += fatorialPoints(countC-2);
         return 1;
     }
     return 0;
