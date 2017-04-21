@@ -43,6 +43,8 @@
 		<Unit filename="Game.h" />
 		<Unit filename="Piece.cpp" />
 		<Unit filename="Piece.h" />
+		<Unit filename="Ranking.cpp" />
+		<Unit filename="Ranking.h" />
 		<Unit filename="Trabalho1.cpp" />
 		<Extensions>
 			<code_completion />

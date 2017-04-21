@@ -33,16 +33,20 @@ void Ranking::writeOnFile(){
 }
 
 void Ranking::addScore(){
-    int i = 0;
-    while (currentRanking.score < scores[i+1].score && i < 9){
-        scores[i].score = scores[i+1].score;
-        strcpy(scores[i].name, scores[i+1].name);
-        i++;
+    int aux;
+    char auxName [21] ;
+    charCount = 0;
+    for(int i = 9 ; i>=0 ; i --){
+        if(currentRanking.score > scores[i].score){
+            aux = scores[i].score;
+            strcpy(auxName,scores[i].name);
+            scores[i].score = currentRanking.score;
+            strcpy(scores[i].name,currentRanking.name);
+            currentRanking.score = aux;
+            strcpy(currentRanking.name,auxName);
+        }
     }
-    if (currentRanking.score < scores[i].score) {
-        scores[i].score = currentRanking.score;
-        strcpy(scores[i].name, currentRanking.name );
-    }
+    strcpy(currentRanking.name,"");
     writeOnFile();
 }
 
@@ -58,43 +62,6 @@ void Ranking::readFromFile(){
 
 char Ranking::getCurrentName(int i){
     return currentRanking.name[i];
-}
-
-void Ranking::printRanking(){
-    for(int i = 0; i < 10; i++){
-        cout << scores[i].name << " - ";
-        cout << scores[i].score << endl;
-    }
-}
-
-void Ranking::ordering(){
-    for(int i = 0; i < 10; i++){
-        for(int j = 0 ; j < 9; j++){
-            if(scores[j+1].score < scores[j].score){
-                int aux = scores[j].score;
-                scores[j].score = scores[j+1].score;
-                scores[j+1].score = aux;
-
-                swapName(scores[j].name,scores[j+1].name);
-            }
-        }
-    }
-}
-
-void Ranking::swapName(char name1[21],char name2[21]){
-    char aux [21];
-    int i;
-    for(int i = 0; i < 21; i++){
-        aux[i] = name1[i];
-    }
-
-    for(i = 0; i < 21; i++){
-        name1[i] = name2[i];
-    }
-
-    for(i = 0; i < 21; i++){
-        name2[i] = aux[i];
-    }
 }
 
 void Ranking::addPointsToCurrentRanking(int points){

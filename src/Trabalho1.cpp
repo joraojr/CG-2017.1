@@ -10,9 +10,10 @@ using namespace std;
 void *font = GLUT_BITMAP_TIMES_ROMAN_24;
 float moveX = 0.0,moveY = 0.0;
 float yMin = -105.0;
-float linha = 15, coluna = 3;
-bool timeOn = true;
-int animationTime = 500.0;
+float linha = 15;
+int coluna = 3;
+bool timeOn = true, fullScreen = false;
+int animationTime = 500.0,animationAux = 500,fastSpeed = 10;
 int typeShift = 0;
 bool shift = false,shiftMouse = false;
 Game* game;
@@ -74,7 +75,7 @@ void displayGame()
     game->getNextPiece()->drawPiece(0,-80);
 
 
-    game->drawPoints();///ajustar essa função
+    game->drawPoints();
     if(shift)
     {
         if(typeShift == 0)
@@ -106,6 +107,7 @@ void timer(int value)
 {
     if (!game->isGameOver())
     {
+
         if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)
         {
             moveY -= 3.5;
@@ -119,6 +121,7 @@ void timer(int value)
             game->addColor(linha + 1,coluna,cubeColors[1]);
             game->addColor(linha + 2,coluna,cubeColors[0]);
             game->runVerification();
+            animationTime = animationAux/game->getLevel();
             moveX = 0.0;
             moveY = 0.0;
             linha = 15, coluna = 3;
@@ -133,6 +136,7 @@ void timer(int value)
     else
     {
         game->setGameState(3);
+        glutPostRedisplay();
     }
 }
 
@@ -152,20 +156,35 @@ void keyboard(unsigned char key, int x, int y)
         linha = 15, coluna = 3;
         glutPostRedisplay();
         break;
-
     case 'a' ... 'z':
     case 'A' ... 'Z':
-        if (game->getGameState() == 3){
+        if (game->getGameState() == 3)
+        {
             game->getRanking()->addChar(key);
             glutPostRedisplay();
         }
         break;
     case 13:
-        if(game->getGameState() == 3){
+        if(game->getGameState() == 3)
+        {
             game->getRanking()->addScore();
             game->setGameState(0);
             glutPostRedisplay();
         }
+        break;
+    case 32:
+        if(!fullScreen)
+        {
+            glutFullScreen();
+            fullScreen = true;
+        }
+        else
+        {
+            glutInitWindowPosition(0,0);
+            glutReshapeWindow(860,680);
+            fullScreen = false;
+        }
+        break;
 
     }
 }
@@ -175,7 +194,7 @@ void specialKeysRelease(int key, int x, int y)
     switch (key)
     {
     case GLUT_KEY_DOWN:
-        animationTime = 500.0;
+        animationTime = animationAux;
         break;
 
     default:
@@ -203,7 +222,7 @@ void specialKey(int key, int x, int y)
         }
         break;
     case GLUT_KEY_DOWN:
-        animationTime = 100;
+        animationTime = fastSpeed;
         break;
 
     case GLUT_KEY_UP:
@@ -232,25 +251,231 @@ void mouse(int button, int state, int x, int y)
     case GLUT_LEFT_BUTTON:
         if(state==GLUT_DOWN && game->getGameState() == 0)
         {
-            if (x > 358 && x < 502)
+            if(!fullScreen)
             {
-                if (y > 133 && y < 215)
+                if (x > 358 && x < 502)
                 {
-                    game->setGameState(1);
+                    if (y > 133 && y < 215)
+                    {
+                        game->setGameState(1);
+                    }
+                    if (y < 293 && y > 220)
+                    {
+                        game->setGameState(2);
+                    }
+                    if (y < 379 && y> 303)
+                        exit(1);
                 }
-                if (y < 293 && y > 220)
+            }
+            else
+            {
+//                float dy= glutGet(GLUT_WINDOW_WIDTH)/(float)680,dx = glutGet(GLUT_WINDOW_HEIGHT)/(float)480;
+                if (x > 358 && x < 502)
                 {
-                    game->setGameState(2);
+                    if (y > 223 && y < 303)
+                    {
+                        game->setGameState(1);
+                    }
+                    if (y < 383 && y > 304)
+                    {
+                        game->setGameState(2);
+                    }
+                    if (y < 464 && y> 388)
+                        exit(1);
                 }
-                if (y < 379 && y> 303)
-                    exit(1);
+
             }
 
         }
         else if (state==GLUT_DOWN && game->getGameState() == 1)
-            animationTime = 100;
+            animationTime = fastSpeed;
         else if (state==GLUT_UP &&game->getGameState() == 1)
-            animationTime = 500;
+            animationTime = animationAux;
+        break;
+    case GLUT_RIGHT_BUTTON:
+        if(state==GLUT_DOWN && game->getGameState() == 1)
+        {
+            if(x>8 && x< 60)
+            {
+                switch(coluna)
+                {
+                case 1:
+                    moveX -= 7;
+                    break;
+                case 2:
+                    moveX -= 14;
+                    break;
+                case 3:
+                    moveX -= 21;
+                    break;
+                case 4:
+                    moveX -= 28;
+                    break;
+                case 5:
+                    moveX -= 35;
+                    break;
+                case 6:
+                    moveX -= 42;
+                    break;
+                }
+                coluna = 0;
+            }
+            if(x>60 && x <114)
+            {
+                switch(coluna)
+                {
+                case 0:
+                    moveX+=7;
+                    break;
+                case 2:
+                    moveX -= 7;
+                    break;
+                case 3:
+                    moveX -= 14;
+                    break;
+                case 4:
+                    moveX -= 21;
+                    break;
+                case 5:
+                    moveX -= 28;
+                    break;
+                case 6:
+                    moveX -= 35;
+                    break;
+                }
+                coluna = 1;
+
+            }
+            if(x>114 && x <170)
+            {
+                switch(coluna)
+                {
+                case 0:
+                    moveX+=14;
+                    break;
+                case 1:
+                    moveX += 7;
+                    break;
+                case 3:
+                    moveX -= 7;
+                    break;
+                case 4:
+                    moveX -= 14;
+                    break;
+                case 5:
+                    moveX -= 21;
+                    break;
+                case 6:
+                    moveX -= 28;
+                    break;
+                }
+                coluna = 2;
+
+            }
+            if(x>170 && x <222)
+            {
+                switch(coluna)
+                {
+                case 0:
+                    moveX+=21;
+                    break;
+                case 1:
+                    moveX += 14;
+                    break;
+                case 2:
+                    moveX += 7;
+                    break;
+                case 4:
+                    moveX -= 7;
+                    break;
+                case 5:
+                    moveX -= 14;
+                    break;
+                case 6:
+                    moveX -= 21;
+                    break;
+                }
+                coluna = 3;
+            }
+            if(x>222 && x <274)
+            {
+                switch(coluna)
+                {
+                case 0:
+                    moveX+=28;
+                    break;
+                case 1:
+                    moveX += 21;
+                    break;
+                case 2:
+                    moveX += 14;
+                    break;
+                case 3:
+                    moveX += 7;
+                    break;
+                case 5:
+                    moveX -= 7;
+                    break;
+                case 6:
+                    moveX -= 14;
+                    break;
+                }
+                coluna = 4;
+
+            }
+            if(x>274 && x <326)
+            {
+                switch(coluna)
+                {
+                case 0:
+                    moveX+=35;
+                    break;
+                case 1:
+                    moveX += 28;
+                    break;
+                case 2:
+                    moveX += 21;
+                    break;
+                case 3:
+                    moveX += 14;
+                    break;
+                case 4:
+                    moveX += 7;
+                    break;
+                case 6:
+                    moveX -= 7;
+                    break;
+                }
+                coluna = 5;
+
+            }
+            if(x>326 && x <378)
+            {
+                switch(coluna)
+                {
+                case 0:
+                    moveX+=42;
+                    break;
+                case 1:
+                    moveX += 35;
+                    break;
+                case 2:
+                    moveX += 28;
+                    break;
+                case 3:
+                    moveX += 21;
+                    break;
+                case 4:
+                    moveX += 14;
+                    break;
+                case 5:
+                    moveX += 7;
+                    break;
+                }
+                coluna = 6;
+
+            }
+        }
         break;
     }
 }
