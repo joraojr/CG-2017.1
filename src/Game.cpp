@@ -494,10 +494,6 @@ int Game::verifyAll(int line, int column)
     int trashSecondDiag = verifySecondDiag(line,column);
     if(trashColumn == 1 || trashLine == 1 || trashMainDiag == 1 || trashSecondDiag == 1){
         trash = 1;
-        points += fatorialPoints(trashCount);
-        if(points/level > 250){
-            level += 1;
-        }
     }
 
     return trash;
@@ -517,11 +513,17 @@ void Game::runVerification(){
         }
     }
     brokenBlocks += trashCount;
-    clear();
+    int brokenBlocksPoints = trashCount;
+    clear();///limpa o trashcount
     readjust();
     drawField();
-    if(trash == 1)
+    if(trash == 1){
+        points += fatorialPoints(brokenBlocksPoints);
+        if(points/level > 250){
+            level += 1;
+        }
         runVerification();
+    }
 }
 
 void Game::readjust()
