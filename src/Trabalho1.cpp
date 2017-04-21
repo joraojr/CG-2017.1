@@ -107,6 +107,7 @@ void timer(int value)
 {
     if (!game->isGameOver())
     {
+
         if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)
         {
             moveY -= 3.5;
@@ -135,6 +136,7 @@ void timer(int value)
     else
     {
         game->setGameState(3);
+        glutPostRedisplay();
     }
 }
 
@@ -154,7 +156,6 @@ void keyboard(unsigned char key, int x, int y)
         linha = 15, coluna = 3;
         glutPostRedisplay();
         break;
-
     case 'a' ... 'z':
     case 'A' ... 'Z':
         if (game->getGameState() == 3)
@@ -271,7 +272,6 @@ void mouse(int button, int state, int x, int y)
 //                float dy= glutGet(GLUT_WINDOW_WIDTH)/(float)680,dx = glutGet(GLUT_WINDOW_HEIGHT)/(float)480;
                 if (x > 358 && x < 502)
                 {
-                    cout << y ;
                     if (y > 223 && y < 303)
                     {
                         game->setGameState(1);
@@ -475,7 +475,6 @@ void mouse(int button, int state, int x, int y)
                 coluna = 6;
 
             }
-            cout<<coluna;
         }
         break;
     }
