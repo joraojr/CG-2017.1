@@ -19,6 +19,7 @@ Game::Game()
     trashCount = 0;
     gameState = 0;
     level = 1;
+    pause = false;
     clearTrashListColumn();
     clearTrashListLine();
     clearTrashList();
@@ -497,10 +498,7 @@ int Game::verifyAll(int line, int column)
         if(points/level > 250){
             level += 1;
         }
-        brokenBlocks += trashCount;
     }
-
-    clear();
 
     return trash;
 }
@@ -515,10 +513,12 @@ void Game::runVerification(){
                 }else{
                     verifyAll(i,j);
                 }
-                readjust();
             }
         }
     }
+    brokenBlocks += trashCount;
+    clear();
+    readjust();
     drawField();
     if(trash == 1)
         runVerification();
@@ -706,7 +706,7 @@ void Game::displayGameOver(){
         glRasterPos3f (110 + i*5,-40, 0);
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, time_1[i]);
     }
-    scoreDisplay(190,-40,0,5,this->points);
+    scoreDisplay(200,-40,0,5,this->points);
 
     if(points >= ranking->getScores()[0].score){
         char enterName[] = "Enter your name:";
@@ -792,6 +792,7 @@ void Game::resetGame(){
     trashCount = 0;
     gameState = 0;
     level = 1;
+    pause = false;
     clearTrashListColumn();
     clearTrashListLine();
     clearTrashList();
@@ -805,6 +806,14 @@ void Game::resetGame(){
 
 int Game::getLevel(){
     return level;
+}
+
+bool Game::getPause(){
+    return pause;
+}
+
+void Game::setPause(bool p){
+    pause = p;
 }
 
 Game::~Game(){
