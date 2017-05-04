@@ -107,14 +107,14 @@ void timer(int value)
 {
     if (!game->isGameOver())
     {
-
         if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)
         {
-            moveY -= 3.5;
-            linha -=0.5;
-
+            if(!game->getPause()){
+                moveY -= 3.5;
+                linha -=0.5;
+            }
         }
-        else
+        else if(!game->getPause())
         {
             int* cubeColors = game->getPiece()->getCubesColor();
             game->addColor(linha,coluna,cubeColors[2]);
@@ -162,6 +162,8 @@ void keyboard(unsigned char key, int x, int y)
         {
             game->getRanking()->addChar(key);
             glutPostRedisplay();
+        }else if(game->getGameState() == 1 && key == 'p'){
+            game->setPause(!game->getPause());
         }
         break;
     case 13:
@@ -194,7 +196,7 @@ void specialKeysRelease(int key, int x, int y)
     switch (key)
     {
     case GLUT_KEY_DOWN:
-        animationTime = animationAux;
+        animationTime = animationAux/game->getLevel();
         break;
 
     default:
@@ -290,7 +292,7 @@ void mouse(int button, int state, int x, int y)
         else if (state==GLUT_DOWN && game->getGameState() == 1)
             animationTime = fastSpeed;
         else if (state==GLUT_UP &&game->getGameState() == 1)
-            animationTime = animationAux;
+            animationTime = animationAux/game->getLevel();
         break;
     case GLUT_RIGHT_BUTTON:
         if(state==GLUT_DOWN && game->getGameState() == 1)

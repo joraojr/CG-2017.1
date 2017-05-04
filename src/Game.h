@@ -24,6 +24,7 @@ private:
     int gameState;
     int brokenBlocks;
     int level;
+    bool pause;
     Ranking *ranking;
     Piece* piece;
     Piece* nextPiece;
@@ -88,6 +89,8 @@ public:
     void createNextPiece();///cria a proxima peça
     void resetGame();///reseta os valores de game para os valores iniciais
     int getLevel();///retorna o nivel
+    bool getPause();
+    void setPause(bool p);
 
 };
 
