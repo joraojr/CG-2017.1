@@ -5,21 +5,29 @@
 #include "Scene.h"
 
 int   last_x, last_y;
-float rotationX = 0.0, rotationY = 0.0;
+float rotationX = 38.0, rotationY = 22.0;
 Scene* s = new Scene();
+float width = 800,height = 800;
 
 void viewPortPerspective(){
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
-    glOrtho(-1.0, 9.0, -1.0, 9.0, -1, 1);
+    int ortho = 10;
+    float w = width;
+    float h = height;
+    glOrtho (-ortho, ortho, -ortho*h/w, ortho*h/w, -100.0, 100.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 300, (int) 400, (int) 300);
-
+    //gluLookAt (0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     ///Para teste..area da cena
-    glColor3f(1.0, 1.0, 0.0);
-    s->drawScene();
+    glPushMatrix();
+        glRotatef( rotationY, 1.0, 0.0, 0.0 );
+        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        glColor3f(1.0, 1.0, 0.0);
+        s->drawScene();
+    glPopMatrix();
 
 }
 
@@ -74,9 +82,9 @@ void display(){
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     viewPortPerspective();
-    viewPortX();
-    viewPortY();
-    viewPortZ();
+    //viewPortX();
+    //viewPortY();
+    //viewPortZ();
 
     glutSwapBuffers();
     glutPostRedisplay();
@@ -112,6 +120,8 @@ int main(int argc,char *argv[]){
     glutCreateWindow("Projeções");
 
     init();
+    glutMouseFunc( mouse );
+    glutMotionFunc( motion );
     glutDisplayFunc(display);
 
     glutMainLoop();
