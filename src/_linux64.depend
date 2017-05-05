@@ -137,3 +137,84 @@
 
 1491597892 /ice/CG-2017.1/src/include/Game.h
 
+1494002059 source:/home/joraojr/Documentos/CG-2017.1/src/Trabalho1.cpp
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Piece.h"
+	"Game.h"
+	<time.h>
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/glut.h
+	"freeglut_std.h"
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/glui.h
+	<GL/freeglut.h>
+	<GL/openglut.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdlib>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/freeglut_ext.h
+	<stdarg.h>
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/src/Piece.h
+	"Cube.h"
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/src/Cube.h
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/src/Game.h
+	<GL/glui.h>
+	<GL/glut.h>
+	"Ranking.h"
+	"Piece.h"
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/src/Ranking.h
+	<fstream>
+	<string.h>
+	<stdio.h>
+	<GL/glut.h>
+
+1494008566 source:/home/joraojr/Documentos/CG-2017.1/src/Desenvolvimento2.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Scene.h"
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/src/Scene.h
+
+1494002059 source:/home/joraojr/Documentos/CG-2017.1/src/Scene.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Scene.h"
+
+1494002059 source:/home/joraojr/Documentos/CG-2017.1/src/Desenvolvimento1.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<math.h>
+	<iostream>
+
+1494002059 source:/home/joraojr/Documentos/CG-2017.1/src/01_quad.cpp
+	<windows.h>
+	<GL/glut.h>
+

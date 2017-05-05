@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Scene.h"
 
+int   last_x, last_y;
+float rotationX = 0.0, rotationY = 0.0;
 Scene* s = new Scene();
 
 void viewPortPerspective(){
@@ -18,6 +20,7 @@ void viewPortPerspective(){
     ///Para teste..area da cena
     glColor3f(1.0, 1.0, 0.0);
     s->drawScene();
+
 }
 
 void viewPortX(){
@@ -79,11 +82,35 @@ void display(){
     glutPostRedisplay();
 }
 
+// Motion callback
+void motion(int x, int y )
+{
+   rotationY += (float) (y - last_y);
+   rotationX += (float) (x - last_x);
+
+   last_x = x;
+   last_y = y;
+
+   glutPostRedisplay();
+}
+
+// Mouse callback
+void mouse(int button, int state, int x, int y)
+{
+   if ( button == GLUT_LEFT_BUTTON && state == GLUT_DOWN )
+   {
+      last_x = x;
+      last_y = y;
+   }
+}
+
+
 int main(int argc,char *argv[]){
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(800,600);
     glutCreateWindow("Projeções");
+
     init();
     glutDisplayFunc(display);
 
