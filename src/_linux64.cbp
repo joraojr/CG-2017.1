@@ -37,13 +37,9 @@
 			<Add library="../lib/libpng12_linux64.a" />
 			<Add library="z" />
 		</Linker>
-		<Unit filename="Trabalho1.cpp" />
-		<Unit filename="include/Cube.h" />
-		<Unit filename="include/Game.h" />
-		<Unit filename="include/Piece.h" />
-		<Unit filename="src/Cube.cpp" />
-		<Unit filename="src/Game.cpp" />
-		<Unit filename="src/Piece.cpp" />
+		<Unit filename="Desenvolvimento2.cpp" />
+		<Unit filename="Scene.cpp" />
+		<Unit filename="Scene.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
