@@ -4,7 +4,8 @@
 class Scene{
     private:
         void drawTable();
-
+        void drawTeapot();
+        void drawTorus();
     public:
         Scene();
         ~Scene();
