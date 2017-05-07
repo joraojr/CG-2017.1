@@ -206,14 +206,14 @@
 	"Ranking.h"
 	<iostream>
 
-1493938495 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
+1494024858 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
 	"Scene.h"
 
-1493938459 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
+1494024140 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>

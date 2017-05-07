@@ -3,6 +3,7 @@
 
 class Scene{
     private:
+        void drawTable();
 
     public:
         Scene();
