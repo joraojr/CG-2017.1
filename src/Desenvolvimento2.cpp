@@ -41,7 +41,7 @@ void viewPortX(){
     glLoadIdentity();
     glViewport ((int) 401, (int) 301, (int) 399, (int) 299);
 
-    glRotatef(45,0.0,1.0,0.0);
+    //glRotatef(45,0.0,1.0,0.0);
     glRotatef(-90,0.0,1.0,0.0);
     s->drawScene();
 }
@@ -59,7 +59,7 @@ void viewPortY(){
     glViewport ((int) 0, (int) 0, (int) 399, (int) 299);
 
     glRotatef(90,1.0,0.0,0.0);
-    glRotatef(45,0.0,1.0,0.0);
+    //glRotatef(45,0.0,1.0,0.0);
     s->drawScene();
 }
 
@@ -69,13 +69,13 @@ void viewPortZ(){
     int ortho = 10;
     float h = height;
     float w = width;
-    glOrtho (-ortho, ortho, -ortho*h/w, ortho*h/w, -100.0, 100.0);
+    glOrtho (-ortho, ortho, -ortho*h/w, ortho*h/w, -100, 100.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 401, (int) 0, (int) 399, (int) 299);
 
-    glRotatef(45,0.0,1.0,0.0);
+    //glRotatef(45,0.0,1.0,0.0);
     s->drawScene();
 }
 
@@ -127,8 +127,9 @@ void display(){
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     ///desenha as divisórias
-    drawPartitionY();
     drawPartitionX();
+    drawPartitionY();
+
 
     viewPortPerspective();
     viewPortX();
