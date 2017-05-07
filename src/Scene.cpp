@@ -4,17 +4,16 @@
 #include <iostream>
 #include "Scene.h"
 
-Scene::Scene()
-{
-
+Scene::Scene(){
+    pmodel = NULL;
 }
 
 ///Para teste..area da cena
-void Scene::drawScene()
-{
+void Scene::drawScene(){
     this->drawTable();
     this->drawTeapot();
     this->drawTorus();
+    this->drawFlower();
 }
 
 void Scene::drawTable(){
@@ -83,7 +82,22 @@ void Scene::drawTorus(){
     glPopMatrix();
 }
 
-Scene::~Scene()
-{
+void Scene::drawFlower(){
+    char objectName[100] = {"../data/objFiles/flowers.obj"};
+
+    glColor3f(0.0,1.0,0.0);
+    if (!pmodel) {
+		pmodel = glmReadOBJ(objectName);
+		if (!pmodel) exit(0);
+		glmUnitize(pmodel);
+		glmFacetNormals(pmodel);
+		glmVertexNormals(pmodel, 90.0);
+		glmScale(pmodel, 1);
+	}
+	glTranslatef(-1.2,1.2,2.0);
+	glmDraw(pmodel, GLM_SMOOTH | GLM_MATERIAL);
+}
+
+Scene::~Scene(){
 
 }

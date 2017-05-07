@@ -206,21 +206,22 @@
 	"Ranking.h"
 	<iostream>
 
-1494120003 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
+1494185343 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
 	"Scene.h"
 
-1494119246 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
+1494185098 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
 	"Scene.h"
 
-1494118432 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.h
+1494184532 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.h
+	"glm.h"
 
 1494002059 source:/home/joraojr/Documentos/CG-2017.1/src/Scene.cpp
 	<stdio.h>
@@ -259,4 +260,15 @@
 	<stdarg.h>
 
 1494002059 /home/joraojr/Documentos/CG-2017.1/src/Scene.h
+
+1494184412 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\glm.h
+	<GL/glut.h>
+
+1470260062 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\glm.cpp
+	<math.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	"glm.h"
 
