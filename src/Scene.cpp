@@ -84,7 +84,7 @@ void Scene::drawTorus(){
 }
 
 void Scene::drawFlower(){
-    char objectName[100] = {"../data/objFiles/flowers.obj"};
+    char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/plate-and-ustensils.obj"};
 
     glColor3f(0.0,1.0,0.0);
     if (!pmodel) {
