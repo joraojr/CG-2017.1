@@ -40,6 +40,8 @@
 		<Unit filename="Desenvolvimento2.cpp" />
 		<Unit filename="Scene.cpp" />
 		<Unit filename="Scene.h" />
+		<Unit filename="glm.cpp" />
+		<Unit filename="glm.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
