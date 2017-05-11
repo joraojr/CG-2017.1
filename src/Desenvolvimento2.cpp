@@ -4,29 +4,28 @@
 #include <iostream>
 #include "Scene.h"
 
+Scene* s = new Scene();
 int   last_x, last_y;
 float rotationX = 38.0, rotationY = 22.0;
-Scene* s = new Scene();
-float width = 800,height = 600,distOrigem = 0;
+float width = 800,height = 600,distOrigem = 20;
+float luzX = s->getLightPosition(0), luzY = s->getLightPosition(1), luzZ = s->getLightPosition(2);
+
 
 void viewPortPerspective(){
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
+    gluLookAt (0.0, 0.0, distOrigem, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 301, (int) 399, (int) 299);
-    gluLookAt (0.0, 0.0, 20, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
-    ///Para teste..area da cena
     glPushMatrix();
-        glTranslatef(0.0,0.0,distOrigem);
         glRotatef( rotationY, 1.0, 0.0, 0.0 );
         glRotatef( rotationX, 0.0, 1.0, 0.0 );
         s->drawScene();
     glPopMatrix();
-
 }
 
 void viewPortX(){
@@ -36,13 +35,12 @@ void viewPortX(){
     float h = height;
     float w = width;
     glOrtho (-ortho, ortho, -ortho*h/w, ortho*h/w, -100.0, 100.0);
+    gluLookAt (20.0, 0.0, 0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 401, (int) 301, (int) 399, (int) 299);
 
-    //glRotatef(45,0.0,1.0,0.0);
-    glRotatef(-90,0.0,1.0,0.0);
     s->drawScene();
 }
 
@@ -53,13 +51,12 @@ void viewPortY(){
     float h = height;
     float w = width;
     glOrtho (-ortho, ortho, -ortho*h/w, ortho*h/w, -100.0, 100.0);
+    gluLookAt (0.0, 20.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) 399, (int) 299);
 
-    glRotatef(90,1.0,0.0,0.0);
-    //glRotatef(45,0.0,1.0,0.0);
     s->drawScene();
 }
 
@@ -70,16 +67,16 @@ void viewPortZ(){
     float h = height;
     float w = width;
     glOrtho (-ortho, ortho, -ortho*h/w, ortho*h/w, -100, 100.0);
+    gluLookAt (0.0, 0.0, 20, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 401, (int) 0, (int) 399, (int) 299);
 
-    //glRotatef(45,0.0,1.0,0.0);
     s->drawScene();
 }
 
-void drawPartitionY(){
+void drawPartition(){
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
 
@@ -96,9 +93,7 @@ void drawPartitionY(){
         glVertex3f(1,-1,0.0);
         glVertex3f(1,1,0.0);
     glEnd();
-}
 
-void drawPartitionX(){
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
 
@@ -108,7 +103,6 @@ void drawPartitionX(){
     glLoadIdentity();
     glViewport ((int) 0, (int) 299, (int) 800, (int) 1);
 
-    glColor3f(1.0,0.0,0.0);
     glBegin(GL_POLYGON);
         glVertex3f(-1,-1,0.0);
         glVertex3f(-1,1,0.0);
@@ -117,19 +111,16 @@ void drawPartitionX(){
     glEnd();
 }
 
-
 void init(){
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glShadeModel(GL_SMOOTH);
+    glClearColor(0.7, 0.8, 0.0, 1.0);
 }
 
 void display(){
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     ///desenha as divisórias
-    drawPartitionX();
-    drawPartitionY();
-
+    glDisable(GL_LIGHTING);
+    drawPartition();
+    glEnable(GL_LIGHTING);
 
     viewPortPerspective();
     viewPortX();
@@ -168,15 +159,43 @@ void mouse(int button, int state, int x, int y){
    }
 }
 
+void special(int key, int x, int y){
+	float step = 0.05f;
+    switch (key){
+        case GLUT_KEY_LEFT:
+             luzX-=step;
+        break;
+        case GLUT_KEY_RIGHT:
+             luzX+=step;
+        break;
+        case GLUT_KEY_UP:
+             luzY+=step;
+        break;
+        case GLUT_KEY_DOWN:
+             luzY-=step;
+        break;
+        case GLUT_KEY_PAGE_UP:
+             luzZ+=step;
+        break;
+        case GLUT_KEY_PAGE_DOWN:
+             luzZ-=step;
+        break;
+    }
+   s->setLightPosition(luzX,luzY,luzZ);
+   //printf("\nPosição da luz [x,y,z]: [%.2f, %.2f, %.2f]",light0_position[0], light0_position[1], light0_position[2]);
+   glutPostRedisplay();
+}
+
 
 int main(int argc,char *argv[]){
     glutInit(&argc,argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800,600);
     glutCreateWindow("Projeções");
 
     init();
     glutMouseFunc( mouse );
+    glutSpecialFunc(special);
     glutMotionFunc( motion );
     glutDisplayFunc(display);
 

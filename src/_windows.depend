@@ -206,21 +206,21 @@
 	"Ranking.h"
 	<iostream>
 
-1494196158 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
+1494425968 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
 	"Scene.h"
 
-1494196352 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
+1494425746 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
 	"Scene.h"
 
-1494184532 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.h
+1494425619 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.h
 	"glm.h"
 
 1494002059 source:/home/joraojr/Documentos/CG-2017.1/src/Scene.cpp
