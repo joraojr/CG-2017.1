@@ -5,14 +5,16 @@
 #include "Scene.h"
 
 Scene::Scene(){
-    for(int i = 0; i < 11; i++)
+    for(int i = 0; i < 12; i++)
     {
         pmodel[i] = NULL;
     }
+    light0_position = new GLfloat[3];
     light0_position[0] = 1.7f;
     light0_position[1] = 2.75f;
-    light0_position[2] = 2.5f;
+    light0_position[2] = 0.5f;
 }
+
 
 ///Para teste..area da cena
 void Scene::drawScene(){
@@ -21,7 +23,7 @@ void Scene::drawScene(){
 
 	glEnable(GL_LIGHTING);                 // Habilita luz
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 
     GLfloat cor0[] = {1.0,1.0,1.0,1.0};
     glEnable(GL_LIGHT0);
@@ -40,10 +42,11 @@ void Scene::drawScene(){
 
     this->drawTable();
     this->drawTeapot();
-    //this->drawTorus();
+    this->drawTorus();
     this->drawChairs();
     this->drawFlower();
     this->drawPlates();
+    this->drawFloor();
     //this->drawRose();
 }
 
@@ -65,7 +68,7 @@ void Scene::drawTable()
 void Scene::drawFlower(){
     char objectName[100] = {"../data/objFiles/flowers.obj"};
     glPushMatrix();
-    glTranslatef(0,2,0);
+    glTranslatef(0,2.15,0);
     if (!pmodel[1])
     {
         pmodel[1] = glmReadOBJ(objectName);
@@ -164,9 +167,6 @@ void Scene::drawPlates()
 
 void Scene::setMaterial(GLfloat *ambient, GLfloat *diffuse, GLfloat *specular,
 					  GLfloat *shininess){
-   // Material do objeto (neste caso, ruby). Parametros em RGBA
-
-
    // Define os parametros da superficie a ser iluminada
    glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
@@ -183,7 +183,7 @@ void Scene::drawTeapot(){
 
     setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
     glPushMatrix();
-    glTranslatef(0.7,1.3,0.0);
+    glTranslatef(0.7,1.37,0.0);
     glRotatef(20,0.0,1.0,0.0);
     glutSolidTeapot(0.3);
     glPopMatrix();
@@ -191,10 +191,16 @@ void Scene::drawTeapot(){
 
 void Scene::drawTorus()
 {
-    //glColor3f(0.5, 0.0, 0.3);
+    GLfloat objeto_ambient[]   = { .1745, .01175, .01175, 1.0 };
+    GLfloat objeto_difusa[]    = { .61424, .24136, .04136, 1.0 };
+    GLfloat objeto_especular[] = { .727811, .226959, .626959, 1.0 };
+    GLfloat objeto_brilho[]    = { 90.0f };
+
+    setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
     glPushMatrix();
-    glTranslatef(-0.5,1,1.0);
+    glTranslatef(1,1.28,1.2);
     glRotatef(90,1.0,0.0,0.0);
+    glScalef(-0.5,-0.5,-0.5);
     glutSolidTorus(0.1,0.3,100,100);
     glPopMatrix();
 }
@@ -207,6 +213,20 @@ void Scene::setLightPosition(float x,float y,float z){
 
 float Scene::getLightPosition(int i){
     return light0_position[i];
+}
+
+void Scene::drawFloor(){
+    GLfloat objeto_ambient[]   = { 1.0, 1.0, 0.0, 0.5 };
+    GLfloat objeto_difusa[]    = { 1.0, 1.0, 0.0, 0.6 };
+    GLfloat objeto_especular[] = { 1.0, 1.0, 0.0, 0.6 };
+    GLfloat objeto_brilho[]    = { 0.0f };
+
+
+    setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
+    glTranslatef(0,-1.185,0);
+    glScaled(10,-0.1,10);
+    glutSolidCube(1);
+
 }
 
 Scene::~Scene()

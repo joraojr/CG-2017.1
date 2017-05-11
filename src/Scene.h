@@ -5,7 +5,7 @@
 class Scene{
     private:
         GLMmodel* pmodel[11];
-        GLfloat light0_position [];
+        GLfloat* light0_position;
         void drawTable();
         void drawTeapot();
         void drawTorus();
@@ -13,6 +13,7 @@ class Scene{
         void drawChairs();
         void drawPlates();
         void drawRose();
+        void drawFloor();
         void setMaterial(GLfloat *ambiente, GLfloat *difusa, GLfloat *especular,GLfloat *brilho);
     public:
         Scene();
