@@ -69,7 +69,7 @@ void Scene::drawTable()
 void Scene::drawFlower(){
     char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/flowers.obj"};
     glPushMatrix();
-    glTranslatef(0,2.15,-4.4);
+    glTranslatef(0,2.15,-4.0);
     if (!pmodel[1])
     {
         pmodel[1] = glmReadOBJ(objectName);
@@ -234,14 +234,14 @@ void Scene::drawFloor(){
 void Scene::drawTable2(){
     ///Desenha mesa simples
     float x =0 , y= 0, z =0;
-    GLfloat objeto_ambient[]   = { 2, 2, 2.0, 0.5 };
-    GLfloat objeto_difusa[]    = { 2, 2, 2.0, 0.6 };
-    GLfloat objeto_especular[] = { 2, 2, 2.0, 0.6 };
+    GLfloat objeto_ambient[]   = { 0.5, 0.5, 0.5, 1 };
+    GLfloat objeto_difusa[]    = { 0.5, 0.5, 0.5, 1 };
+    GLfloat objeto_especular[] = { 0.5, 0.5, 0.5, 1 };
     GLfloat objeto_brilho[]    = { 0.0f };
 
     glPushMatrix();
         setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
-        glTranslatef(2.5,0.88,-4.8);
+        glTranslatef(2.5,0.88,-4.5);
         glRotatef(-90,0,1,0);
         glRotatef(90,1,0,0);
         //tampod da mesa
