@@ -235,9 +235,9 @@ void Scene::drawFloor(){
 void Scene::drawTable2(){
     ///Desenha mesa simples
     float x =0 , y= 0, z =0;
-    GLfloat objeto_ambient[]   = { 0.5, 0.5, 0.5, 1 };
-    GLfloat objeto_difusa[]    = { 0.5, 0.5, 0.5, 1 };
-    GLfloat objeto_especular[] = { 0.5, 0.5, 0.5, 1 };
+    GLfloat objeto_ambient[]   = { 0.54,0.47,0.32, 1 };
+    GLfloat objeto_difusa[]    = { 0.64,0.56,0.35, 1 };
+    GLfloat objeto_especular[] = { 0.74,0.57,0.39, 1 };
     GLfloat objeto_brilho[]    = { 90.0f };
 
     setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
