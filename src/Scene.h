@@ -4,7 +4,7 @@
 
 class Scene{
     private:
-        GLMmodel* pmodel[11];
+        GLMmodel* pmodel[12];
         GLfloat* light0_position;
         void drawTable();
         void drawTeapot();

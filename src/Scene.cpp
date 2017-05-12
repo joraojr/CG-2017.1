@@ -48,7 +48,7 @@ void Scene::drawScene(){
     this->drawPlates();
     this->drawFloor();
     this->drawTable2();
-    //this->drawRose();
+    this->drawRose();
 }
 
 void Scene::drawTable()
@@ -85,7 +85,7 @@ void Scene::drawFlower(){
 
 void Scene::drawRose(){
 
-    char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/rose+vase.obj"};
+    char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/rosevase.obj"};
     glPushMatrix();
     glTranslatef(0,2,0);
     if (!pmodel[11])
