@@ -87,7 +87,7 @@ void Scene::drawRose(){
 
     char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/rosevase.obj"};
     glPushMatrix();
-    glTranslatef(0,2,0);
+    glTranslatef(0,2.14,0);
     if (!pmodel[11])
     {
         pmodel[11] = glmReadOBJ(objectName);
@@ -237,10 +237,10 @@ void Scene::drawTable2(){
     GLfloat objeto_ambient[]   = { 0.5, 0.5, 0.5, 1 };
     GLfloat objeto_difusa[]    = { 0.5, 0.5, 0.5, 1 };
     GLfloat objeto_especular[] = { 0.5, 0.5, 0.5, 1 };
-    GLfloat objeto_brilho[]    = { 0.0f };
+    GLfloat objeto_brilho[]    = { 90.0f };
 
+    setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
     glPushMatrix();
-        setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
         glTranslatef(2.5,0.88,-4.5);
         glRotatef(-90,0,1,0);
         glRotatef(90,1,0,0);
