@@ -19,6 +19,7 @@ Scene::Scene(){
 ///Para teste..area da cena
 void Scene::drawScene(){
     glEnable(GL_COLOR_MATERIAL);           // Utiliza cor do objeto como material
+    glEnable(GL_NORMALIZE);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 
 	glEnable(GL_LIGHTING);                 // Habilita luz
