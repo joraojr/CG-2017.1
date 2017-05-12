@@ -47,12 +47,13 @@ void Scene::drawScene(){
     this->drawFlower();
     this->drawPlates();
     this->drawFloor();
+    this->drawTable2();
     //this->drawRose();
 }
 
 void Scene::drawTable()
 {
-    char objectName[100] = {"../data/objFiles/table.obj"};
+    char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/table.obj"};
 
     if (!pmodel[0])
     {
@@ -66,9 +67,9 @@ void Scene::drawTable()
     glmDraw(pmodel[0], GLM_SMOOTH | GLM_MATERIAL);
 }
 void Scene::drawFlower(){
-    char objectName[100] = {"../data/objFiles/flowers.obj"};
+    char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/flowers.obj"};
     glPushMatrix();
-    glTranslatef(0,2.15,0);
+    glTranslatef(0,2.15,-4.4);
     if (!pmodel[1])
     {
         pmodel[1] = glmReadOBJ(objectName);
@@ -84,7 +85,7 @@ void Scene::drawFlower(){
 
 void Scene::drawRose(){
 
-    char objectName[100] = {"../data/objFiles/rose+vase.obj"};
+    char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/rose+vase.obj"};
     glPushMatrix();
     glTranslatef(0,2,0);
     if (!pmodel[11])
@@ -101,7 +102,7 @@ void Scene::drawRose(){
 }
 
 void Scene::drawChairs(){
-    char objectName[100] = {"../data/objFiles/chair.obj"};
+    char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/chair.obj"};
 
     for(int i = 0 ; i < 4; i ++)
     {
@@ -132,7 +133,7 @@ void Scene::drawChairs(){
 
 void Scene::drawPlates()
 {
-    char objectName[100] = {"../data/objFiles/plate-and-ustensils.obj"};
+    char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/plate-and-ustensils.obj"};
 
 
     for(int i = 0 ; i < 4; i ++)
@@ -221,12 +222,67 @@ void Scene::drawFloor(){
     GLfloat objeto_especular[] = { 1.0, 1.0, 0.0, 0.6 };
     GLfloat objeto_brilho[]    = { 0.0f };
 
-
+    glPushMatrix();
     setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
     glTranslatef(0,-1.185,0);
     glScaled(10,-0.1,10);
     glutSolidCube(1);
+    glPopMatrix();
 
+}
+
+void Scene::drawTable2(){
+    ///Desenha mesa simples
+    float x =0 , y= 0, z =0;
+    GLfloat objeto_ambient[]   = { 2, 2, 2.0, 0.5 };
+    GLfloat objeto_difusa[]    = { 2, 2, 2.0, 0.6 };
+    GLfloat objeto_especular[] = { 2, 2, 2.0, 0.6 };
+    GLfloat objeto_brilho[]    = { 0.0f };
+
+    glPushMatrix();
+        setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
+        glTranslatef(2.5,0.88,-4.8);
+        glRotatef(-90,0,1,0);
+        glRotatef(90,1,0,0);
+        //tampod da mesa
+        glPushMatrix();
+            glTranslatef(x+0.5,y+2.5,z);
+            glScalef(2,7,0.5);
+            glutSolidCube(1);
+        glPopMatrix();
+        //Pes da mesa
+        glPushMatrix();
+            glPushMatrix();
+                glPushMatrix();
+                    glTranslatef(x,y,z+1);
+                    glRotatef(90,0,1,0);
+                    glScalef (2.0, 0.5, 0.5);
+                    glutSolidCube(1);
+                glPopMatrix();
+                glPushMatrix();
+                    glTranslatef(x+1,y,z+1);
+                    glRotatef(90,0,1,0);
+                    glScalef (2.0, 0.5, 0.5);
+                    glutSolidCube(1);
+                glPopMatrix();
+            glPopMatrix();
+            glTranslated(x,y+5,z);
+            glPushMatrix();
+                glPushMatrix();
+                    glTranslatef(x+1,y,z+1);
+                    glRotatef(90,0,1,0);
+                    glScalef (2.0, 0.5, 0.5);
+                    glutSolidCube(1);
+                glPopMatrix();
+                glPushMatrix();
+                    glTranslatef(x,y,z+1);
+                    glRotatef(90,0,1,0);
+                    glScalef (2.0, 0.5, 0.5);
+                    glutSolidCube(1);
+                glPopMatrix();
+            glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
 }
 
 Scene::~Scene()

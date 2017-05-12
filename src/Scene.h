@@ -15,6 +15,7 @@ class Scene{
         void drawRose();
         void drawFloor();
         void setMaterial(GLfloat *ambiente, GLfloat *difusa, GLfloat *especular,GLfloat *brilho);
+        void drawTable2();
     public:
         Scene();
         ~Scene();
