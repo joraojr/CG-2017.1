@@ -95,7 +95,7 @@
 1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\piece.cpp
 	"Piece.h"
 
-1492813459 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
+1495303530 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
@@ -120,11 +120,11 @@
 1492812798 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.h
 	"Cube.h"
 
-1492814160 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
+1495301977 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
 	"Game.h"
 	<iostream>
 
-1492813168 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
+1495301487 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
 	<GL/glui.h>
 	<GL/glut.h>
 	"Ranking.h"
@@ -206,21 +206,21 @@
 	"Ranking.h"
 	<iostream>
 
-1494464892 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
+1494609979 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
 	"Scene.h"
 
-1494465068 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
+1494610416 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
 	<stdio.h>
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
 	"Scene.h"
 
-1494464838 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.h
+1494598571 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.h
 	"glm.h"
 
 1494002059 source:/home/joraojr/Documentos/CG-2017.1/src/Scene.cpp

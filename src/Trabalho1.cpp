@@ -12,38 +12,52 @@ float moveX = 0.0,moveY = 0.0;
 float yMin = -105.0;
 float linha = 15;
 int coluna = 3;
-bool timeOn = true, fullScreen = false;
+bool timeOn = true,fullScreen = false,shift = false,shiftMouse = false;
 int animationTime = 500.0,animationAux = 500,fastSpeed = 10;
 int typeShift = 0;
-bool shift = false,shiftMouse = false;
 Game* game;
+int height = 680,width = 860;
 
 void timer (int value);
 void displayGame();
 
-void drawState()
-{
-    switch (game->getGameState())
-    {
+void resetAll(){
+    moveX = 0.0;
+    moveY = 0.0;
+    linha = 15;
+    coluna = 3;
+    animationTime = 500;
+    animationAux = 500;
+}
+
+void drawState(){
+    switch (game->getGameState()){
     case 0:
-        game->drawStartScreen();
+        resetAll();
+        game->drawStartScreen(width,height);
         break;
     case 1:
         displayGame();
 
-        if(timeOn)
-        {
+        if(timeOn){
             glutTimerFunc(animationTime,timer,1);
             timeOn = false;
         }
 
         break;
     case 2:
-        game->displayRanking();
+        game->displayRanking(width,height);
         break;
     case 3:
-        game->displayGameOver();
+        game->displayGameOver(width,height);
         timeOn = true;
+        break;
+    case 4:
+        resetAll();
+        game->drawStartScreenPlayerOption(width,height);
+        break;
+    case 5:
+        ///2 player
         break;
     }
 
@@ -60,7 +74,7 @@ void displayGame()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glViewport ((int) 0, (int) 0, (int) 480, (int) 680);
+    glViewport ((int) 0, (int) 0, (int) width*0.55, (int) height);
 
     game->drawField();
     game->getPiece()->drawPiece(moveX,moveY);
@@ -71,11 +85,11 @@ void displayGame()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glViewport ((int) 680, (int) 480, (int) 180, (int) 200);
+    glViewport ((int) width*0.79, (int) height*0.71, (int) width*0.21, (int) height*0.29);
     game->getNextPiece()->drawPiece(0,-80);
 
 
-    game->drawPoints();
+    game->drawPoints(width,height);
     if(shift)
     {
         if(typeShift == 0)
@@ -83,6 +97,7 @@ void displayGame()
         else
             game->getPiece()->shiftColorMouse();
         shift = false;
+        glutPostRedisplay();
     }
 }
 
@@ -96,6 +111,7 @@ void display()
     drawState();
 
     glutSwapBuffers();
+    glutPostRedisplay();
 }
 
 void init()
@@ -140,7 +156,11 @@ void timer(int value)
     }
 }
 
-
+void reshape(int w,int h){
+    height = h;
+    width = w;
+    //cout << height << " " << width << endl;
+}
 
 
 
@@ -151,9 +171,7 @@ void keyboard(unsigned char key, int x, int y)
     case 27:
         game->setGameState(0);
         game->resetGame();
-        moveX = 0.0;
-        moveY = 0.0;
-        linha = 15, coluna = 3;
+        resetAll();
         glutPostRedisplay();
         break;
     case 'a' ... 'z':
@@ -186,6 +204,7 @@ void keyboard(unsigned char key, int x, int y)
             glutReshapeWindow(860,680);
             fullScreen = false;
         }
+        glutPostRedisplay();
         break;
 
     }
@@ -251,47 +270,30 @@ void mouse(int button, int state, int x, int y)
         typeShift = 1;
         break;
     case GLUT_LEFT_BUTTON:
-        if(state==GLUT_DOWN && game->getGameState() == 0)
-        {
-            if(!fullScreen)
-            {
-                if (x > 358 && x < 502)
-                {
-                    if (y > 133 && y < 215)
-                    {
-                        game->setGameState(1);
-                    }
-                    if (y < 293 && y > 220)
-                    {
-                        game->setGameState(2);
-                    }
-                    if (y < 379 && y> 303)
-                        exit(1);
+        if(state==GLUT_DOWN && game->getGameState() == 0){
+            if (x > width*0.41 && x < width*0.58){
+                if (y > height*0.19 && y < height*0.31){
+                    game->setGameState(4);
+                }
+                if (y < height*0.43 && y > height*0.32){
+                    game->setGameState(2);
+                }
+                if (y < height*0.55 && y> height*0.44)
+                    exit(1);
+            }
+        }else if(state==GLUT_DOWN && game->getGameState() == 4){
+            if (x > width*0.41 && x < width*0.63){
+                if (y > height*0.19 && y < height*0.31){
+                    game->setGameState(1);
+                }
+                if (y < height*0.43 && y > height*0.32){
+                    game->setGameState(5);
                 }
             }
-            else
-            {
-//                float dy= glutGet(GLUT_WINDOW_WIDTH)/(float)680,dx = glutGet(GLUT_WINDOW_HEIGHT)/(float)480;
-                if (x > 358 && x < 502)
-                {
-                    if (y > 223 && y < 303)
-                    {
-                        game->setGameState(1);
-                    }
-                    if (y < 383 && y > 304)
-                    {
-                        game->setGameState(2);
-                    }
-                    if (y < 464 && y> 388)
-                        exit(1);
-                }
-
-            }
-
         }
         else if (state==GLUT_DOWN && game->getGameState() == 1)
             animationTime = fastSpeed;
-        else if (state==GLUT_UP &&game->getGameState() == 1)
+        else if (state==GLUT_UP && game->getGameState() == 1)
             animationTime = animationAux/game->getLevel();
         break;
     case GLUT_RIGHT_BUTTON:
@@ -492,7 +494,7 @@ int main (int argc,char *argv[])
 
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(860,680);
+    glutInitWindowSize(width,height);
     glutInitWindowPosition(0,0);
     glutCreateWindow("TetrisCrush");
 
@@ -501,7 +503,7 @@ int main (int argc,char *argv[])
     glutSpecialFunc(specialKey);
     glutSpecialUpFunc( specialKeysRelease );
     glutMouseFunc(mouse);
-
+    glutReshapeFunc(reshape);
     glutDisplayFunc(display);
 
     glutMainLoop();
