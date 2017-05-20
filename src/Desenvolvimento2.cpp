@@ -88,10 +88,10 @@ void drawPartition(){
 
     glColor3f(1.0,0.0,0.0);
     glBegin(GL_POLYGON);
-        glVertex3f(-1,-1,0.0);
-        glVertex3f(-1,1,0.0);
         glVertex3f(1,-1,0.0);
         glVertex3f(1,1,0.0);
+        glVertex3f(-1,1,0.0);
+        glVertex3f(-1,-1,0.0);
     glEnd();
 
     glMatrixMode (GL_PROJECTION);
@@ -104,10 +104,10 @@ void drawPartition(){
     glViewport ((int) 0, (int) 299, (int) 800, (int) 1);
 
     glBegin(GL_POLYGON);
-        glVertex3f(-1,-1,0.0);
-        glVertex3f(-1,1,0.0);
         glVertex3f(1,-1,0.0);
         glVertex3f(1,1,0.0);
+        glVertex3f(-1,1,0.0);
+        glVertex3f(-1,-1,0.0);
     glEnd();
 }
 
