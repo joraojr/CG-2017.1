@@ -105,14 +105,14 @@ void Game::drawField()
     }
 }
 
-void Game:: drawPoints(){
+void Game:: drawPoints(int w,int h){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-100.0,1100.0,-300,200.0,0.0,10.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glViewport ((int) 400, (int) 300, (int) 480, (int) 200);
+    glViewport ((int) w*0.46, (int) h*0.44, (int) w*0.55, (int) h*0.29);
 
     glColor3f(1,1,1);
     int x  = 100;
@@ -570,7 +570,7 @@ int Game::getGameState()
 {
     return this->gameState;
 }
-void Game::drawStartScreen(){
+void Game::drawStartScreen(int w,int h){
 
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
@@ -580,7 +580,7 @@ void Game::drawStartScreen(){
     glLoadIdentity();
     glOrtho(0.0,300.0, -200.0, 50.0, -1.0, 1.0);
     glColor3f(1.0,0.0,0.0);
-    glViewport ((int) 0, (int) 0, (int) 860, (int) 680);
+    glViewport ((int) 0, (int) 0, (int) w, (int) h);
 
     glBegin(GL_QUADS);
           glVertex3f (125, 0, 0.0);
@@ -684,14 +684,80 @@ void Game::scoreDisplay(int posx, int posy, int posz, int space_char, int scorev
 
 }
 
-void Game::displayGameOver(){
+void Game::drawStartScreenPlayerOption(int w,int h){
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+
+    glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Projeção
+    glLoadIdentity();
+    glOrtho(0.0,300.0, -200.0, 50.0, -1.0, 1.0);
+    glColor3f(1.0,0.0,0.0);
+    glViewport ((int) 0, (int) 0, (int) w, (int) h);
+
+    glBegin(GL_QUADS);
+          glVertex3f (125, 0, 0.0);
+          glVertex3f (125, -30, 0.0);
+          glVertex3f (190, -30, 0.0);
+          glVertex3f (190, 0, 0.0);
+    glEnd();
+
+
+    glColor3f(1.0,1,1);
+    glBegin(GL_LINE_LOOP);
+          glVertex3f (125, 0, 0.0);
+          glVertex3f (125, -30, 0.0);
+          glVertex3f (190, -30, 0.0);
+          glVertex3f (190, 0, 0.0);
+    glEnd();
+
+
+    int posX = 137;
+
+    char player1[] = "1 PLAYER";
+
+    for (int i = 0; i < 8; i++){
+        glRasterPos3f (posX + i*5,-20, 0);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, player1[i]);
+    }
+
+     glColor3f(0.0,0.5,0.0);
+
+
+    glBegin(GL_QUADS);
+          glVertex3f (125, -60, 0.0);
+          glVertex3f (125, -30, 0.0);
+          glVertex3f (190, -30, 0.0);
+          glVertex3f (190, -60, 0.0);
+    glEnd();
+
+
+    glColor3f(1.0,1,1);
+    glBegin(GL_LINE_LOOP);
+          glVertex3f (125, -60, 0.0);
+          glVertex3f (125, -30, 0.0);
+          glVertex3f (190, -30, 0.0);
+          glVertex3f (190, -60, 0.0);
+    glEnd();
+
+    posX = 130;
+
+    char player2[] = "2 PLAYERS";
+
+    for (int i = 0; i < 9; i++){
+        glRasterPos3f (posX + i*6,-50, 0);
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, player2[i]);
+    }
+}
+
+void Game::displayGameOver(int w,int h){
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Projeção
     glLoadIdentity();
     glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
 
-    glViewport ((int) 0, (int) 0, (int) 860, (int) 680);
+    glViewport ((int) 0, (int) 0, (int) w, (int) h);
     char gameover[] = "GAME OVER";
 
     ranking->addPointsToCurrentRanking(points);
@@ -736,11 +802,12 @@ void Game::displayGameOver(){
     }
 }
 
-void Game::displayRanking(){
+void Game::displayRanking(int w,int h){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
 
+    glViewport ((int) 0, (int) 0, (int) w, (int) h);
     char rankingText[] = "TOP SCORES";
     glColor3f(1,1,1);
 

@@ -73,13 +73,14 @@ public:
     void clearTrashList();///limpa a matriz de coordenadas para destruição
     void clear();///destrói os blocos nas coordenadas que estiver dentro da matriz de coordenadas
     void runVerification();///chama a função verifyAll e chama recursivo caso houver destruição
-    int getGameState();///retorna o estado de jogo 0 - tela inicial 1 - jogo executando 2 - ranking 3 - fim de jogo
+    int getGameState();///retorna o estado de jogo 0 - tela inicial 1 - jogo executando 2 - ranking 3 - fim de jogo 4 - tela de opção de quantos players, 5 - 2 players
     void setGameState(int gameState);
-    void drawStartScreen();///desenha tela inicial
-    void displayGameOver();///desenha tela de fim de jogo
+    void drawStartScreen(int w,int h);///desenha tela inicial
+    void drawStartScreenPlayerOption(int w, int h);
+    void displayGameOver(int w, int h);///desenha tela de fim de jogo
     void scoreDisplay (int posx, int posy, int posz, int space_char, int scorevar);///escreve numeros na tela
-    void displayRanking();///desenha tela de ranking
-    void drawPoints();///desenha na tela de jogo os pontos, blocos destruidos e nivel
+    void displayRanking(int w, int h);///desenha tela de ranking
+    void drawPoints(int w,int h);///desenha na tela de jogo os pontos, blocos destruidos e nivel
     Ranking* getRanking();
     ///gets e sets
     Piece* getPiece();
