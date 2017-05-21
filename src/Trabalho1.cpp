@@ -148,7 +148,6 @@ void timer(int value)
         glutPostRedisplay();
         glutTimerFunc(animationTime,timer,1);
     }
-
     else
     {
         game->setGameState(3);
