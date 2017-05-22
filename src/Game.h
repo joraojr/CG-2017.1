@@ -8,7 +8,7 @@
 class Game
 {
 private:
-    int field[18][7] ;
+    int** field;
     void drawCubeColor(int i, int j,float positionX, float positionY);
     /*
     int trashListLine[7][2];
@@ -23,8 +23,8 @@ private:
     int mainDiagCount;
     int secondDiagCount;
     */
-    int trashListAux[15][7];
-    int trashListFinal[15][7];
+    int** trashListAux;
+    int** trashListFinal;
     int trashCount;
     int points;
     int gameState;
@@ -50,9 +50,9 @@ private:
     int verifySecondDiagDown(int color,int line, int column);///verifica recursivo para baixo na diagonal secundaria
     int verifyMainDiag(int line,int column);///chama as funções de verifica recursivo na diagonal primaria
     int verifySecondDiag(int line,int column);///chama as funções de verifica recursivo na diagonal secundaria
-    bool verifyCoord(int x,int y,int trash[15][7]);///verifica se a coordenada esta dentro da matriz
+    bool verifyCoord(int x,int y,int** trash);///verifica se a coordenada esta dentro da matriz
     void clearTrashListAux();///limpa a matriz de coordenadas de blocos
-    void copyToTrashListFinal(int matriz[15][7]);
+    void copyToTrashListFinal(int** matriz);
 
 public:
     void drawField();

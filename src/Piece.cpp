@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 #include <ctime>
 
+
 Piece::Piece()
 {
     c[0] = new Cube();
@@ -37,10 +38,9 @@ void Piece::shiftColorMouse(){
 
 }
 
-int * Piece::getCubesColor()
+int* Piece::getCubesColor()
 {
-    int colors[5];
-
+    int* colors = new int[5];
     for(int i = 0;i < 3;i++){
 
         if(this->c[i]->getColor()[0] == 1.0 && this->c[i]->getColor()[1] == 0.0 && this->c[i]->getColor()[2] == 0.0)

@@ -132,11 +132,14 @@ void timer(int value)
         }
         else if(!game->getPause())
         {
+
             int* cubeColors = game->getPiece()->getCubesColor();
+
             game->addColor(linha,coluna,cubeColors[2]);
             game->addColor(linha + 1,coluna,cubeColors[1]);
             game->addColor(linha + 2,coluna,cubeColors[0]);
             game->runVerification();
+            printf("test");
             animationTime = animationAux/game->getLevel();
             moveX = 0.0;
             moveY = 0.0;
