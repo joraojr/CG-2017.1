@@ -36,7 +36,7 @@ void Ranking::addScore(){
     int aux;
     char* auxName = new char[21];
     charCount = 0;
-    for(int i = 9 ; i>=0 ; i --){
+    for(int i = 9 ; i>=0 ; i--){
         if(currentRanking.score > scores[i].score){
             aux = scores[i].score;
             strcpy(auxName,scores[i].name);
@@ -54,6 +54,9 @@ void Ranking::readFromFile(){
     FILE * pFile;
 
     pFile = fopen("TopScores.txt" , "r");
+
+    if(pFile == NULL)///Nao achou o arquivo
+        return;
 
     for (int i = 0; i < 10; i++){
         fscanf (pFile, "%d %s", &scores[i].score, scores[i].name);

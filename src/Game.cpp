@@ -273,7 +273,6 @@ int Game::verifyColumn(int line, int column){
     int countC = 1;
     trashListAux[line][column] = 1;
     countC += verifyColumnDown(field[line][column],line,column);
-
     countC += verifyColumnUp(field[line][column],line,column);
 
     if(countC < 3)
