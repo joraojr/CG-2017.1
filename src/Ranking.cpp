@@ -34,7 +34,7 @@ void Ranking::writeOnFile(){
 
 void Ranking::addScore(){
     int aux;
-    char auxName [21] ;
+    char* auxName = new char[21];
     charCount = 0;
     for(int i = 9 ; i>=0 ; i --){
         if(currentRanking.score > scores[i].score){
@@ -56,7 +56,7 @@ void Ranking::readFromFile(){
     pFile = fopen("TopScores.txt" , "r");
 
     for (int i = 0; i < 10; i++){
-        fscanf (pFile, "%d %s", &scores[i].score, &scores[i].name);
+        fscanf (pFile, "%d %s", &scores[i].score, scores[i].name);
     }
 }
 
