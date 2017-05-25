@@ -37,7 +37,7 @@ void drawState(){
         game->drawStartScreen(width,height);
         break;
     case 1:
-        displayGame();
+        game->displayGame(width,height,moveX,moveY,shift,typeShift);
 
         if(timeOn){
             glutTimerFunc(animationTime,timer,1);
@@ -57,48 +57,15 @@ void drawState(){
         game->drawStartScreenPlayerOption(width,height);
         break;
     case 5:
-        ///2 player
+        game->displayGame2Players(width,height,moveX,moveY,shift,typeShift);
+
+          if(timeOn){
+            glutTimerFunc(animationTime,timer,1);
+            timeOn = false;
+        }
         break;
     }
 
-}
-
-void displayGame()
-{
-
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glViewport ((int) 0, (int) 0, (int) width*0.55, (int) height);
-
-    game->drawField();
-    game->getPiece()->drawPiece(moveX,moveY);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(20.0,55.0,20,60.0,0.0,10.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glViewport ((int) width*0.79, (int) height*0.71, (int) width*0.21, (int) height*0.29);
-    game->getNextPiece()->drawPiece(0,-80);
-
-
-    game->drawPoints(width,height);
-    if(shift)
-    {
-        if(typeShift == 0)
-            game->getPiece()->shiftColor();
-        else
-            game->getPiece()->shiftColorMouse();
-        shift = false;
-        glutPostRedisplay();
-    }
 }
 
 void display()
@@ -297,192 +264,7 @@ void mouse(int button, int state, int x, int y)
         else if (state==GLUT_UP && game->getGameState() == 1)
             animationTime = animationAux/game->getLevel();
         break;
-    case GLUT_RIGHT_BUTTON:
-        if(state==GLUT_DOWN && game->getGameState() == 1)
-        {
-            if(x>8 && x< 60)
-            {
-                switch(coluna)
-                {
-                case 1:
-                    moveX -= 7;
-                    break;
-                case 2:
-                    moveX -= 14;
-                    break;
-                case 3:
-                    moveX -= 21;
-                    break;
-                case 4:
-                    moveX -= 28;
-                    break;
-                case 5:
-                    moveX -= 35;
-                    break;
-                case 6:
-                    moveX -= 42;
-                    break;
-                }
-                coluna = 0;
-            }
-            if(x>60 && x <114)
-            {
-                switch(coluna)
-                {
-                case 0:
-                    moveX+=7;
-                    break;
-                case 2:
-                    moveX -= 7;
-                    break;
-                case 3:
-                    moveX -= 14;
-                    break;
-                case 4:
-                    moveX -= 21;
-                    break;
-                case 5:
-                    moveX -= 28;
-                    break;
-                case 6:
-                    moveX -= 35;
-                    break;
-                }
-                coluna = 1;
-
-            }
-            if(x>114 && x <170)
-            {
-                switch(coluna)
-                {
-                case 0:
-                    moveX+=14;
-                    break;
-                case 1:
-                    moveX += 7;
-                    break;
-                case 3:
-                    moveX -= 7;
-                    break;
-                case 4:
-                    moveX -= 14;
-                    break;
-                case 5:
-                    moveX -= 21;
-                    break;
-                case 6:
-                    moveX -= 28;
-                    break;
-                }
-                coluna = 2;
-
-            }
-            if(x>170 && x <222)
-            {
-                switch(coluna)
-                {
-                case 0:
-                    moveX+=21;
-                    break;
-                case 1:
-                    moveX += 14;
-                    break;
-                case 2:
-                    moveX += 7;
-                    break;
-                case 4:
-                    moveX -= 7;
-                    break;
-                case 5:
-                    moveX -= 14;
-                    break;
-                case 6:
-                    moveX -= 21;
-                    break;
-                }
-                coluna = 3;
-            }
-            if(x>222 && x <274)
-            {
-                switch(coluna)
-                {
-                case 0:
-                    moveX+=28;
-                    break;
-                case 1:
-                    moveX += 21;
-                    break;
-                case 2:
-                    moveX += 14;
-                    break;
-                case 3:
-                    moveX += 7;
-                    break;
-                case 5:
-                    moveX -= 7;
-                    break;
-                case 6:
-                    moveX -= 14;
-                    break;
-                }
-                coluna = 4;
-
-            }
-            if(x>274 && x <326)
-            {
-                switch(coluna)
-                {
-                case 0:
-                    moveX+=35;
-                    break;
-                case 1:
-                    moveX += 28;
-                    break;
-                case 2:
-                    moveX += 21;
-                    break;
-                case 3:
-                    moveX += 14;
-                    break;
-                case 4:
-                    moveX += 7;
-                    break;
-                case 6:
-                    moveX -= 7;
-                    break;
-                }
-                coluna = 5;
-
-            }
-            if(x>326 && x <378)
-            {
-                switch(coluna)
-                {
-                case 0:
-                    moveX+=42;
-                    break;
-                case 1:
-                    moveX += 35;
-                    break;
-                case 2:
-                    moveX += 28;
-                    break;
-                case 3:
-                    moveX += 21;
-                    break;
-                case 4:
-                    moveX += 14;
-                    break;
-                case 5:
-                    moveX += 7;
-                    break;
-                }
-                coluna = 6;
-
-            }
-        }
-        break;
-    }
+}
 }
 
 void controlCallback(int control) {}

@@ -34,7 +34,8 @@ void Scene::drawScene(){
 
     ///Desenha a luz
     glPushMatrix();
-		glLoadIdentity();
+        ///luz mexe junto com a camera
+		//glLoadIdentity();
 		glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
 		glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 		glColor3f(1.0, 1.0, 1.0);
@@ -70,7 +71,7 @@ void Scene::drawTable()
 void Scene::drawFlower(){
     char objectName[100] = {"/home/joraojr/Documentos/CG-2017.1/data/objFiles/flowers.obj"};
     glPushMatrix();
-    glTranslatef(0,2.15,-4.0);
+    glTranslatef(0,1.99,-4.0);
     if (!pmodel[1])
     {
         pmodel[1] = glmReadOBJ(objectName);
@@ -187,7 +188,8 @@ void Scene::drawTeapot(){
     glPushMatrix();
     glTranslatef(0.7,1.37,0.0);
     glRotatef(20,0.0,1.0,0.0);
-    glutSolidTeapot(0.3);
+//    glutSolidTeapot(0.3);
+    glutSolidSphere(0.3,20,20);
     glPopMatrix();
 }
 
@@ -221,7 +223,7 @@ void Scene::drawFloor(){
     GLfloat objeto_ambient[]   = { 1.0, 1.0, 0.0, 0.5 };
     GLfloat objeto_difusa[]    = { 1.0, 1.0, 0.0, 0.6 };
     GLfloat objeto_especular[] = { 1.0, 1.0, 0.0, 0.6 };
-    GLfloat objeto_brilho[]    = { 0.0f };
+    GLfloat objeto_brilho[]    = { 90.0f };
 
     glPushMatrix();
     setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
@@ -248,7 +250,7 @@ void Scene::drawTable2(){
         //tampod da mesa
         glPushMatrix();
             glTranslatef(x+0.5,y+2.5,z);
-            glScalef(2,7,0.5);
+            glScalef(2,7,0.2);
             glutSolidCube(1);
         glPopMatrix();
         //Pes da mesa
@@ -257,13 +259,13 @@ void Scene::drawTable2(){
                 glPushMatrix();
                     glTranslatef(x,y,z+1);
                     glRotatef(90,0,1,0);
-                    glScalef (2.0, 0.5, 0.5);
+                    glScalef (2.0, 0.2, 0.2);
                     glutSolidCube(1);
                 glPopMatrix();
                 glPushMatrix();
                     glTranslatef(x+1,y,z+1);
                     glRotatef(90,0,1,0);
-                    glScalef (2.0, 0.5, 0.5);
+                    glScalef (2.0, 0.2, 0.2);
                     glutSolidCube(1);
                 glPopMatrix();
             glPopMatrix();
@@ -272,13 +274,13 @@ void Scene::drawTable2(){
                 glPushMatrix();
                     glTranslatef(x+1,y,z+1);
                     glRotatef(90,0,1,0);
-                    glScalef (2.0, 0.5, 0.5);
+                    glScalef (2.0, 0.2, 0.2);
                     glutSolidCube(1);
                 glPopMatrix();
                 glPushMatrix();
                     glTranslatef(x,y,z+1);
                     glRotatef(90,0,1,0);
-                    glScalef (2.0, 0.5, 0.5);
+                    glScalef (2.0, 0.2, 0.2);
                     glutSolidCube(1);
                 glPopMatrix();
             glPopMatrix();

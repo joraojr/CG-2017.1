@@ -113,6 +113,7 @@ void drawPartition(){
 
 void init(){
     glClearColor(0.7, 0.8, 0.0, 1.0);
+    glFrontFace(GL_FRONT_AND_BACK);
 }
 
 void display(){
@@ -151,11 +152,11 @@ void mouse(int button, int state, int x, int y){
    }
    if(button == 3){
       distOrigem+=0.3;
-      if(distOrigem>180) distOrigem=180;
+      if(distOrigem>100) distOrigem=100;
    }
    if(button == 4){
       distOrigem-=0.3;
-      if(distOrigem<-20) distOrigem=-20;
+      if(distOrigem<-0) distOrigem=0;
    }
 }
 
@@ -195,7 +196,7 @@ int main(int argc,char *argv[]){
 
     init();
     glutMouseFunc( mouse );
-    glutSpecialFunc(special);
+    //glutSpecialFunc(special);
     glutMotionFunc( motion );
     glutDisplayFunc(display);
 

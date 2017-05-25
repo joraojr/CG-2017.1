@@ -56,6 +56,8 @@ private:
 
 public:
     void drawField();
+    void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift);
+    void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift);
     void addColor(int i, int j, int color);
     Game();
     ~Game();
