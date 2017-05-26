@@ -8,7 +8,7 @@
 class Game
 {
 private:
-    int** field;
+
     void drawCubeColor(int i, int j,float positionX, float positionY);
     /*
     int trashListLine[7][2];
@@ -23,8 +23,7 @@ private:
     int mainDiagCount;
     int secondDiagCount;
     */
-    int** trashListAux;
-    int** trashListFinal;
+
     int trashCount;
     int points;
     int gameState;
@@ -33,26 +32,27 @@ private:
     bool pause;
     Ranking *ranking;
     Piece* piece;
+    Piece* piece2;
     Piece* nextPiece;
 
     ///verificar em linha
-    int verifyLineLeft(int color,int line, int column);///verifica recursivo pra esquerda
-    int verifyLineRight(int color,int line, int column);///verifica recursivo pra direita
-    int verifyLine(int line,int column);///chama a função recursivo pra esquerda e direta e verifica se há blocos candidatos a destruição
+    int verifyLineLeft(int** field, int ** trashListAux, int color,int line, int column);///verifica recursivo pra esquerda
+    int verifyLineRight(int** field, int** trashListAux,int color,int line, int column);///verifica recursivo pra direita
+    int verifyLine(int** field, int** trashListAux, int** trashListFinal,int line,int column);///chama a função recursivo pra esquerda e direta e verifica se há blocos candidatos a destruição
     ///verificar em coluna
-    int verifyColumnUp(int color,int line, int column);///verifica recursivo para cima
-    int verifyColumnDown(int color,int line, int column);///verifica recursivo para baixo
-    int verifyColumn(int line,int column);///chama a função recursivo pra cima e para baixo se há blocos candidatos a destruição
+    int verifyColumnUp(int** field, int** trashListAux,int color,int line, int column);///verifica recursivo para cima
+    int verifyColumnDown(int** field, int** trashListAux,int color,int line, int column);///verifica recursivo para baixo
+    int verifyColumn(int** field, int** trashListAux,int** trashListFinal,int line,int column);///chama a função recursivo pra cima e para baixo se há blocos candidatos a destruição
     ///verifica em diagonal principal e secundaria
-    int verifyMainDiagUp(int color,int line, int column);///verifica recursivo para cima na diagonal primaria
-    int verifyMainDiagDown(int color,int line, int column);///verifica recursivo para baixo na diagonal primaria
-    int verifySecondDiagUp(int color,int line, int column);///verifica recursivo para cima na diagonal secundaria
-    int verifySecondDiagDown(int color,int line, int column);///verifica recursivo para baixo na diagonal secundaria
-    int verifyMainDiag(int line,int column);///chama as funções de verifica recursivo na diagonal primaria
-    int verifySecondDiag(int line,int column);///chama as funções de verifica recursivo na diagonal secundaria
+    int verifyMainDiagUp(int** field, int** trashListAux,int color,int line, int column);///verifica recursivo para cima na diagonal primaria
+    int verifyMainDiagDown(int** field, int** trashListAux,int color,int line, int column);///verifica recursivo para baixo na diagonal primaria
+    int verifySecondDiagUp(int** field, int** trashListAux,int color,int line, int column);///verifica recursivo para cima na diagonal secundaria
+    int verifySecondDiagDown(int** field, int** trashListAux,int color,int line, int column);///verifica recursivo para baixo na diagonal secundaria
+    int verifyMainDiag(int** field, int** trashListAux,int** trashListFinal,int line,int column);///chama as funções de verifica recursivo na diagonal primaria
+    int verifySecondDiag(int** field, int** trashListAux, int ** trashListFinal,int line,int column);///chama as funções de verifica recursivo na diagonal secundaria
     bool verifyCoord(int x,int y,int** trash);///verifica se a coordenada esta dentro da matriz
-    void clearTrashListAux();///limpa a matriz de coordenadas de blocos
-    void copyToTrashListFinal(int** matriz);
+    void clearTrashListAux(int ** trashListAux);///limpa a matriz de coordenadas de blocos
+    void copyToTrashListFinal(int** trashListAux, int** trashListFinal);
 
 public:
     void drawField();
@@ -66,14 +66,14 @@ public:
     void printMatrix();///para teste
     bool verifyMoveLeft(int i,int j);///verifica se mover para esquerda é valido
     bool verifyMoveRight(int i,int j);///verifica se mover para direita é valido
-    void readjust();///reajusta a matriz após destruição
-    int verifyAll(int line,int column);///verifica todas as direções
+    void readjust(int** field);///reajusta a matriz após destruição
+    int verifyAll(int** field, int** trashListAux,int** trashListFinal,int line,int column);///verifica todas as direções
     int fatorialPoints(int i);///calcula os pontos em fatorial de blocos destruidos
     void drawMenu();///desenha menu
     int getPoints();///retorna os pontos
-    void clearTrashListFinal();///limpa a matriz de coordenadas para destruição
-    void clear();///destrói os blocos nas coordenadas que estiver dentro da matriz de coordenadas
-    void runVerification();///chama a função verifyAll e chama recursivo caso houver destruição
+    void clearTrashListFinal(int ** trashListFinal);///limpa a matriz de coordenadas para destruição
+    void clear(int **trashListFinal);///destrói os blocos nas coordenadas que estiver dentro da matriz de coordenadas
+    void runVerification(int** field, int** trashListAux, int **trashListFinal);///chama a função verifyAll e chama recursivo caso houver destruição
     int getGameState();///retorna o estado de jogo 0 - tela inicial 1 - jogo executando 2 - ranking 3 - fim de jogo 4 - tela de opção de quantos players, 5 - 2 players
     void setGameState(int gameState);
     void drawStartScreen(int w,int h);///desenha tela inicial
@@ -93,6 +93,12 @@ public:
     int getLevel();///retorna o nivel
     bool getPause();
     void setPause(bool p);
+    int** field;
+    int** field2;
+    int** trashListAux;
+    int** trashListFinal;
+    int** trashListAux2;
+    int** trashListFinal2;
 
 };
 

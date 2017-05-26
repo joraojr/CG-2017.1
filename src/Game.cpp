@@ -7,23 +7,34 @@ Game::Game()
 {
     /// 1- vermelho, 2-Verde, 3-Azul, 4- Amarelo, 5-Magenta , 0-Vazio
     field = new int*[18];
+    field2 = new int*[18];
     for(int i = 0; i < 18; i++)
     {
         field[i] = new int[7];
-        for(int j =0; j < 7; j++)
+        field2[i] = new int[7];
+        for(int j =0; j < 7; j++){
             field[i][j] = 0 ;
+            field2[i][j] = 0 ;
+            }
     }
 
     trashListAux = new int*[15];
     trashListFinal = new int*[15];
+    trashListAux2 = new int*[15];
+    trashListFinal2 = new int*[15];
     for(int i = 0; i < 15; i++)
     {
         trashListAux[i] = new int[7];
         trashListFinal[i] = new int[7];
+        trashListAux2[i] = new int[7];
+        trashListFinal2[i] = new int[7];
+
         for(int j =0; j < 7; j++)
         {
             trashListAux[i][j] = 0;
             trashListFinal[i][j] = 0;
+            trashListAux2[i][j] = 0;
+            trashListFinal2[i][j] = 0;
         }
     }
 
@@ -35,6 +46,7 @@ Game::Game()
     ranking = new Ranking();
     brokenBlocks = 0;
     piece = new Piece();
+    piece2 = new Piece();
     nextPiece = new Piece();
 }
 
@@ -201,50 +213,50 @@ bool Game::verifyMoveRight(int line,int column)
     return false;
 }
 ///verificar em linha
-int Game::verifyLineLeft(int color,int line, int column)
+int Game::verifyLineLeft(int** field, int** trashListAux, int color,int line, int column)
 {
     if(column - 1 >= 0)
     {
         if(color == field[line][column - 1])
         {
             trashListAux[line][column - 1] = 1;
-            return 1 + verifyLineLeft(color,line,column - 1);
+            return 1 + verifyLineLeft(field, trashListAux,color,line,column - 1);
         }
     }
     return 0;
 }
 
-int Game::verifyLineRight(int color,int line, int column)
+int Game::verifyLineRight(int** field, int** trashListAux,int color,int line, int column)
 {
     if(column + 1 < 7)
     {
         if(color == field[line][column + 1])
         {
             trashListAux[line][column + 1] = line;
-            return 1 + verifyLineRight(color,line,column + 1);
+            return 1 + verifyLineRight(field,trashListAux,color,line,column + 1);
         }
     }
     return 0;
 }
 
-int Game::verifyLine(int line, int column)
+int Game::verifyLine(int** field, int** trashListAux, int ** trashListFinal,int line, int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
-    countC += verifyLineLeft(field[line][column],line,column);
-    countC += verifyLineRight(field[line][column],line,column);
+    countC += verifyLineLeft(field,trashListAux,field[line][column],line,column);
+    countC += verifyLineRight(field,trashListAux,field[line][column],line,column);
 
     if(countC < 3)
-        clearTrashListAux();
+        clearTrashListAux(trashListAux);
     else
     {
-        copyToTrashListFinal(trashListAux);
+        copyToTrashListFinal(trashListAux,trashListFinal);
         return 1;
     }
     return 0;
 }
 
-void Game::copyToTrashListFinal(int** matriz)
+void Game::copyToTrashListFinal(int** trashListAux, int** trashListFinal)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -253,15 +265,15 @@ void Game::copyToTrashListFinal(int** matriz)
             if(trashListAux[i][j] == 1 && !verifyCoord(i,j,trashListFinal))
             {
                 trashListFinal[i][j] = 1;
-                trashCount += 1;
+                this->trashCount += 1;
             }
         }
     }
-    clearTrashListAux();
+    clearTrashListAux(trashListAux);
 }
 
 //reseta a matriz com as coordenadas
-void Game::clearTrashListAux()
+void Game::clearTrashListAux(int** trashListAux)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -271,44 +283,44 @@ void Game::clearTrashListAux()
 }///FIM verifica Linha
 
 ///verifica em coluna
-int Game::verifyColumnDown(int color,int line,int column)
+int Game::verifyColumnDown(int** field, int** trashListAux,int color,int line,int column)
 {
     if(line - 1 >= 0)
     {
         if(color == field[line - 1][column])
         {
             trashListAux[line - 1][column] = 1;
-            return 1 + verifyColumnDown(color,line - 1,column);
+            return 1 + verifyColumnDown(field,trashListAux,color,line - 1,column);
         }
     }
     return 0;
 }
 
-int Game::verifyColumnUp(int color,int line,int column)
+int Game::verifyColumnUp(int** field, int** trashListAux,int color,int line,int column)
 {
     if(line + 1 < 15)
     {
         if(color == field[line + 1][column])
         {
             trashListAux[line + 1][column] = 1;
-            return 1 + verifyColumnUp(color,line + 1,column);
+            return 1 + verifyColumnUp(field,trashListAux,color,line + 1,column);
         }
     }
     return 0;
 }
 
-int Game::verifyColumn(int line, int column)
+int Game::verifyColumn(int** field, int** trashListAux, int ** trashListFinal,int line, int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
-    countC += verifyColumnDown(field[line][column],line,column);
-    countC += verifyColumnUp(field[line][column],line,column);
+    countC += verifyColumnDown(field,trashListAux,field[line][column],line,column);
+    countC += verifyColumnUp(field,trashListAux,field[line][column],line,column);
 
     if(countC < 3)
-        clearTrashListAux();
+        clearTrashListAux(trashListAux);
     else
     {
-        copyToTrashListFinal(trashListAux);
+        copyToTrashListFinal(trashListAux,trashListFinal);
         return 1;
     }
     return 0;
@@ -318,92 +330,92 @@ int Game::verifyColumn(int line, int column)
 ///verificar em diagonal primaria
 
 
-int Game::verifyMainDiag(int line, int column)
+int Game::verifyMainDiag(int** field, int** trashListAux,int ** trashListFinal,int line, int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
-    countC += verifyMainDiagUp(field[line][column],line,column);
-    countC += verifyMainDiagDown(field[line][column],line,column);
+    countC += verifyMainDiagUp(field, trashListAux,field[line][column],line,column);
+    countC += verifyMainDiagDown(field,trashListAux,field[line][column],line,column);
     if(countC < 3)
-        clearTrashListAux();
+        clearTrashListAux(trashListAux);
     else
     {
-        copyToTrashListFinal(trashListAux);
+        copyToTrashListFinal(trashListAux,trashListFinal);
         return 1;
     }
     return 0;
 }
 
-int Game::verifyMainDiagUp(int color,int line, int column)
+int Game::verifyMainDiagUp(int** field, int** trashListAux,int color,int line, int column)
 {
     if(line - 1 >= 0 && column + 1 < 7)
     {
         if(color == field[line - 1][column + 1])
         {
             trashListAux[line - 1][column + 1] = 1;
-            return 1 + verifyMainDiagUp(color,line - 1,column + 1);
+            return 1 + verifyMainDiagUp(field,trashListAux,color,line - 1,column + 1);
         }
     }
     return 0;
 }
 
-int Game::verifyMainDiagDown(int color,int line, int column)
+int Game::verifyMainDiagDown(int** field, int** trashListAux,int color,int line, int column)
 {
     if(line + 1 < 15 && column - 1 >= 0)
     {
         if(color == field[line + 1][column - 1])
         {
             trashListAux[line + 1][column - 1] = 1;
-            return 1 + verifyMainDiagDown(color,line + 1,column - 1);
+            return 1 + verifyMainDiagDown(field,trashListAux,color,line + 1,column - 1);
         }
     }
     return 0;
 }///FIM verifica em diagonal primaria
 
 ///Verificar em diagonal secundaria
-int Game::verifySecondDiag(int line,int column)
+int Game::verifySecondDiag(int** field, int** trashListAux, int** trashListFinal,int line,int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
-    countC += verifySecondDiagUp(field[line][column],line,column);
-    countC += verifySecondDiagDown(field[line][column],line,column);
+    countC += verifySecondDiagUp(field,trashListAux,field[line][column],line,column);
+    countC += verifySecondDiagDown(field, trashListAux,field[line][column],line,column);
     if(countC < 3)
-        clearTrashListAux();
+        clearTrashListAux(trashListAux);
     else
     {
-        copyToTrashListFinal(trashListAux);
+        copyToTrashListFinal(trashListAux,trashListFinal);
         return 1;
     }
     return 0;
 }
 
-int Game::verifySecondDiagDown(int color,int line,int column)
+int Game::verifySecondDiagDown(int** field, int** trashListAux,int color,int line,int column)
 {
     if(line - 1 >= 0 && column - 1 >= 0)
     {
         if(color == field[line - 1][column - 1])
         {
             trashListAux[line - 1][column - 1] = 1;
-            return 1 + verifySecondDiagDown(color,line - 1,column - 1);
+            return 1 + verifySecondDiagDown(field,trashListAux,color,line - 1,column - 1);
         }
     }
     return 0;
 }
 
-int Game::verifySecondDiagUp(int color,int line,int column)
+int Game::verifySecondDiagUp(int** field, int** trashListAux,int color,int line,int column)
 {
     if(line + 1 < 15 && column + 1 < 7)
     {
         if(color == field[line + 1][column + 1])
         {
             trashListAux[line + 1][column + 1] = 1;
-            return 1 + verifySecondDiagUp(color,line + 1,column + 1);
+            return 1 + verifySecondDiagUp(field,trashListAux,color,line + 1,column + 1);
         }
     }
     return 0;
 }///FIM verifica em diagonal secundaria
 
-void Game::clearTrashListFinal()
+void Game::clearTrashListFinal(int ** trashListFinal)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -420,7 +432,7 @@ bool Game::verifyCoord(int x,int y,int** trash)
     return false;
 }
 
-void Game::clear()
+void Game::clear(int ** trashListFinal)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -434,13 +446,13 @@ void Game::clear()
     trashCount = 0;
 }
 
-int Game::verifyAll(int line, int column)
+int Game::verifyAll(int** field, int** trashListAux, int ** trashListFinal,int line, int column)
 {
     int trash = 0;
-    int trashColumn = verifyColumn(line,column);
-    int trashLine = verifyLine(line,column);
-    int trashMainDiag = verifyMainDiag(line,column);
-    int trashSecondDiag = verifySecondDiag(line,column);
+    int trashColumn = verifyColumn(field,trashListAux, trashListFinal,line,column);
+    int trashLine = verifyLine(field,trashListAux,trashListFinal,line,column);
+    int trashMainDiag = verifyMainDiag(field,trashListAux,trashListFinal,line,column);
+    int trashSecondDiag = verifySecondDiag(field,trashListAux,trashListFinal,line,column);
     if(trashColumn == 1 || trashLine == 1 || trashMainDiag == 1 || trashSecondDiag == 1)
     {
         trash = 1;
@@ -449,7 +461,7 @@ int Game::verifyAll(int line, int column)
     return trash;
 }
 
-void Game::runVerification()
+void Game::runVerification(int** field, int** trashListAux, int **trashListFinal)
 {
     int trash = 0;
     for(int i = 0; i < 15; i++)
@@ -460,19 +472,19 @@ void Game::runVerification()
             {
                 if(trash == 0)
                 {
-                    trash = verifyAll(i,j);
+                    trash = verifyAll(field,trashListAux, trashListFinal,i,j);
                 }
                 else
                 {
-                    verifyAll(i,j);
+                    verifyAll(field,trashListAux, trashListFinal,i,j);
                 }
             }
         }
     }
     brokenBlocks += trashCount;
     int brokenBlocksPoints = trashCount;
-    clear();///limpa o trashcount
-    readjust();
+    clear(trashListFinal);///limpa o trashcount
+    readjust(field);
     drawField();
     if(trash == 1)
     {
@@ -481,11 +493,11 @@ void Game::runVerification()
         {
             level += 1;
         }
-        runVerification();
+        runVerification(field,trashListAux,trashListFinal);
     }
 }
 
-void Game::readjust()
+void Game::readjust(int ** field)
 {
     bool aux = false;
     for(int i = 0; i < 7; i++)
@@ -846,8 +858,12 @@ void Game::resetGame()
     gameState = 0;
     level = 1;
     pause = false;
-    clearTrashListAux();
-    clearTrashListFinal();
+    if(this->gameState == 1){}
+    clearTrashListAux(this->trashListAux);
+    clearTrashListFinal(this->trashListFinal);
+    clearTrashListAux(this->trashListAux2);
+    clearTrashListFinal(this->trashListFinal2);
+
 
     brokenBlocks = 0;
     piece = new Piece();
