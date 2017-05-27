@@ -8,8 +8,7 @@
 class Game
 {
 private:
-    int** field;
-    int** field2;
+
     int** trashListAux;
     int** trashListFinal;
     int** trashListAux2;
@@ -27,8 +26,9 @@ private:
     Piece* piece;
     Piece* piece2;
     Piece* nextPiece;
+    Piece* nextPiece2;
 
-    void drawCubeColor(int i, int j,float positionX, float positionY);
+    void drawCubeColor(int ** field,int i, int j,float positionX, float positionY);
     void getPosition(int x,int y);
     void getReadjustPosition();
     void clearTrashReadjust();
@@ -53,10 +53,11 @@ private:
     void copyToTrashListFinal(int** trashListAux, int** trashListFinal);
 
 public:
-    void drawField(float animationMove);
+    Piece* getPiece2();
+    void drawField(int ** field,float animationMove);
     void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift, float animationMove,float rotationX, float rotationY,float distOrigem);
-    void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove);
-    void addColor(int i, int j, int color);
+    void displayGame2Players(int width, int height, int moveX,int last_x, int last_y, int moveY, bool &shift, int typeShift,float animationMove);
+    void addColor(int ** field,int i, int j, int color);
     Game();
     ~Game();
     int getColor(int i, int j);///retorna a cor da posição i e j
@@ -70,7 +71,7 @@ public:
     void drawMenu();///desenha menu
     int getPoints();///retorna os pontos
     void clearTrashListFinal(int ** trashListFinal);///limpa a matriz de coordenadas para destruição
-    void clear(int **trashListFinal);///destrói os blocos nas coordenadas que estiver dentro da matriz de coordenadas
+    void clear(int** field,int **trashListFinal);///destrói os blocos nas coordenadas que estiver dentro da matriz de coordenadas
     void runVerification(int** field, int** trashListAux, int **trashListFinal);///chama a função verifyAll e chama recursivo caso houver destruição
     int getGameState();///retorna o estado de jogo 0 - tela inicial 1 - jogo executando 2 - ranking 3 - fim de jogo 4 - tela de opção de quantos players, 5 - 2 players
     void setGameState(int gameState);
@@ -84,7 +85,9 @@ public:
     ///gets e sets
     Piece* getPiece();
     Piece* getNextPiece();
+    Piece* getNextPiece2();
     void setPiece(Piece* p);
+    void setPiece2(Piece* p);
     void setNextPiece(Piece* p);
     void createNextPiece();///cria a proxima peça
     void resetGame();///reseta os valores de game para os valores iniciais
@@ -101,6 +104,8 @@ public:
     void redrawPiece(int column,float moveY);
     int readjustCalculation(int** mat, int column);
     int getCoord(int** mat,int column);
+int** field;
+    int** field2;
 };
 
 #endif // GAME_H_INCLUDED
