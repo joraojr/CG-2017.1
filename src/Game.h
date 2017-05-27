@@ -8,21 +8,13 @@
 class Game
 {
 private:
-
-    void drawCubeColor(int i, int j,float positionX, float positionY);
-    /*
-    int trashListLine[7][2];
-    int trashListColumn[15][2];
-    int trashListMainDiag[7][2];
-    int trashListSecondDiag[7][2];
-    int trashList[105][2];
-
-    int trashCount;
-    int lineCount;
-    int columnCount;
-    int mainDiagCount;
-    int secondDiagCount;
-    */
+    int** field;
+    int** field2;
+    int** trashListAux;
+    int** trashListFinal;
+    int** trashListAux2;
+    int** trashListFinal2;
+    int** trashReadjust;
 
     int trashCount;
     int points;
@@ -30,10 +22,16 @@ private:
     int brokenBlocks;
     int level;
     bool pause;
+    int animationOn;
     Ranking *ranking;
     Piece* piece;
     Piece* piece2;
     Piece* nextPiece;
+
+    void drawCubeColor(int i, int j,float positionX, float positionY);
+    void getPosition(int x,int y);
+    void getReadjustPosition();
+    void clearTrashReadjust();
 
     ///verificar em linha
     int verifyLineLeft(int** field, int ** trashListAux, int color,int line, int column);///verifica recursivo pra esquerda
@@ -56,7 +54,7 @@ private:
 
 public:
     void drawField();
-    void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift);
+    void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift, float animationMove,float rotationX, float rotationY,float distOrigem);
     void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift);
     void addColor(int i, int j, int color);
     Game();
@@ -93,13 +91,16 @@ public:
     int getLevel();///retorna o nivel
     bool getPause();
     void setPause(bool p);
-    int** field;
-    int** field2;
-    int** trashListAux;
-    int** trashListFinal;
-    int** trashListAux2;
-    int** trashListFinal2;
-
+    int** getField();
+    int** getField2();
+    int** getTrashListAux();
+    int** getTrashListAux2();
+    int** getTrashListFinal();
+    int** getTrashListFinal2();
+    int getAnimationOn();
+    void redrawPiece(int column,float moveY);
+    int readjustCalculation(int** mat, int column);
+    int getCoord(int** mat,int column);
 };
 
 #endif // GAME_H_INCLUDED

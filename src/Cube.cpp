@@ -13,7 +13,7 @@ Cube::Cube(){
 void Cube::drawCube(float positionX,float positionY){
     glColor3fv(color);
     glPushMatrix();
-        glTranslatef(positionX,positionY,0.0);
+        glTranslatef(positionX,positionY,3.5);
         glutSolidCube(size);
     glPopMatrix();
 }

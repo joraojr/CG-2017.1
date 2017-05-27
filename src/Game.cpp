@@ -3,13 +3,11 @@
 
 using namespace std;
 
-Game::Game()
-{
+Game::Game(){
     /// 1- vermelho, 2-Verde, 3-Azul, 4- Amarelo, 5-Magenta , 0-Vazio
     field = new int*[18];
     field2 = new int*[18];
-    for(int i = 0; i < 18; i++)
-    {
+    for(int i = 0; i < 18; i++){
         field[i] = new int[7];
         field2[i] = new int[7];
         for(int j =0; j < 7; j++){
@@ -22,22 +20,22 @@ Game::Game()
     trashListFinal = new int*[15];
     trashListAux2 = new int*[15];
     trashListFinal2 = new int*[15];
-    for(int i = 0; i < 15; i++)
-    {
+    trashReadjust = new int*[15];
+    for(int i = 0; i < 15; i++){
         trashListAux[i] = new int[7];
         trashListFinal[i] = new int[7];
         trashListAux2[i] = new int[7];
         trashListFinal2[i] = new int[7];
-
-        for(int j =0; j < 7; j++)
-        {
+        trashReadjust[i] = new int[7];
+        for(int j =0; j < 7; j++){
             trashListAux[i][j] = 0;
             trashListFinal[i][j] = 0;
             trashListAux2[i][j] = 0;
             trashListFinal2[i][j] = 0;
+            trashReadjust[i][j] = 0;
         }
     }
-
+    animationOn = 0;
     points = 0 ;
     trashCount = 0;
     gameState = 0;
@@ -50,72 +48,61 @@ Game::Game()
     nextPiece = new Piece();
 }
 
-void Game::drawCubeColor(int i, int j, float positionX, float positionY)
-{
+void Game::drawCubeColor(int i, int j, float positionX, float positionY){
     ///desenhar a cor do cubo
-    switch(field[i][j])
-    {
-    case 0:
-        glColor3f(0,0,0);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,0.0);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 1:
-        glColor3f(1,0,0);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,0.0);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 2:
-        glColor3f(0,1,0);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,0.0);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 3:
-        glColor3f(0,0,1);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,0.0);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 4:
-        glColor3f(1,1,0);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,0.0);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 5:
-        glColor3f(1,0,1);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,0.0);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
+    switch(field[i][j]){
+        case 1:
+            glColor3f(1,0,0);
+            glPushMatrix();
+            glTranslatef(positionX,positionY,3.5);
+            glutSolidCube(7.0);
+            glPopMatrix();
+            break;
+        case 2:
+            glColor3f(0,1,0);
+            glPushMatrix();
+            glTranslatef(positionX,positionY,3.5);
+            glutSolidCube(7.0);
+            glPopMatrix();
+            break;
+        case 3:
+            glColor3f(0,0,1);
+            glPushMatrix();
+            glTranslatef(positionX,positionY,3.5);
+            glutSolidCube(7.0);
+            glPopMatrix();
+            break;
+        case 4:
+            glColor3f(1,1,0);
+            glPushMatrix();
+            glTranslatef(positionX,positionY,3.5);
+            glutSolidCube(7.0);
+            glPopMatrix();
+            break;
+        case 5:
+            glColor3f(1,0,1);
+            glPushMatrix();
+            glTranslatef(positionX,positionY,3.5);
+            glutSolidCube(7.0);
+            glPopMatrix();
+            break;
+        default:
+            break;
     }
-
 }
 
-void Game::drawField()
-{
+void Game::drawField(){
     float x = 0.0;
     float y = 0.0;
-    for(int i = 0; i < 15; i++)
-    {
-        for(int j = 0; j < 7; j++)
-        {
+    for(int i = 0; i < 15; i++){
+        for(int j = 0; j < 7; j++){
             this->drawCubeColor(i,j,x+3.5,y+3.5);
             glColor3f(0.0,0.0,0.3);
             glBegin(GL_LINE_LOOP);
-            glVertex3f(x,y,0.0);
-            glVertex3f(x + 7.0,y,0.0);
-            glVertex3f(x + 7.0,y + 7.0,0.0);
-            glVertex3f(x,y + 7.0,0.0);
+                glVertex3f(x,y,0.0);
+                glVertex3f(x + 7.0,y,0.0);
+                glVertex3f(x + 7.0,y + 7.0,0.0);
+                glVertex3f(x,y + 7.0,0.0);
             glEnd();
             x += 7.0;
         }
@@ -124,46 +111,65 @@ void Game::drawField()
     }
 }
 
-void Game:: drawPoints(int w,int h)
-{
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-100.0,1100.0,-300,200.0,0.0,10.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glViewport ((int) w*0.46, (int) h*0.44, (int) w*0.55, (int) h*0.29);
-
-    glColor3f(1,1,1);
-    int x  = 100;
-    char rankingPoints [] = "POINTS: ";
-    for ( int i = 0; i < 8; i++)
-    {
-        glRasterPos3f ( x + i*40,-150, 0);
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingPoints[i]);
+void Game::clearTrashReadjust(){
+    for(int i = 0; i < 15; i++){
+        for(int j = 0; j < 7; j++)
+            trashReadjust[i][j] = 0;
     }
+}
 
-    scoreDisplay(650,-150,0,25,this->points);
-
-    char rankingBlocks [] = "BROKEN BLOCKS: ";
-
-    for ( int i = 0; i < 15; i++)
-    {
-        glRasterPos3f ( x + i*40,-50, 0);
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingBlocks[i]);
+void Game::getPosition(int x, int y){
+    for(int i = y + 1;i < 15; i++){
+        if(field[i][x] != 0 && !verifyCoord(i,x,trashListFinal))
+            trashReadjust[i][x] = 1;
     }
+}
 
-    scoreDisplay(800,-50,0,25,this->brokenBlocks);
-
-    char lvl [] = "LEVEL: ";
-
-    for ( int i = 0; i < 7; i++)
-    {
-        glRasterPos3f ( x + i*40,50, 0);
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, lvl[i]);
+void Game::getReadjustPosition(){
+    for(int i = 0;i < 7;i++){
+        for(int j = 0;j < 15; j++){
+            if(trashListFinal[j][i] == 1){
+                getPosition(i,j);
+            }
+        }
     }
+}
 
-    scoreDisplay(550,50,0,25,this->level);
+void Game::redrawPiece(int column,float moveY){
+    glPushMatrix();
+    for(int i = 0; i < 15; i++){
+        if(trashReadjust[i][column] == 1){
+            Cube* c = new Cube();
+            glTranslatef(moveY,0.0,0.0);
+            c->drawCube(7*i + 3.5,7*column + 3.5);
+        }
+    }
+    glPopMatrix();
+}
+
+int Game::readjustCalculation(int** mat,int column){
+    int countL = 0;
+    int coord = getCoord(trashReadjust,column);
+    printf("\n%d\n",coord);
+    for(int i = 0; i < 15; i++){
+        if(mat[i][column] == 0){
+            countL = i;
+            break;
+        }
+    }
+    printf("\n%d\n",countL);
+    return (coord - countL);
+}
+
+int Game::getCoord(int** mat, int column){
+    int coord = 0;
+    for(int i = 0; i < 15; i++){
+        if(mat[i][column] == 1){
+            coord = i;
+            break;
+        }
+    }
+    return coord;
 }
 
 void Game::addColor(int i, int j, int color)
@@ -188,37 +194,31 @@ bool Game::isGameOver()
     return false;
 }
 
-void Game::printMatrix()
-{
-    for(int i = 0; i < 15; i++)
-    {
-        for(int j =0; j < 2; j++)
-            cout << trashListFinal[i][j] << ";";
-        cout  << "]]";
+void Game::printMatrix(){
+    for(int i = 0; i < 15; i++){
+        cout << "[";
+        for(int j =0; j < 7; j++)
+            cout << trashReadjust[i][j] << ";";
+        cout  << "]" << endl;
     }
     cout << endl;
 }
 
-bool Game::verifyMoveLeft(int line,int column)
-{
+bool Game::verifyMoveLeft(int line,int column){
     if(field[line][column-1] == 0)
         return true;
     return false;
 }
 
-bool Game::verifyMoveRight(int line,int column)
-{
+bool Game::verifyMoveRight(int line,int column){
     if(field[line][column+1] == 0)
         return true;
     return false;
 }
 ///verificar em linha
-int Game::verifyLineLeft(int** field, int** trashListAux, int color,int line, int column)
-{
-    if(column - 1 >= 0)
-    {
-        if(color == field[line][column - 1])
-        {
+int Game::verifyLineLeft(int** field, int** trashListAux, int color,int line, int column){
+    if(column - 1 >= 0){
+        if(color == field[line][column - 1]){
             trashListAux[line][column - 1] = 1;
             return 1 + verifyLineLeft(field, trashListAux,color,line,column - 1);
         }
@@ -415,7 +415,7 @@ int Game::verifySecondDiagUp(int** field, int** trashListAux,int color,int line,
     return 0;
 }///FIM verifica em diagonal secundaria
 
-void Game::clearTrashListFinal(int ** trashListFinal)
+void Game::clearTrashListFinal(int** trashListFinal)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -432,7 +432,7 @@ bool Game::verifyCoord(int x,int y,int** trash)
     return false;
 }
 
-void Game::clear(int ** trashListFinal)
+void Game::clear(int** trashListFinal)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -446,36 +446,27 @@ void Game::clear(int ** trashListFinal)
     trashCount = 0;
 }
 
-int Game::verifyAll(int** field, int** trashListAux, int ** trashListFinal,int line, int column)
-{
+int Game::verifyAll(int** field, int** trashListAux, int** trashListFinal,int line, int column){
     int trash = 0;
     int trashColumn = verifyColumn(field,trashListAux, trashListFinal,line,column);
     int trashLine = verifyLine(field,trashListAux,trashListFinal,line,column);
     int trashMainDiag = verifyMainDiag(field,trashListAux,trashListFinal,line,column);
     int trashSecondDiag = verifySecondDiag(field,trashListAux,trashListFinal,line,column);
-    if(trashColumn == 1 || trashLine == 1 || trashMainDiag == 1 || trashSecondDiag == 1)
-    {
+    if(trashColumn == 1 || trashLine == 1 || trashMainDiag == 1 || trashSecondDiag == 1){
         trash = 1;
     }
 
     return trash;
 }
 
-void Game::runVerification(int** field, int** trashListAux, int **trashListFinal)
-{
+void Game::runVerification(int** field, int** trashListAux, int** trashListFinal){
     int trash = 0;
-    for(int i = 0; i < 15; i++)
-    {
-        for(int j = 0; j < 7; j++)
-        {
-            if(field[i][j] != 0)
-            {
-                if(trash == 0)
-                {
+    for(int i = 0; i < 15; i++){
+        for(int j = 0; j < 7; j++){
+            if(field[i][j] != 0){
+                if(trash == 0){
                     trash = verifyAll(field,trashListAux, trashListFinal,i,j);
-                }
-                else
-                {
+                }else{
                     verifyAll(field,trashListAux, trashListFinal,i,j);
                 }
             }
@@ -483,21 +474,47 @@ void Game::runVerification(int** field, int** trashListAux, int **trashListFinal
     }
     brokenBlocks += trashCount;
     int brokenBlocksPoints = trashCount;
+    getReadjustPosition();
+    printMatrix();///teste apenas
     clear(trashListFinal);///limpa o trashcount
     readjust(field);
+    animationOn = 1;
+    clearTrashReadjust();
     drawField();
-    if(trash == 1)
-    {
+    if(trash == 1){
         points += fatorialPoints(brokenBlocksPoints);
-        if(points/level > 250)
-        {
+        if(points/level > 250){
             level += 1;
         }
         runVerification(field,trashListAux,trashListFinal);
     }
 }
 
-void Game::readjust(int ** field)
+int** Game::getField(){
+    return field;
+}
+
+int** Game::getField2(){
+    return field2;
+}
+
+int** Game::getTrashListAux(){
+    return trashListAux;
+}
+
+int** Game::getTrashListAux2(){
+    return trashListAux2;
+}
+
+int** Game::getTrashListFinal(){
+    return trashListFinal;
+}
+
+int** Game::getTrashListFinal2(){
+    return trashListFinal2;
+}
+
+void Game::readjust(int** field)
 {
     bool aux = false;
     for(int i = 0; i < 7; i++)
@@ -541,6 +558,184 @@ int Game::getGameState()
 {
     return this->gameState;
 }
+
+
+Ranking* Game::getRanking()
+{
+    return ranking;
+}
+
+Piece* Game::getPiece()
+{
+    return piece;
+}
+
+Piece* Game::getNextPiece()
+{
+    return nextPiece;
+}
+
+void Game::setPiece(Piece* p){
+    piece = p;
+}
+
+void Game::createNextPiece(){
+    nextPiece = new Piece();
+}
+
+void Game::resetGame(){
+    for(int i = 0; i < 18; i++){
+        for(int j =0; j < 7; j++){
+            field[i][j] = 0;
+            field2[i][j] = 0;
+        }
+    }
+    points = 0 ;
+    trashCount = 0;
+    gameState = 0;
+    level = 1;
+    pause = false;
+
+    clearTrashListAux(this->trashListAux);
+    clearTrashListFinal(this->trashListFinal);
+    clearTrashListAux(this->trashListAux2);
+    clearTrashListFinal(this->trashListFinal2);
+
+    brokenBlocks = 0;
+    piece = new Piece();
+    nextPiece = new Piece();
+}
+
+int Game::getLevel(){
+    return level;
+}
+
+int Game::getAnimationOn(){
+    return animationOn;
+}
+
+bool Game::getPause(){
+    return pause;
+}
+
+void Game::setPause(bool p){
+    pause = p;
+}
+
+void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem){
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    //glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+    gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
+    gluLookAt (30.0, 52.5, distOrigem, 30.0, 50.0, 0.0, 0.0, 1.0, 0.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) 0, (int) 0, (int) width*0.55, (int) height);
+    glPushMatrix();
+        glRotatef( rotationY, 1.0, 0.0, 0.0 );
+        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        this->drawField();
+        this->getPiece()->drawPiece(moveX,moveY);
+    glPopMatrix();
+
+
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(20.0,55.0,20,60.0,0.0,10.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) width*0.79, (int) height*0.71, (int) width*0.21, (int) height*0.29);
+    this->getNextPiece()->drawPiece(0,-80);
+
+
+    this->drawPoints(width,height);
+    if(shift)
+    {
+        if(typeShift == 0)
+            this->getPiece()->shiftColor();
+        else
+            this->getPiece()->shiftColorMouse();
+        shift = false;
+        glutPostRedisplay();
+    }
+}
+
+void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift )
+{
+    ///player1
+    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) 0, (int) 0, (int) width*0.53, (int) height);
+
+    this->drawField();
+    this->getPiece()->drawPiece(moveX,moveY);
+
+    ///player2
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) width*0.55, (int) 0, (int) width*0.53 ,(int) height);
+    this->drawField();
+    this->getNextPiece()->drawPiece(moveX,moveY);
+
+}
+
+void Game::drawPoints(int w,int h)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-100.0,1100.0,-300,200.0,0.0,10.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) w*0.46, (int) h*0.44, (int) w*0.55, (int) h*0.29);
+
+    glColor3f(1,1,1);
+    int x  = 100;
+    char rankingPoints [] = "POINTS: ";
+    for ( int i = 0; i < 8; i++)
+    {
+        glRasterPos3f ( x + i*40,-150, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingPoints[i]);
+    }
+
+    scoreDisplay(650,-150,0,25,this->points);
+
+    char rankingBlocks [] = "BROKEN BLOCKS: ";
+
+    for ( int i = 0; i < 15; i++)
+    {
+        glRasterPos3f ( x + i*40,-50, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingBlocks[i]);
+    }
+
+    scoreDisplay(800,-50,0,25,this->brokenBlocks);
+
+    char lvl [] = "LEVEL: ";
+
+    for ( int i = 0; i < 7; i++)
+    {
+        glRasterPos3f ( x + i*40,50, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, lvl[i]);
+    }
+
+    scoreDisplay(550,50,0,25,this->level);
+}
+
 void Game::drawStartScreen(int w,int h)
 {
 
@@ -640,6 +835,7 @@ void Game::drawStartScreen(int w,int h)
     }
 
 }
+
 void Game::scoreDisplay(int posx, int posy, int posz, int space_char, int scorevar)
 {
     int j=0,p,k;
@@ -821,134 +1017,6 @@ void Game::displayRanking(int w,int h)
 
 }
 
-Ranking* Game::getRanking()
-{
-    return ranking;
-}
-
-Piece* Game::getPiece()
-{
-    return piece;
-}
-
-Piece* Game::getNextPiece()
-{
-    return nextPiece;
-}
-
-void Game::setPiece(Piece* p)
-{
-    piece = p;
-}
-
-void Game::createNextPiece()
-{
-    nextPiece = new Piece();
-}
-
-void Game::resetGame()
-{
-    for(int i = 0; i < 18; i++)
-    {
-        for(int j =0; j < 7; j++)
-            field[i][j] = 0 ;
-    }
-    points = 0 ;
-    trashCount = 0;
-    gameState = 0;
-    level = 1;
-    pause = false;
-    if(this->gameState == 1){}
-    clearTrashListAux(this->trashListAux);
-    clearTrashListFinal(this->trashListFinal);
-    clearTrashListAux(this->trashListAux2);
-    clearTrashListFinal(this->trashListFinal2);
-
-
-    brokenBlocks = 0;
-    piece = new Piece();
-    nextPiece = new Piece();
-}
-
-int Game::getLevel()
-{
-    return level;
-}
-
-bool Game::getPause()
-{
-    return pause;
-}
-
-void Game::setPause(bool p)
-{
-    pause = p;
-}
-void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift )
-{
-
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glViewport ((int) 0, (int) 0, (int) width*0.55, (int) height);
-
-    this->drawField();
-    this->getPiece()->drawPiece(moveX,moveY);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(20.0,55.0,20,60.0,0.0,10.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glViewport ((int) width*0.79, (int) height*0.71, (int) width*0.21, (int) height*0.29);
-    this->getNextPiece()->drawPiece(0,-80);
-
-
-    this->drawPoints(width,height);
-    if(shift)
-    {
-        if(typeShift == 0)
-            this->getPiece()->shiftColor();
-        else
-            this->getPiece()->shiftColorMouse();
-        shift = false;
-        glutPostRedisplay();
-    }
-}
-void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift )
-{
-    ///player1
-    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glViewport ((int) 0, (int) 0, (int) width*0.53, (int) height);
-
-    this->drawField();
-    this->getPiece()->drawPiece(moveX,moveY);
-
-    ///player2
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glViewport ((int) width*0.55, (int) 0, (int) width*0.53 ,(int) height);
-    this->drawField();
-    this->getNextPiece()->drawPiece(moveX,moveY);
-
-}
 Game::~Game()
 {
 
