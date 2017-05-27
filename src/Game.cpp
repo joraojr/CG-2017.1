@@ -91,23 +91,54 @@ void Game::drawCubeColor(int i, int j, float positionX, float positionY){
     }
 }
 
-void Game::drawField(){
-    float x = 0.0;
-    float y = 0.0;
-    for(int i = 0; i < 15; i++){
-        for(int j = 0; j < 7; j++){
-            this->drawCubeColor(i,j,x+3.5,y+3.5);
-            glColor3f(0.0,0.0,0.3);
-            glBegin(GL_LINE_LOOP);
-                glVertex3f(x,y,0.0);
-                glVertex3f(x + 7.0,y,0.0);
-                glVertex3f(x + 7.0,y + 7.0,0.0);
-                glVertex3f(x,y + 7.0,0.0);
-            glEnd();
-            x += 7.0;
+void Game::drawField(float animationMove){
+    if(animationOn == 0){
+        float x = 0.0;
+        float y = 0.0;
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 7; j++){
+                this->drawCubeColor(i,j,x+3.5,y+3.5);
+                glColor3f(0.0,0.0,0.3);
+                glBegin(GL_LINE_LOOP);
+                    glVertex3f(x,y,0.0);
+                    glVertex3f(x + 7.0,y,0.0);
+                    glVertex3f(x + 7.0,y + 7.0,0.0);
+                    glVertex3f(x,y + 7.0,0.0);
+                glEnd();
+                x += 7.0;
+            }
+            y += 7.0;
+            x = 0.0;
         }
-        y += 7.0;
-        x = 0.0;
+    }else{
+        float x = 0.0;
+        float y = 0.0;
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 7; j++){
+                if(trashReadjust[i][j] == 1){
+                    this->drawCubeColor(i,j,x+3.5,y+3.5 - animationMove);
+                    glColor3f(0.0,0.0,0.3);
+                    glBegin(GL_LINE_LOOP);
+                        glVertex3f(x,y,0.0);
+                        glVertex3f(x + 7.0,y,0.0);
+                        glVertex3f(x + 7.0,y + 7.0,0.0);
+                        glVertex3f(x,y + 7.0,0.0);
+                    glEnd();
+                }else{
+                    this->drawCubeColor(i,j,x+3.5,y+3.5);
+                    glColor3f(0.0,0.0,0.3);
+                    glBegin(GL_LINE_LOOP);
+                        glVertex3f(x,y,0.0);
+                        glVertex3f(x + 7.0,y,0.0);
+                        glVertex3f(x + 7.0,y + 7.0,0.0);
+                        glVertex3f(x,y + 7.0,0.0);
+                    glEnd();
+                }
+                x += 7.0;
+            }
+            y += 7.0;
+            x = 0.0;
+        }
     }
 }
 
@@ -478,9 +509,9 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
     printMatrix();///teste apenas
     clear(trashListFinal);///limpa o trashcount
     readjust(field);
-    animationOn = 1;
+    //animationOn = 1;
     clearTrashReadjust();
-    drawField();
+
     if(trash == 1){
         points += fatorialPoints(brokenBlocksPoints);
         if(points/level > 250){
@@ -625,11 +656,12 @@ void Game::setPause(bool p){
 void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem){
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glEnable(GL_DEPTH_TEST);///z-buffer
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     //glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
     gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
-    gluLookAt (30.0, 52.5, distOrigem, 30.0, 50.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -637,7 +669,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glPushMatrix();
         glRotatef( rotationY, 1.0, 0.0, 0.0 );
         glRotatef( rotationX, 0.0, 1.0, 0.0 );
-        this->drawField();
+        this->drawField(animationMove);
         this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
 
@@ -665,7 +697,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     }
 }
 
-void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift )
+void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove )
 {
     ///player1
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -678,7 +710,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.53, (int) height);
 
-    this->drawField();
+    this->drawField(animationMove);
     this->getPiece()->drawPiece(moveX,moveY);
 
     ///player2
@@ -689,7 +721,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) width*0.55, (int) 0, (int) width*0.53 ,(int) height);
-    this->drawField();
+    this->drawField(animationMove);
     this->getNextPiece()->drawPiece(moveX,moveY);
 
 }

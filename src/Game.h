@@ -53,9 +53,9 @@ private:
     void copyToTrashListFinal(int** trashListAux, int** trashListFinal);
 
 public:
-    void drawField();
+    void drawField(float animationMove);
     void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift, float animationMove,float rotationX, float rotationY,float distOrigem);
-    void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift);
+    void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove);
     void addColor(int i, int j, int color);
     Game();
     ~Game();

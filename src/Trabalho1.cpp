@@ -12,8 +12,9 @@ float moveX = 0.0,moveY = 0.0,animationMove = 1.0;
 float yMin = -105.0;
 float linha = 15;
 int coluna = 3;
-int last_x,last_y,distOrigem = 100;
-float rotationX = 0.0, rotationY = 0.0;
+int last_x,last_y;
+float distOrigem = 60;
+float rotationX = 0.0, rotationY = -30.0;
 bool timeOn = true,fullScreen = false,shift = false,shiftMouse = false;
 int animationTime = 500.0,animationAux = 500,fastSpeed = 10;
 int typeShift = 0;
@@ -59,7 +60,7 @@ void drawState(){
         game->drawStartScreenPlayerOption(width,height);
         break;
     case 5:
-        game->displayGame2Players(width,height,moveX,moveY,shift,typeShift);
+        game->displayGame2Players(width,height,moveX,moveY,shift,typeShift,animationMove);
 
         if(timeOn){
             glutTimerFunc(animationTime,timer,1);
@@ -272,7 +273,7 @@ void mouse(int button, int state, int x, int y){
         case 4:
             if(game->getPause()){
                 distOrigem-=0.3;
-                if(distOrigem<-0) distOrigem=0;
+                if(distOrigem<0) distOrigem=0;
             }else{
                 shift = true;
                 typeShift = 1;
