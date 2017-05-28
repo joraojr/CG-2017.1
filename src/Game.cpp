@@ -5,13 +5,13 @@ using namespace std;
 
 Game::Game(){
     /// 1- vermelho, 2-Verde, 3-Azul, 4- Amarelo, 5-Magenta , 0-Vazio
-    field = new int*[18];
+    field1 = new int*[18];
     field2 = new int*[18];
     for(int i = 0; i < 18; i++){
-        field[i] = new int[7];
+        field1[i] = new int[7];
         field2[i] = new int[7];
         for(int j =0; j < 7; j++){
-            field[i][j] = 0 ;
+            field1[i][j] = 0 ;
             field2[i][j] = 0 ;
             }
     }
@@ -49,7 +49,7 @@ Game::Game(){
     nextPiece2 = new Piece();
 }
 
-void Game::drawCubeColor(int ** field,int i, int j, float positionX, float positionY){
+void Game::drawCubeColor(int** field,int i, int j, float positionX, float positionY){
     ///desenhar a cor do cubo
     switch(field[i][j]){
         case 1:
@@ -152,7 +152,7 @@ void Game::clearTrashReadjust(){
 
 void Game::getPosition(int x, int y){
     for(int i = y + 1;i < 15; i++){
-        if(field[i][x] != 0 && !verifyCoord(i,x,trashListFinal))
+        if(field1[i][x] != 0 && !verifyCoord(i,x,trashListFinal))
             trashReadjust[i][x] = 1;
     }
 }
@@ -204,19 +204,19 @@ int Game::getCoord(int** mat, int column){
     return coord;
 }
 
-void Game::addColor(int **field, int i, int j, int color)
+void Game::addColor(int** field, int i, int j, int color)
 {
     field[i][j] = color ;
 }
 
-int Game::getColor(int i, int j)
+int Game::getColor(int** field,int i, int j)
 {
     if(i == -1 || j == 7 || j == -1)
         return -1;
     return field[i][j];
 }
 
-bool Game::isGameOver()
+bool Game::isGameOver(int** field)
 {
     for(int i = 0; i < 7; i++)
     {
@@ -230,19 +230,19 @@ void Game::printMatrix(){
     for(int i = 0; i < 15; i++){
         cout << "[";
         for(int j =0; j < 7; j++)
-            cout << trashReadjust[i][j] << ";";
+            cout << field2[i][j] << ";";
         cout  << "]" << endl;
     }
     cout << endl;
 }
 
-bool Game::verifyMoveLeft(int line,int column){
+bool Game::verifyMoveLeft(int** field,int line,int column){
     if(field[line][column-1] == 0)
         return true;
     return false;
 }
 
-bool Game::verifyMoveRight(int line,int column){
+bool Game::verifyMoveRight(int** field,int line,int column){
     if(field[line][column+1] == 0)
         return true;
     return false;
@@ -522,8 +522,8 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
     }
 }
 
-int** Game::getField(){
-    return field;
+int** Game::getField1(){
+    return field1;
 }
 
 int** Game::getField2(){
@@ -632,7 +632,7 @@ void Game::createNextPiece(){
 void Game::resetGame(){
     for(int i = 0; i < 18; i++){
         for(int j =0; j < 7; j++){
-            field[i][j] = 0;
+            field1[i][j] = 0;
             field2[i][j] = 0;
         }
     }
@@ -684,7 +684,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glPushMatrix();
         glRotatef( rotationY, 1.0, 0.0, 0.0 );
         glRotatef( rotationX, 0.0, 1.0, 0.0 );
-        this->drawField(field,animationMove);
+        this->drawField(field1,animationMove);
         this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
 
@@ -712,7 +712,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     }
 }
 
-void Game::displayGame2Players(int width, int height, int moveX, int moveY, int last_x, int last_y, bool &shift, int typeShift,float animationMove )
+void Game::displayGame2Players(int width, int height, int moveX, int moveY, int last_x, int last_y, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2)
 {
     ///player1
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -725,7 +725,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.53, (int) height);
 
-    this->drawField(this->field,animationMove);
+    this->drawField(this->field1,animationMove);
     this->getPiece()->drawPiece(moveX,moveY);
 
     ///player2
@@ -737,7 +737,19 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
     glLoadIdentity();
     glViewport ((int) width*0.55, (int) 0, (int) width*0.53 ,(int) height);
     this->drawField(this->field2,animationMove);
-    this->getPiece2()->drawPiece(moveX,moveY);
+    this->getPiece2()->drawPiece(moveX2,moveY2);
+
+    if(shift){
+        piece->shiftColor();
+        shift = false;
+    }
+
+    if(shift2){
+        piece2->shiftColor();
+        shift2 = false;
+    }
+
+    glutPostRedisplay();
 
 }
 

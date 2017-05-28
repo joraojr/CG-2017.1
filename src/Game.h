@@ -14,6 +14,8 @@ private:
     int** trashListAux2;
     int** trashListFinal2;
     int** trashReadjust;
+    int** field1;
+    int** field2;
 
     int trashCount;
     int points;
@@ -56,15 +58,15 @@ public:
     Piece* getPiece2();
     void drawField(int ** field,float animationMove);
     void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift, float animationMove,float rotationX, float rotationY,float distOrigem);
-    void displayGame2Players(int width, int height, int moveX,int last_x, int last_y, int moveY, bool &shift, int typeShift,float animationMove);
+    void displayGame2Players(int width, int height, int moveX,int last_x, int last_y, int moveY, bool &shift, int typeShift,float animationMove,int moveX2,int moveY2,bool &shift2);
     void addColor(int ** field,int i, int j, int color);
     Game();
     ~Game();
-    int getColor(int i, int j);///retorna a cor da posição i e j
-    bool isGameOver();///verifica se o jogo acabou
+    int getColor(int** field,int i, int j);///retorna a cor da posição i e j
+    bool isGameOver(int** field);///verifica se o jogo acabou
     void printMatrix();///para teste
-    bool verifyMoveLeft(int i,int j);///verifica se mover para esquerda é valido
-    bool verifyMoveRight(int i,int j);///verifica se mover para direita é valido
+    bool verifyMoveLeft(int** field,int i,int j);///verifica se mover para esquerda é valido
+    bool verifyMoveRight(int** field,int i,int j);///verifica se mover para direita é valido
     void readjust(int** field);///reajusta a matriz após destruição
     int verifyAll(int** field, int** trashListAux,int** trashListFinal,int line,int column);///verifica todas as direções
     int fatorialPoints(int i);///calcula os pontos em fatorial de blocos destruidos
@@ -94,7 +96,7 @@ public:
     int getLevel();///retorna o nivel
     bool getPause();
     void setPause(bool p);
-    int** getField();
+    int** getField1();
     int** getField2();
     int** getTrashListAux();
     int** getTrashListAux2();
@@ -104,8 +106,7 @@ public:
     void redrawPiece(int column,float moveY);
     int readjustCalculation(int** mat, int column);
     int getCoord(int** mat,int column);
-int** field;
-    int** field2;
+
 };
 
 #endif // GAME_H_INCLUDED

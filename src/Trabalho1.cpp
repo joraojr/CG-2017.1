@@ -6,6 +6,14 @@
 #include <time.h>
 
 using namespace std;
+///PLAYER 2
+float yMin2 = -105.0;
+float linha2 = 15;
+int coluna2 = 3;
+int animationTime2 = 500;
+int animationAux2 = 500;
+float moveX2 = 0.0, moveY2 = 0.0;
+bool shift2 = false;
 
 void *font = GLUT_BITMAP_TIMES_ROMAN_24;
 float moveX = 0.0,moveY = 0.0,animationMove = 1.0;
@@ -23,6 +31,7 @@ int height = 680,width = 860;
 
 void timer (int value);
 void timer2 (int value);
+void timer3(int value);
 void displayGame();
 
 void resetAll()
@@ -65,11 +74,11 @@ void drawState()
         game->drawStartScreenPlayerOption(width,height);
         break;
     case 5:
-        game->displayGame2Players(width,height,moveX,moveY, last_x, last_y,shift,typeShift,animationMove);
+        game->displayGame2Players(width,height,moveX,moveY, last_x, last_y,shift,typeShift,animationMove,moveX2,moveY2,shift2);
 
-        if(timeOn)
-        {
+        if(timeOn){
             glutTimerFunc(animationTime,timer2,1);
+            glutTimerFunc(animationTime2,timer3,1);
             timeOn = false;
         }
         break;
@@ -109,9 +118,9 @@ void init()
 
 void timer(int value)
 {
-    if (!game->isGameOver())
+    if (!game->isGameOver(game->getField1()))
     {
-        if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)
+        if(game->getColor(game->getField1(),linha - 1,coluna) == 0 && moveY > yMin)
         {
             if(!game->getPause())
             {
@@ -122,10 +131,10 @@ void timer(int value)
         else if(!game->getPause())
         {
             int* cubeColors = game->getPiece()->getCubesColor();
-            game->addColor(game->getField(),linha,coluna,cubeColors[2]);
-            game->addColor(game->getField(),linha + 1,coluna,cubeColors[1]);
-            game->addColor(game->getField(),linha + 2,coluna,cubeColors[0]);
-            game->runVerification(game->getField(),game->getTrashListAux(),game->getTrashListFinal());
+            game->addColor(game->getField1(),linha,coluna,cubeColors[2]);
+            game->addColor(game->getField1(),linha + 1,coluna,cubeColors[1]);
+            game->addColor(game->getField1(),linha + 2,coluna,cubeColors[0]);
+            game->runVerification(game->getField1(),game->getTrashListAux(),game->getTrashListFinal());
             animationTime = animationAux/game->getLevel();
             moveX = 0.0;
             moveY = 0.0;
@@ -145,9 +154,9 @@ void timer(int value)
 }
 void timer2(int value)
 {
-    if (!game->isGameOver())
+    if (!game->isGameOver(game->getField1()))
     {
-        if(game->getColor(linha - 1,coluna) == 0 && moveY > yMin)
+        if(game->getColor(game->getField1(),linha - 1,coluna) == 0 && moveY > yMin)
         {
             if(!game->getPause())
             {
@@ -160,18 +169,12 @@ void timer2(int value)
         else if(!game->getPause())
         {
             int* cubeColors = game->getPiece()->getCubesColor();
-            int* cubeColors2 = game->getPiece2()->getCubesColor();
-            game->addColor(game->field2,linha,coluna,cubeColors[2]);
-            game->addColor(game->field2,linha + 1,coluna,cubeColors[1]);
-            game->addColor(game->field2,linha + 2,coluna,cubeColors[0]);
+            game->addColor(game->getField1(),linha,coluna,cubeColors[2]);
+            game->addColor(game->getField1(),linha + 1,coluna,cubeColors[1]);
+            game->addColor(game->getField1(),linha + 2,coluna,cubeColors[0]);
 
-            game->addColor(game->field2,linha,coluna,cubeColors2[2]);
-            game->addColor(game->field2,linha + 1,coluna,cubeColors2[1]);
-            game->addColor(game->field2,linha + 2,coluna,cubeColors2[0]);
-
-            game->runVerification(game->getField(),game->getTrashListAux(),game->getTrashListFinal());
-            game->runVerification(game->getField2(),game->getTrashListAux2(),game->getTrashListFinal2());
-
+            game->runVerification(game->getField1(),game->getTrashListAux(),game->getTrashListFinal());
+            game->printMatrix();
             animationTime = animationAux/game->getLevel();
             moveX = 0.0;
             moveY = 0.0;
@@ -179,13 +182,52 @@ void timer2(int value)
             linha = 15, coluna = 3, last_x = 3;
 
             game->setPiece(game->getNextPiece());
+
+            game->createNextPiece();
+        }
+
+        glutPostRedisplay();
+        glutTimerFunc(animationTime,timer2,1);
+    }
+    else
+    {
+        game->setGameState(3);
+        glutPostRedisplay();
+    }
+}
+
+void timer3(int value){
+    if (!game->isGameOver(game->getField2())){
+        if(game->getColor(game->getField2(),linha2 - 1,coluna2) == 0 && moveY2 > yMin2){
+            if(!game->getPause()){
+                moveY2 -= 3.5;
+                linha2 -=0.5;
+                last_y -= 3.5;
+            }
+        }
+        else if(!game->getPause())
+        {
+            int* cubeColors2 = game->getPiece2()->getCubesColor();
+
+            game->addColor(game->getField2(),linha2,coluna2,cubeColors2[2]);
+            game->addColor(game->getField2(),linha2 + 1,coluna2,cubeColors2[1]);
+            game->addColor(game->getField2(),linha2 + 2,coluna2,cubeColors2[0]);
+
+            game->runVerification(game->getField2(),game->getTrashListAux2(),game->getTrashListFinal2());
+            game->printMatrix();
+            animationTime = animationAux/game->getLevel();
+            moveX2 = 0.0;
+            moveY2 = 0.0;
+            last_y = 0.0;
+            linha2 = 15, coluna2 = 3, last_x = 3;
+
             game->setPiece2(game->getNextPiece2());
 
             game->createNextPiece();
         }
 
         glutPostRedisplay();
-        glutTimerFunc(animationTime,timer,1);
+        glutTimerFunc(animationTime2,timer3,1);
     }
     else
     {
@@ -212,14 +254,30 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'a' ... 'z':
     case 'A' ... 'Z':
-        if (game->getGameState() == 3)
-        {
+        if((game->getGameState() == 1 || game->getGameState() == 5) && key == 'p'){
+            game->setPause(!game->getPause());
+        }else if(game->getGameState() == 5 && !game->getPause()){
+            if (key == 'w'){
+                shift2 = true;
+            }
+            if (key == 'd'){
+                if(moveX2 < 21 && moveY2 > yMin2 && game->verifyMoveRight(game->getField2(),linha2,coluna2)){
+                    moveX2 += 7;
+                    coluna2 += 1;
+                }
+            }
+            if (key == 's'){
+                animationTime2 = fastSpeed;
+            }
+            if (key == 'a'){
+                if(moveX2 > -21.0 && moveY2 > yMin2 && game->verifyMoveLeft(game->getField2(),linha2,coluna2)){
+                    moveX2 -= 7;
+                    coluna2 -= 1;
+                }
+            }
+        }else if (game->getGameState() == 3){
             game->getRanking()->addChar(key);
             glutPostRedisplay();
-        }
-        else if(game->getGameState() == 1 && key == 'p')
-        {
-            game->setPause(!game->getPause());
         }
         break;
     case 13:
@@ -261,19 +319,34 @@ void specialKeysRelease(int key, int x, int y)
         break;
     }
 }
+
+void keyboardKeysRelease(unsigned char key, int x, int y)
+{
+    switch (key)
+    {
+    case 's':
+        animationTime2 = animationAux2/game->getLevel();
+        break;
+
+    default:
+        //cout << "Tecla sem função" << endl;
+        break;
+    }
+}
+
 void specialKey(int key, int x, int y)
 {
     switch (key)
     {
     case GLUT_KEY_LEFT:
-        if(moveX > -21.0 && moveY > yMin && game->verifyMoveLeft(linha,coluna))
+        if(moveX > -21.0 && moveY > yMin && game->verifyMoveLeft(game->getField1(),linha,coluna))
         {
             moveX -= 7;
             coluna -= 1;
         }
         break;
     case GLUT_KEY_RIGHT:
-        if(moveX < 21 && moveY > yMin && game->verifyMoveRight(linha,coluna))
+        if(moveX < 21 && moveY > yMin && game->verifyMoveRight(game->getField1(),linha,coluna))
         {
             moveX += 7;
             coluna += 1;
@@ -402,6 +475,7 @@ int main (int argc,char *argv[])
 
     init();
     glutKeyboardFunc(keyboard);
+    glutKeyboardUpFunc(keyboardKeysRelease);
     glutSpecialFunc(specialKey);
     glutSpecialUpFunc( specialKeysRelease );
     glutMouseFunc(mouse);
