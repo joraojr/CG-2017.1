@@ -18,11 +18,11 @@ private:
     int** field2;
 
     int gameView;
-    int trashCount;
+    int trashCount1;
     int trashCount2;
     int points;
     int gameState;
-    int brokenBlocks;
+    int brokenBlocks1;
     int brokenBlocks2;
     int level;
     bool pause;

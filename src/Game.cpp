@@ -42,13 +42,13 @@ Game::Game()
     }
     animationOn = 0;
     points = 0 ;
-    trashCount = 0;
+    trashCount1 = 0;
     trashCount2 = 0;
     gameState = 0;
     level = 1;
     pause = false;
     ranking = new Ranking();
-    brokenBlocks = 0;
+    brokenBlocks1 = 0;
     brokenBlocks2 = 0;
     piece = new Piece();
     piece2 = new Piece();
@@ -342,7 +342,7 @@ int Game::verifyLine(int** field, int** trashListAux, int ** trashListFinal,int 
     return 0;
 }
 
-void Game::copyToTrashListFinal(int** trashListAux, int** trashListFinal, int *trashCount)
+void Game::copyToTrashListFinal(int** trashListAux, int** trashListFinal, int* trashCount)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -351,7 +351,7 @@ void Game::copyToTrashListFinal(int** trashListAux, int** trashListFinal, int *t
             if(trashListAux[i][j] == 1 && !verifyCoord(i,j,trashListFinal))
             {
                 trashListFinal[i][j] = 1;
-                trashCount += 1;
+                *trashCount += 1;
             }
         }
     }
@@ -395,7 +395,7 @@ int Game::verifyColumnUp(int** field, int** trashListAux,int color,int line,int 
     return 0;
 }
 
-int Game::verifyColumn(int** field, int** trashListAux, int ** trashListFinal, int *trashCount,int line, int column)
+int Game::verifyColumn(int** field, int** trashListAux, int ** trashListFinal, int* trashCount,int line, int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
@@ -416,7 +416,7 @@ int Game::verifyColumn(int** field, int** trashListAux, int ** trashListFinal, i
 ///verificar em diagonal primaria
 
 
-int Game::verifyMainDiag(int** field, int** trashListAux,int ** trashListFinal,int *trashCount,int line, int column)
+int Game::verifyMainDiag(int** field, int** trashListAux,int ** trashListFinal,int* trashCount,int line, int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
@@ -459,7 +459,7 @@ int Game::verifyMainDiagDown(int** field, int** trashListAux,int color,int line,
 }///FIM verifica em diagonal primaria
 
 ///Verificar em diagonal secundaria
-int Game::verifySecondDiag(int** field, int** trashListAux, int** trashListFinal,int *trashCount,int line,int column)
+int Game::verifySecondDiag(int** field, int** trashListAux, int** trashListFinal,int* trashCount,int line,int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
@@ -501,7 +501,7 @@ int Game::verifySecondDiagUp(int** field, int** trashListAux,int color,int line,
     return 0;
 }///FIM verifica em diagonal secundaria
 
-void Game::clearTrashListFinal(int** trashListFinal, int * trashCount)
+void Game::clearTrashListFinal(int** trashListFinal,int* trashCount)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -518,7 +518,7 @@ bool Game::verifyCoord(int x,int y,int** trash)
     return false;
 }
 
-void Game::clear(int ** field,int** trashListFinal, int *trashCount)
+void Game::clear(int ** field,int** trashListFinal, int* trashCount)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -529,10 +529,10 @@ void Game::clear(int ** field,int** trashListFinal, int *trashCount)
                 trashListFinal[i][j] = 0;
             }
     }
-    trashCount = 0;
+    *trashCount = 0;
 }
 
-int Game::verifyAll(int** field, int** trashListAux, int** trashListFinal,int *trashCount,int line, int column)
+int Game::verifyAll(int** field, int** trashListAux, int** trashListFinal,int* trashCount,int line, int column)
 {
     int trash = 0;
     int trashColumn = verifyColumn(field,trashListAux, trashListFinal,trashCount,line,column);
@@ -549,7 +549,6 @@ int Game::verifyAll(int** field, int** trashListAux, int** trashListFinal,int *t
 
 void Game::runVerification(int** field, int** trashListAux, int** trashListFinal, int player)
 {
-    cout <<"Player 1 = "<<this->brokenBlocks<<endl<<"player 2= "<<this->brokenBlocks2<<endl;
     if(player == 1)
     {
         int trash = 0;
@@ -561,20 +560,20 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
                 {
                     if(trash == 0)
                     {
-                        trash = verifyAll(field,trashListAux, trashListFinal,&trashCount,i,j);
+                        trash = verifyAll(field,trashListAux, trashListFinal,&trashCount1,i,j);
                     }
                     else
                     {
-                        verifyAll(field,trashListAux, trashListFinal,&trashCount,i,j);
+                        verifyAll(field,trashListAux, trashListFinal,&trashCount1,i,j);
                     }
                 }
             }
         }
-        brokenBlocks += trashCount;
-        int brokenBlocksPoints = trashCount;
+        brokenBlocks1 += trashCount1;
+        int brokenBlocksPoints = trashCount1;
         getReadjustPosition();
 //        printMatrix();///teste apenas
-        clear(field,trashListFinal, &trashCount);///limpa o trashcount
+        clear(field,trashListFinal,&trashCount1);///limpa o trashcount
         readjust(field);
         //animationOn = 1;
         clearTrashReadjust();
@@ -628,6 +627,7 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
             runVerification(field,trashListAux,trashListFinal,player);
         }
     }
+    cout <<"Player 1 = "<<brokenBlocks1<<endl<<"player 2= "<<brokenBlocks2<<endl;
 }
 
 int** Game::getField1()
@@ -757,18 +757,18 @@ void Game::resetGame()
         }
     }
     points = 0 ;
-    trashCount = 0;
+    trashCount1 = 0;
     trashCount2 = 0;
     gameState = 0;
     level = 1;
     pause = false;
 
     clearTrashListAux(this->trashListAux);
-    clearTrashListFinal(this->trashListFinal,&this->trashCount);
+    clearTrashListFinal(this->trashListFinal,&trashCount1);
     clearTrashListAux(this->trashListAux2);
-    clearTrashListFinal(this->trashListFinal2,&this->trashCount2);
+    clearTrashListFinal(this->trashListFinal2,&trashCount2);
 
-    brokenBlocks = 0;
+    brokenBlocks1 = 0;
     brokenBlocks2 = 0;
     piece = new Piece();
     nextPiece = new Piece();
@@ -961,7 +961,7 @@ void Game::drawPoints(int w,int h)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, rankingBlocks[i]);
     }
 
-    scoreDisplay(800,-50,0,25,this->brokenBlocks);
+    scoreDisplay(800,-50,0,25,brokenBlocks1);
 
     char lvl [] = "LEVEL: ";
 
@@ -1257,7 +1257,7 @@ void Game::displayRanking(int w,int h)
 
 int Game::getTrashCount()
 {
-    return this->trashCount;
+    return this->trashCount1;
 }
 int Game::getTrashCount2()
 {
@@ -1265,7 +1265,7 @@ int Game::getTrashCount2()
 }
 int Game::getBrokenBlocks()
 {
-    return this->brokenBlocks;
+    return this->brokenBlocks1;
 }
 int Game::getBrokenBlocks2()
 {
