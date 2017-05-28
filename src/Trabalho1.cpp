@@ -134,7 +134,7 @@ void timer(int value)
             game->addColor(game->getField1(),linha,coluna,cubeColors[2]);
             game->addColor(game->getField1(),linha + 1,coluna,cubeColors[1]);
             game->addColor(game->getField1(),linha + 2,coluna,cubeColors[0]);
-            game->runVerification(game->getField1(),game->getTrashListAux(),game->getTrashListFinal());
+            game->runVerification(game->getField1(),game->getTrashListAux(),game->getTrashListFinal(),1);
             animationTime = animationAux/game->getLevel();
             moveX = 0.0;
             moveY = 0.0;
@@ -172,8 +172,8 @@ void timer2(int value)
             game->addColor(game->getField1(),linha + 1,coluna,cubeColors[1]);
             game->addColor(game->getField1(),linha + 2,coluna,cubeColors[0]);
 
-            game->runVerification(game->getField1(),game->getTrashListAux(),game->getTrashListFinal());
-            game->printMatrix();
+            game->runVerification(game->getField1(),game->getTrashListAux(),game->getTrashListFinal(),1);
+//            game->printMatrix();
             animationTime = animationAux/game->getLevel();
             moveX = 0.0;
             moveY = 0.0;
@@ -210,8 +210,8 @@ void timer3(int value){
             game->addColor(game->getField2(),linha2 + 1,coluna2,cubeColors2[1]);
             game->addColor(game->getField2(),linha2 + 2,coluna2,cubeColors2[0]);
 
-            game->runVerification(game->getField2(),game->getTrashListAux2(),game->getTrashListFinal2());
-            game->printMatrix();
+            game->runVerification(game->getField2(),game->getTrashListAux2(),game->getTrashListFinal2(),2);
+//            game->printMatrix();
             animationTime = animationAux/game->getLevel();
             moveX2 = 0.0;
             moveY2 = 0.0;
