@@ -74,7 +74,7 @@ void drawState()
         game->drawStartScreenPlayerOption(width,height);
         break;
     case 5:
-        game->displayGame2Players(width,height,moveX,moveY, last_x, last_y,shift,typeShift,animationMove,moveX2,moveY2,shift2);
+        game->displayGame2Players(width,height,moveX,moveY, last_x, last_y,shift,typeShift,animationMove,moveX2,moveY2,shift2,distOrigem,rotationX,rotationY);
 
         if(timeOn){
             glutTimerFunc(animationTime,timer2,1);
@@ -162,7 +162,6 @@ void timer2(int value)
             {
                 moveY -= 3.5;
                 linha -=0.5;
-                last_y -= 3.5;
 
             }
         }
@@ -178,8 +177,7 @@ void timer2(int value)
             animationTime = animationAux/game->getLevel();
             moveX = 0.0;
             moveY = 0.0;
-            last_y = 0.0;
-            linha = 15, coluna = 3, last_x = 3;
+            linha = 15, coluna = 3;
 
             game->setPiece(game->getNextPiece());
 
@@ -202,7 +200,6 @@ void timer3(int value){
             if(!game->getPause()){
                 moveY2 -= 3.5;
                 linha2 -=0.5;
-                last_y -= 3.5;
             }
         }
         else if(!game->getPause())
@@ -218,8 +215,7 @@ void timer3(int value){
             animationTime = animationAux/game->getLevel();
             moveX2 = 0.0;
             moveY2 = 0.0;
-            last_y = 0.0;
-            linha2 = 15, coluna2 = 3, last_x = 3;
+            linha2 = 15, coluna2 = 3;
 
             game->setPiece2(game->getNextPiece2());
 
@@ -242,68 +238,76 @@ void reshape(int w,int h)
     width = w;
 }
 
-void keyboard(unsigned char key, int x, int y)
-{
-    switch (key)
-    {
-    case 27:
-        game->setGameState(0);
-        game->resetGame();
-        resetAll();
-        glutPostRedisplay();
-        break;
-    case 'a' ... 'z':
-    case 'A' ... 'Z':
-        if((game->getGameState() == 1 || game->getGameState() == 5) && key == 'p'){
-            game->setPause(!game->getPause());
-        }else if(game->getGameState() == 5 && !game->getPause()){
-            if (key == 'w'){
-                shift2 = true;
-            }
-            if (key == 'd'){
-                if(moveX2 < 21 && moveY2 > yMin2 && game->verifyMoveRight(game->getField2(),linha2,coluna2)){
-                    moveX2 += 7;
-                    coluna2 += 1;
+void keyboard(unsigned char key, int x, int y){
+    switch (key){
+        case '1':
+            printf("\n%d\n",game->getGameView());
+            if((game->getGameState() == 1 || game->getGameState() == 5) && game->getPause()){
+                if(game->getGameView() == 0){
+                    game->setGameView(1);
+                }else{
+                    game->setGameView(0);
                 }
             }
-            if (key == 's'){
-                animationTime2 = fastSpeed;
-            }
-            if (key == 'a'){
-                if(moveX2 > -21.0 && moveY2 > yMin2 && game->verifyMoveLeft(game->getField2(),linha2,coluna2)){
-                    moveX2 -= 7;
-                    coluna2 -= 1;
-                }
-            }
-        }else if (game->getGameState() == 3){
-            game->getRanking()->addChar(key);
-            glutPostRedisplay();
-        }
-        break;
-    case 13:
-        if(game->getGameState() == 3)
-        {
-            game->getRanking()->addScore();
+            break;
+        case 27:
             game->setGameState(0);
+            game->resetGame();
+            resetAll();
             glutPostRedisplay();
-        }
-        break;
-    case 32:
-        if(!fullScreen)
-        {
-            glutFullScreen();
-            fullScreen = true;
-        }
-        else
-        {
-            glutInitWindowPosition(0,0);
-            glutReshapeWindow(860,680);
-            fullScreen = false;
-        }
-        glutPostRedisplay();
-        break;
+            break;
+        case 'a' ... 'z':
+        case 'A' ... 'Z':
+            if((game->getGameState() == 1 || game->getGameState() == 5) && key == 'p'){
+                game->setPause(!game->getPause());
+            }else if(game->getGameState() == 5 && !game->getPause()){
+                if (key == 'w'){
+                    shift2 = true;
+                }
+                if (key == 'd'){
+                    if(moveX2 < 21 && moveY2 > yMin2 && game->verifyMoveRight(game->getField2(),linha2,coluna2)){
+                        moveX2 += 7;
+                        coluna2 += 1;
+                    }
+                }
+                if (key == 's'){
+                    animationTime2 = fastSpeed;
+                }
+                if (key == 'a'){
+                    if(moveX2 > -21.0 && moveY2 > yMin2 && game->verifyMoveLeft(game->getField2(),linha2,coluna2)){
+                        moveX2 -= 7;
+                        coluna2 -= 1;
+                    }
+                }
+            }else if (game->getGameState() == 3){
+                game->getRanking()->addChar(key);
+                glutPostRedisplay();
+            }
+            break;
+        case 13:
+            if(game->getGameState() == 3)
+            {
+                game->getRanking()->addScore();
+                game->setGameState(0);
+                glutPostRedisplay();
+            }
+            break;
+        case 32:
+            if(!fullScreen)
+            {
+                glutFullScreen();
+                fullScreen = true;
+            }
+            else
+            {
+                glutInitWindowPosition(0,0);
+                glutReshapeWindow(860,680);
+                fullScreen = false;
+            }
+            glutPostRedisplay();
+            break;
 
-    }
+        }
 }
 
 void specialKeysRelease(int key, int x, int y)
@@ -339,14 +343,14 @@ void specialKey(int key, int x, int y)
     switch (key)
     {
     case GLUT_KEY_LEFT:
-        if(moveX > -21.0 && moveY > yMin && game->verifyMoveLeft(game->getField1(),linha,coluna))
+        if(moveX > -21.0 && moveY > yMin && game->verifyMoveLeft(game->getField1(),linha,coluna) && !game->getPause())
         {
             moveX -= 7;
             coluna -= 1;
         }
         break;
     case GLUT_KEY_RIGHT:
-        if(moveX < 21 && moveY > yMin && game->verifyMoveRight(game->getField1(),linha,coluna))
+        if(moveX < 21 && moveY > yMin && game->verifyMoveRight(game->getField1(),linha,coluna) && !game->getPause())
         {
             moveX += 7;
             coluna += 1;
@@ -358,7 +362,8 @@ void specialKey(int key, int x, int y)
         break;
 
     case GLUT_KEY_UP:
-        shift = true;
+        if(!game->getPause())
+            shift = true;
         break;
 
     default:
@@ -454,7 +459,7 @@ void motion(int x, int y )
         rotationX += (float) (x - last_x);
 
         last_x = x;
-//        last_y = y;
+        last_y = y;
     }
 
     glutPostRedisplay();
