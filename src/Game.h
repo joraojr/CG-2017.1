@@ -17,6 +17,7 @@ private:
     int** field1;
     int** field2;
 
+    int gameView;
     int trashCount;
     int points;
     int gameState;
@@ -58,7 +59,7 @@ public:
     Piece* getPiece2();
     void drawField(int ** field,float animationMove);
     void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift, float animationMove,float rotationX, float rotationY,float distOrigem);
-    void displayGame2Players(int width, int height, int moveX,int last_x, int last_y, int moveY, bool &shift, int typeShift,float animationMove,int moveX2,int moveY2,bool &shift2);
+    void displayGame2Players(int width, int height, int moveX,int last_x, int last_y, int moveY, bool &shift, int typeShift,float animationMove,int moveX2,int moveY2,bool &shift2,float distOrigem,float rotationX, float rotationY);
     void addColor(int ** field,int i, int j, int color);
     Game();
     ~Game();
@@ -106,6 +107,8 @@ public:
     void redrawPiece(int column,float moveY);
     int readjustCalculation(int** mat, int column);
     int getCoord(int** mat,int column);
+    void setGameView(int gv);
+    int getGameView();
 
 };
 

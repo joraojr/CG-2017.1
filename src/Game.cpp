@@ -15,7 +15,7 @@ Game::Game(){
             field2[i][j] = 0 ;
             }
     }
-
+    gameView = 0;
     trashListAux = new int*[15];
     trashListFinal = new int*[15];
     trashListAux2 = new int*[15];
@@ -141,6 +141,14 @@ void Game::drawField(int ** field,float animationMove){
             x = 0.0;
         }
     }
+}
+
+void Game::setGameView(int gv){
+    gameView = gv;
+}
+
+int Game::getGameView(){
+    return gameView;
 }
 
 void Game::clearTrashReadjust(){
@@ -671,19 +679,27 @@ void Game::setPause(bool p){
 void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem){
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_DEPTH_TEST);///z-buffer
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    //glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-    gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
-    gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+    if(gameView == 0){
+        glDisable(GL_DEPTH_TEST);
+        glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+    }else{
+        glEnable(GL_DEPTH_TEST);///z-buffer
+        gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
+        gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+    }
+
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.55, (int) height);
     glPushMatrix();
-        glRotatef( rotationY, 1.0, 0.0, 0.0 );
-        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        if(gameView != 0){
+            glRotatef( rotationY, 1.0, 0.0, 0.0 );
+            glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        }
         this->drawField(field1,animationMove);
         this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
@@ -701,43 +717,72 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
 
 
     this->drawPoints(width,height);
-    if(shift)
-    {
+    if(shift){
         if(typeShift == 0)
             this->getPiece()->shiftColor();
         else
             this->getPiece()->shiftColorMouse();
         shift = false;
-        glutPostRedisplay();
     }
+    glutPostRedisplay();
 }
 
-void Game::displayGame2Players(int width, int height, int moveX, int moveY, int last_x, int last_y, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2)
+void Game::displayGame2Players(int width, int height, int moveX, int moveY, int last_x, int last_y, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2,float distOrigem,float rotationX, float rotationY)
 {
     ///player1
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+
+    if(gameView == 0){
+        glDisable(GL_DEPTH_TEST);
+        glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+    }else{
+        glEnable(GL_DEPTH_TEST);
+        gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
+        gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+    }
+
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.53, (int) height);
 
-    this->drawField(this->field1,animationMove);
-    this->getPiece()->drawPiece(moveX,moveY);
+    glPushMatrix();
+        if(gameView != 0){
+            glRotatef( rotationY, 1.0, 0.0, 0.0 );
+            glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        }
+        this->drawField(this->field1,animationMove);
+        this->getPiece()->drawPiece(moveX,moveY);
+    glPopMatrix();
+
+
 
     ///player2
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+    if(gameView == 0){
+        glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+    }else{
+        gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
+        gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+    }
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) width*0.55, (int) 0, (int) width*0.53 ,(int) height);
-    this->drawField(this->field2,animationMove);
-    this->getPiece2()->drawPiece(moveX2,moveY2);
+    glPushMatrix();
+        if(gameView != 0){
+            glRotatef( rotationY, 1.0, 0.0, 0.0 );
+            glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        }
+        this->drawField(this->field2,animationMove);
+        this->getPiece2()->drawPiece(moveX2,moveY2);
+    glPopMatrix();
+
+
 
     if(shift){
         piece->shiftColor();
