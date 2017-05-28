@@ -3,17 +3,20 @@
 
 using namespace std;
 
-Game::Game(){
+Game::Game()
+{
     /// 1- vermelho, 2-Verde, 3-Azul, 4- Amarelo, 5-Magenta , 0-Vazio
     field1 = new int*[18];
     field2 = new int*[18];
-    for(int i = 0; i < 18; i++){
+    for(int i = 0; i < 18; i++)
+    {
         field1[i] = new int[7];
         field2[i] = new int[7];
-        for(int j =0; j < 7; j++){
+        for(int j =0; j < 7; j++)
+        {
             field1[i][j] = 0 ;
             field2[i][j] = 0 ;
-            }
+        }
     }
     gameView = 0;
     trashListAux = new int*[15];
@@ -21,13 +24,15 @@ Game::Game(){
     trashListAux2 = new int*[15];
     trashListFinal2 = new int*[15];
     trashReadjust = new int*[15];
-    for(int i = 0; i < 15; i++){
+    for(int i = 0; i < 15; i++)
+    {
         trashListAux[i] = new int[7];
         trashListFinal[i] = new int[7];
         trashListAux2[i] = new int[7];
         trashListFinal2[i] = new int[7];
         trashReadjust[i] = new int[7];
-        for(int j =0; j < 7; j++){
+        for(int j =0; j < 7; j++)
+        {
             trashListAux[i][j] = 0;
             trashListFinal[i][j] = 0;
             trashListAux2[i][j] = 0;
@@ -38,101 +43,116 @@ Game::Game(){
     animationOn = 0;
     points = 0 ;
     trashCount = 0;
+    trashCount2 = 0;
     gameState = 0;
     level = 1;
     pause = false;
     ranking = new Ranking();
     brokenBlocks = 0;
+    brokenBlocks2 = 0;
     piece = new Piece();
     piece2 = new Piece();
     nextPiece = new Piece();
     nextPiece2 = new Piece();
 }
 
-void Game::drawCubeColor(int** field,int i, int j, float positionX, float positionY){
+void Game::drawCubeColor(int** field,int i, int j, float positionX, float positionY)
+{
     ///desenhar a cor do cubo
-    switch(field[i][j]){
-        case 1:
-            glColor3f(1,0,0);
-            glPushMatrix();
-            glTranslatef(positionX,positionY,3.5);
-            glutSolidCube(7.0);
-            glPopMatrix();
-            break;
-        case 2:
-            glColor3f(0,1,0);
-            glPushMatrix();
-            glTranslatef(positionX,positionY,3.5);
-            glutSolidCube(7.0);
-            glPopMatrix();
-            break;
-        case 3:
-            glColor3f(0,0,1);
-            glPushMatrix();
-            glTranslatef(positionX,positionY,3.5);
-            glutSolidCube(7.0);
-            glPopMatrix();
-            break;
-        case 4:
-            glColor3f(1,1,0);
-            glPushMatrix();
-            glTranslatef(positionX,positionY,3.5);
-            glutSolidCube(7.0);
-            glPopMatrix();
-            break;
-        case 5:
-            glColor3f(1,0,1);
-            glPushMatrix();
-            glTranslatef(positionX,positionY,3.5);
-            glutSolidCube(7.0);
-            glPopMatrix();
-            break;
-        default:
-            break;
+    switch(field[i][j])
+    {
+    case 1:
+        glColor3f(1,0,0);
+        glPushMatrix();
+        glTranslatef(positionX,positionY,3.5);
+        glutSolidCube(7.0);
+        glPopMatrix();
+        break;
+    case 2:
+        glColor3f(0,1,0);
+        glPushMatrix();
+        glTranslatef(positionX,positionY,3.5);
+        glutSolidCube(7.0);
+        glPopMatrix();
+        break;
+    case 3:
+        glColor3f(0,0,1);
+        glPushMatrix();
+        glTranslatef(positionX,positionY,3.5);
+        glutSolidCube(7.0);
+        glPopMatrix();
+        break;
+    case 4:
+        glColor3f(1,1,0);
+        glPushMatrix();
+        glTranslatef(positionX,positionY,3.5);
+        glutSolidCube(7.0);
+        glPopMatrix();
+        break;
+    case 5:
+        glColor3f(1,0,1);
+        glPushMatrix();
+        glTranslatef(positionX,positionY,3.5);
+        glutSolidCube(7.0);
+        glPopMatrix();
+        break;
+    default:
+        break;
     }
 }
 
-void Game::drawField(int ** field,float animationMove){
-    if(animationOn == 0){
+void Game::drawField(int ** field,float animationMove)
+{
+    if(animationOn == 0)
+    {
         float x = 0.0;
         float y = 0.0;
-        for(int i = 0; i < 15; i++){
-            for(int j = 0; j < 7; j++){
+        for(int i = 0; i < 15; i++)
+        {
+            for(int j = 0; j < 7; j++)
+            {
                 this->drawCubeColor(field,i,j,x+3.5,y+3.5);
                 glColor3f(0.0,0.0,0.3);
                 glBegin(GL_LINE_LOOP);
-                    glVertex3f(x,y,0.0);
-                    glVertex3f(x + 7.0,y,0.0);
-                    glVertex3f(x + 7.0,y + 7.0,0.0);
-                    glVertex3f(x,y + 7.0,0.0);
+                glVertex3f(x,y,0.0);
+                glVertex3f(x + 7.0,y,0.0);
+                glVertex3f(x + 7.0,y + 7.0,0.0);
+                glVertex3f(x,y + 7.0,0.0);
                 glEnd();
                 x += 7.0;
             }
             y += 7.0;
             x = 0.0;
         }
-    }else{
+    }
+    else
+    {
         float x = 0.0;
         float y = 0.0;
-        for(int i = 0; i < 15; i++){
-            for(int j = 0; j < 7; j++){
-                if(trashReadjust[i][j] == 1){
+        for(int i = 0; i < 15; i++)
+        {
+            for(int j = 0; j < 7; j++)
+            {
+                if(trashReadjust[i][j] == 1)
+                {
                     this->drawCubeColor(field,i,j,x+3.5,y+3.5 - animationMove);
                     glColor3f(0.0,0.0,0.3);
                     glBegin(GL_LINE_LOOP);
-                        glVertex3f(x,y,0.0);
-                        glVertex3f(x + 7.0,y,0.0);
-                        glVertex3f(x + 7.0,y + 7.0,0.0);
-                        glVertex3f(x,y + 7.0,0.0);
+                    glVertex3f(x,y,0.0);
+                    glVertex3f(x + 7.0,y,0.0);
+                    glVertex3f(x + 7.0,y + 7.0,0.0);
+                    glVertex3f(x,y + 7.0,0.0);
                     glEnd();
-                }else{
+                }
+                else
+                {
                     this->drawCubeColor(field,i,j,x+3.5,y+3.5);
                     glColor3f(0.0,0.0,0.3);
                     glBegin(GL_LINE_LOOP);
-                        glVertex3f(x,y,0.0);
-                        glVertex3f(x + 7.0,y,0.0);
-                        glVertex3f(x + 7.0,y + 7.0,0.0);
-                        glVertex3f(x,y + 7.0,0.0);
+                    glVertex3f(x,y,0.0);
+                    glVertex3f(x + 7.0,y,0.0);
+                    glVertex3f(x + 7.0,y + 7.0,0.0);
+                    glVertex3f(x,y + 7.0,0.0);
                     glEnd();
                 }
                 x += 7.0;
@@ -143,42 +163,55 @@ void Game::drawField(int ** field,float animationMove){
     }
 }
 
-void Game::setGameView(int gv){
+void Game::setGameView(int gv)
+{
     gameView = gv;
 }
 
-int Game::getGameView(){
+int Game::getGameView()
+{
     return gameView;
 }
 
-void Game::clearTrashReadjust(){
-    for(int i = 0; i < 15; i++){
+void Game::clearTrashReadjust()
+{
+    for(int i = 0; i < 15; i++)
+    {
         for(int j = 0; j < 7; j++)
             trashReadjust[i][j] = 0;
     }
 }
 
-void Game::getPosition(int x, int y){
-    for(int i = y + 1;i < 15; i++){
+void Game::getPosition(int x, int y)
+{
+    for(int i = y + 1; i < 15; i++)
+    {
         if(field1[i][x] != 0 && !verifyCoord(i,x,trashListFinal))
             trashReadjust[i][x] = 1;
     }
 }
 
-void Game::getReadjustPosition(){
-    for(int i = 0;i < 7;i++){
-        for(int j = 0;j < 15; j++){
-            if(trashListFinal[j][i] == 1){
+void Game::getReadjustPosition()
+{
+    for(int i = 0; i < 7; i++)
+    {
+        for(int j = 0; j < 15; j++)
+        {
+            if(trashListFinal[j][i] == 1)
+            {
                 getPosition(i,j);
             }
         }
     }
 }
 
-void Game::redrawPiece(int column,float moveY){
+void Game::redrawPiece(int column,float moveY)
+{
     glPushMatrix();
-    for(int i = 0; i < 15; i++){
-        if(trashReadjust[i][column] == 1){
+    for(int i = 0; i < 15; i++)
+    {
+        if(trashReadjust[i][column] == 1)
+        {
             Cube* c = new Cube();
             glTranslatef(moveY,0.0,0.0);
             c->drawCube(7*i + 3.5,7*column + 3.5);
@@ -187,12 +220,15 @@ void Game::redrawPiece(int column,float moveY){
     glPopMatrix();
 }
 
-int Game::readjustCalculation(int** mat,int column){
+int Game::readjustCalculation(int** mat,int column)
+{
     int countL = 0;
     int coord = getCoord(trashReadjust,column);
     printf("\n%d\n",coord);
-    for(int i = 0; i < 15; i++){
-        if(mat[i][column] == 0){
+    for(int i = 0; i < 15; i++)
+    {
+        if(mat[i][column] == 0)
+        {
             countL = i;
             break;
         }
@@ -201,10 +237,13 @@ int Game::readjustCalculation(int** mat,int column){
     return (coord - countL);
 }
 
-int Game::getCoord(int** mat, int column){
+int Game::getCoord(int** mat, int column)
+{
     int coord = 0;
-    for(int i = 0; i < 15; i++){
-        if(mat[i][column] == 1){
+    for(int i = 0; i < 15; i++)
+    {
+        if(mat[i][column] == 1)
+        {
             coord = i;
             break;
         }
@@ -234,8 +273,10 @@ bool Game::isGameOver(int** field)
     return false;
 }
 
-void Game::printMatrix(){
-    for(int i = 0; i < 15; i++){
+void Game::printMatrix()
+{
+    for(int i = 0; i < 15; i++)
+    {
         cout << "[";
         for(int j =0; j < 7; j++)
             cout << field2[i][j] << ";";
@@ -244,21 +285,26 @@ void Game::printMatrix(){
     cout << endl;
 }
 
-bool Game::verifyMoveLeft(int** field,int line,int column){
+bool Game::verifyMoveLeft(int** field,int line,int column)
+{
     if(field[line][column-1] == 0)
         return true;
     return false;
 }
 
-bool Game::verifyMoveRight(int** field,int line,int column){
+bool Game::verifyMoveRight(int** field,int line,int column)
+{
     if(field[line][column+1] == 0)
         return true;
     return false;
 }
 ///verificar em linha
-int Game::verifyLineLeft(int** field, int** trashListAux, int color,int line, int column){
-    if(column - 1 >= 0){
-        if(color == field[line][column - 1]){
+int Game::verifyLineLeft(int** field, int** trashListAux, int color,int line, int column)
+{
+    if(column - 1 >= 0)
+    {
+        if(color == field[line][column - 1])
+        {
             trashListAux[line][column - 1] = 1;
             return 1 + verifyLineLeft(field, trashListAux,color,line,column - 1);
         }
@@ -279,7 +325,7 @@ int Game::verifyLineRight(int** field, int** trashListAux,int color,int line, in
     return 0;
 }
 
-int Game::verifyLine(int** field, int** trashListAux, int ** trashListFinal,int line, int column)
+int Game::verifyLine(int** field, int** trashListAux, int ** trashListFinal,int *trashCount,int line, int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
@@ -290,13 +336,13 @@ int Game::verifyLine(int** field, int** trashListAux, int ** trashListFinal,int 
         clearTrashListAux(trashListAux);
     else
     {
-        copyToTrashListFinal(trashListAux,trashListFinal);
+        copyToTrashListFinal(trashListAux,trashListFinal, trashCount);
         return 1;
     }
     return 0;
 }
 
-void Game::copyToTrashListFinal(int** trashListAux, int** trashListFinal)
+void Game::copyToTrashListFinal(int** trashListAux, int** trashListFinal, int *trashCount)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -305,7 +351,7 @@ void Game::copyToTrashListFinal(int** trashListAux, int** trashListFinal)
             if(trashListAux[i][j] == 1 && !verifyCoord(i,j,trashListFinal))
             {
                 trashListFinal[i][j] = 1;
-                this->trashCount += 1;
+                trashCount += 1;
             }
         }
     }
@@ -349,7 +395,7 @@ int Game::verifyColumnUp(int** field, int** trashListAux,int color,int line,int 
     return 0;
 }
 
-int Game::verifyColumn(int** field, int** trashListAux, int ** trashListFinal,int line, int column)
+int Game::verifyColumn(int** field, int** trashListAux, int ** trashListFinal, int *trashCount,int line, int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
@@ -360,7 +406,7 @@ int Game::verifyColumn(int** field, int** trashListAux, int ** trashListFinal,in
         clearTrashListAux(trashListAux);
     else
     {
-        copyToTrashListFinal(trashListAux,trashListFinal);
+        copyToTrashListFinal(trashListAux,trashListFinal,trashCount);
         return 1;
     }
     return 0;
@@ -370,7 +416,7 @@ int Game::verifyColumn(int** field, int** trashListAux, int ** trashListFinal,in
 ///verificar em diagonal primaria
 
 
-int Game::verifyMainDiag(int** field, int** trashListAux,int ** trashListFinal,int line, int column)
+int Game::verifyMainDiag(int** field, int** trashListAux,int ** trashListFinal,int *trashCount,int line, int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
@@ -380,7 +426,7 @@ int Game::verifyMainDiag(int** field, int** trashListAux,int ** trashListFinal,i
         clearTrashListAux(trashListAux);
     else
     {
-        copyToTrashListFinal(trashListAux,trashListFinal);
+        copyToTrashListFinal(trashListAux,trashListFinal,trashCount);
         return 1;
     }
     return 0;
@@ -413,7 +459,7 @@ int Game::verifyMainDiagDown(int** field, int** trashListAux,int color,int line,
 }///FIM verifica em diagonal primaria
 
 ///Verificar em diagonal secundaria
-int Game::verifySecondDiag(int** field, int** trashListAux, int** trashListFinal,int line,int column)
+int Game::verifySecondDiag(int** field, int** trashListAux, int** trashListFinal,int *trashCount,int line,int column)
 {
     int countC = 1;
     trashListAux[line][column] = 1;
@@ -423,7 +469,7 @@ int Game::verifySecondDiag(int** field, int** trashListAux, int** trashListFinal
         clearTrashListAux(trashListAux);
     else
     {
-        copyToTrashListFinal(trashListAux,trashListFinal);
+        copyToTrashListFinal(trashListAux,trashListFinal,trashCount);
         return 1;
     }
     return 0;
@@ -455,7 +501,7 @@ int Game::verifySecondDiagUp(int** field, int** trashListAux,int color,int line,
     return 0;
 }///FIM verifica em diagonal secundaria
 
-void Game::clearTrashListFinal(int** trashListFinal)
+void Game::clearTrashListFinal(int** trashListFinal, int * trashCount)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -472,7 +518,7 @@ bool Game::verifyCoord(int x,int y,int** trash)
     return false;
 }
 
-void Game::clear(int ** field,int** trashListFinal)
+void Game::clear(int ** field,int** trashListFinal, int *trashCount)
 {
     for(int i = 0; i < 15; i++)
     {
@@ -486,71 +532,131 @@ void Game::clear(int ** field,int** trashListFinal)
     trashCount = 0;
 }
 
-int Game::verifyAll(int** field, int** trashListAux, int** trashListFinal,int line, int column){
+int Game::verifyAll(int** field, int** trashListAux, int** trashListFinal,int *trashCount,int line, int column)
+{
     int trash = 0;
-    int trashColumn = verifyColumn(field,trashListAux, trashListFinal,line,column);
-    int trashLine = verifyLine(field,trashListAux,trashListFinal,line,column);
-    int trashMainDiag = verifyMainDiag(field,trashListAux,trashListFinal,line,column);
-    int trashSecondDiag = verifySecondDiag(field,trashListAux,trashListFinal,line,column);
-    if(trashColumn == 1 || trashLine == 1 || trashMainDiag == 1 || trashSecondDiag == 1){
+    int trashColumn = verifyColumn(field,trashListAux, trashListFinal,trashCount,line,column);
+    int trashLine = verifyLine(field,trashListAux,trashListFinal,trashCount,line,column);
+    int trashMainDiag = verifyMainDiag(field,trashListAux,trashListFinal,trashCount,line,column);
+    int trashSecondDiag = verifySecondDiag(field,trashListAux,trashListFinal,trashCount,line,column);
+    if(trashColumn == 1 || trashLine == 1 || trashMainDiag == 1 || trashSecondDiag == 1)
+    {
         trash = 1;
     }
 
     return trash;
 }
 
-void Game::runVerification(int** field, int** trashListAux, int** trashListFinal){
-    int trash = 0;
-    for(int i = 0; i < 15; i++){
-        for(int j = 0; j < 7; j++){
-            if(field[i][j] != 0){
-                if(trash == 0){
-                    trash = verifyAll(field,trashListAux, trashListFinal,i,j);
-                }else{
-                    verifyAll(field,trashListAux, trashListFinal,i,j);
+void Game::runVerification(int** field, int** trashListAux, int** trashListFinal, int player)
+{
+    cout <<"Player 1 = "<<this->brokenBlocks<<endl<<"player 2= "<<this->brokenBlocks2<<endl;
+    if(player == 1)
+    {
+        int trash = 0;
+        for(int i = 0; i < 15; i++)
+        {
+            for(int j = 0; j < 7; j++)
+            {
+                if(field[i][j] != 0)
+                {
+                    if(trash == 0)
+                    {
+                        trash = verifyAll(field,trashListAux, trashListFinal,&trashCount,i,j);
+                    }
+                    else
+                    {
+                        verifyAll(field,trashListAux, trashListFinal,&trashCount,i,j);
+                    }
                 }
             }
         }
-    }
-    brokenBlocks += trashCount;
-    int brokenBlocksPoints = trashCount;
-    getReadjustPosition();
-    printMatrix();///teste apenas
-    clear(field,trashListFinal);///limpa o trashcount
-    readjust(field);
-    //animationOn = 1;
-    clearTrashReadjust();
+        brokenBlocks += trashCount;
+        int brokenBlocksPoints = trashCount;
+        getReadjustPosition();
+//        printMatrix();///teste apenas
+        clear(field,trashListFinal, &trashCount);///limpa o trashcount
+        readjust(field);
+        //animationOn = 1;
+        clearTrashReadjust();
 
-    if(trash == 1){
-        points += fatorialPoints(brokenBlocksPoints);
-        if(points/level > 250){
-            level += 1;
+        if(trash == 1)
+        {
+            points += fatorialPoints(brokenBlocksPoints);
+            if(points/level > 250)
+            {
+                level += 1;
+            }
+            runVerification(field,trashListAux,trashListFinal,player);
         }
-        runVerification(field,trashListAux,trashListFinal);
+    }
+    else if(player == 2)
+    {
+        int trash = 0;
+        for(int i = 0; i < 15; i++)
+        {
+            for(int j = 0; j < 7; j++)
+            {
+                if(field[i][j] != 0)
+                {
+                    if(trash == 0)
+                    {
+                        trash = verifyAll(field,trashListAux, trashListFinal,&trashCount2,i,j);
+                    }
+                    else
+                    {
+                        verifyAll(field,trashListAux, trashListFinal,&trashCount2,i,j);
+                    }
+                }
+            }
+        }
+        brokenBlocks2 += trashCount2;
+        int brokenBlocksPoints2 = trashCount2;
+        getReadjustPosition();
+//        printMatrix();///teste apenas
+        clear(field,trashListFinal, &trashCount2);///limpa o trashcount
+        readjust(field);
+        //animationOn = 1;
+        clearTrashReadjust();
+
+        if(trash == 1)
+        {
+            points += fatorialPoints(brokenBlocksPoints2);
+            if(points/level > 250)
+            {
+                level += 1;
+            }
+            runVerification(field,trashListAux,trashListFinal,player);
+        }
     }
 }
 
-int** Game::getField1(){
+int** Game::getField1()
+{
     return field1;
 }
 
-int** Game::getField2(){
+int** Game::getField2()
+{
     return field2;
 }
 
-int** Game::getTrashListAux(){
+int** Game::getTrashListAux()
+{
     return trashListAux;
 }
 
-int** Game::getTrashListAux2(){
+int** Game::getTrashListAux2()
+{
     return trashListAux2;
 }
 
-int** Game::getTrashListFinal(){
+int** Game::getTrashListFinal()
+{
     return trashListFinal;
 }
 
-int** Game::getTrashListFinal2(){
+int** Game::getTrashListFinal2()
+{
     return trashListFinal2;
 }
 
@@ -625,67 +731,83 @@ Piece* Game::getNextPiece2()
 }
 
 
-void Game::setPiece(Piece* p){
+void Game::setPiece(Piece* p)
+{
     this->piece = p;
 }
-void Game::setPiece2(Piece* p){
+void Game::setPiece2(Piece* p)
+{
     this->piece2 = p;
 }
 
-void Game::createNextPiece(){
+void Game::createNextPiece()
+{
     nextPiece = new Piece();
     nextPiece2 = new Piece();
 }
 
-void Game::resetGame(){
-    for(int i = 0; i < 18; i++){
-        for(int j =0; j < 7; j++){
+void Game::resetGame()
+{
+    for(int i = 0; i < 18; i++)
+    {
+        for(int j =0; j < 7; j++)
+        {
             field1[i][j] = 0;
             field2[i][j] = 0;
         }
     }
     points = 0 ;
     trashCount = 0;
+    trashCount2 = 0;
     gameState = 0;
     level = 1;
     pause = false;
 
     clearTrashListAux(this->trashListAux);
-    clearTrashListFinal(this->trashListFinal);
+    clearTrashListFinal(this->trashListFinal,&this->trashCount);
     clearTrashListAux(this->trashListAux2);
-    clearTrashListFinal(this->trashListFinal2);
+    clearTrashListFinal(this->trashListFinal2,&this->trashCount2);
 
     brokenBlocks = 0;
+    brokenBlocks2 = 0;
     piece = new Piece();
     nextPiece = new Piece();
 }
 
-int Game::getLevel(){
+int Game::getLevel()
+{
     return level;
 }
 
-int Game::getAnimationOn(){
+int Game::getAnimationOn()
+{
     return animationOn;
 }
 
-bool Game::getPause(){
+bool Game::getPause()
+{
     return pause;
 }
 
-void Game::setPause(bool p){
+void Game::setPause(bool p)
+{
     pause = p;
 }
 
-void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem){
+void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem)
+{
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if(gameView == 0){
+    if(gameView == 0)
+    {
         glDisable(GL_DEPTH_TEST);
         glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-    }else{
+    }
+    else
+    {
         glEnable(GL_DEPTH_TEST);///z-buffer
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
@@ -696,12 +818,13 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.55, (int) height);
     glPushMatrix();
-        if(gameView != 0){
-            glRotatef( rotationY, 1.0, 0.0, 0.0 );
-            glRotatef( rotationX, 0.0, 1.0, 0.0 );
-        }
-        this->drawField(field1,animationMove);
-        this->getPiece()->drawPiece(moveX,moveY);
+    if(gameView != 0)
+    {
+        glRotatef( rotationY, 1.0, 0.0, 0.0 );
+        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+    }
+    this->drawField(field1,animationMove);
+    this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
 
 
@@ -717,7 +840,8 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
 
 
     this->drawPoints(width,height);
-    if(shift){
+    if(shift)
+    {
         if(typeShift == 0)
             this->getPiece()->shiftColor();
         else
@@ -735,10 +859,13 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    if(gameView == 0){
+    if(gameView == 0)
+    {
         glDisable(GL_DEPTH_TEST);
         glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-    }else{
+    }
+    else
+    {
         glEnable(GL_DEPTH_TEST);
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
@@ -750,12 +877,13 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
     glViewport ((int) 0, (int) 0, (int) width*0.53, (int) height);
 
     glPushMatrix();
-        if(gameView != 0){
-            glRotatef( rotationY, 1.0, 0.0, 0.0 );
-            glRotatef( rotationX, 0.0, 1.0, 0.0 );
-        }
-        this->drawField(this->field1,animationMove);
-        this->getPiece()->drawPiece(moveX,moveY);
+    if(gameView != 0)
+    {
+        glRotatef( rotationY, 1.0, 0.0, 0.0 );
+        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+    }
+    this->drawField(this->field1,animationMove);
+    this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
 
 
@@ -763,9 +891,12 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
     ///player2
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if(gameView == 0){
+    if(gameView == 0)
+    {
         glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-    }else{
+    }
+    else
+    {
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
@@ -774,22 +905,25 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
     glLoadIdentity();
     glViewport ((int) width*0.55, (int) 0, (int) width*0.53 ,(int) height);
     glPushMatrix();
-        if(gameView != 0){
-            glRotatef( rotationY, 1.0, 0.0, 0.0 );
-            glRotatef( rotationX, 0.0, 1.0, 0.0 );
-        }
-        this->drawField(this->field2,animationMove);
-        this->getPiece2()->drawPiece(moveX2,moveY2);
+    if(gameView != 0)
+    {
+        glRotatef( rotationY, 1.0, 0.0, 0.0 );
+        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+    }
+    this->drawField(this->field2,animationMove);
+    this->getPiece2()->drawPiece(moveX2,moveY2);
     glPopMatrix();
 
 
 
-    if(shift){
+    if(shift)
+    {
         piece->shiftColor();
         shift = false;
     }
 
-    if(shift2){
+    if(shift2)
+    {
         piece2->shiftColor();
         shift2 = false;
     }
@@ -1120,6 +1254,24 @@ void Game::displayRanking(int w,int h)
     }
 
 }
+
+int Game::getTrashCount()
+{
+    return this->trashCount;
+}
+int Game::getTrashCount2()
+{
+    return this->trashCount2;
+}
+int Game::getBrokenBlocks()
+{
+    return this->brokenBlocks;
+}
+int Game::getBrokenBlocks2()
+{
+    return this->brokenBlocks2;
+}
+
 
 Game::~Game()
 {
