@@ -1,5 +1,4 @@
 55 Fernando
-55 Vanessa
 62 Aline
 68 Caio
 79 asddasdasd
@@ -8,3 +7,4 @@
 219 Gerson
 224 Clara
 283 rodrigo
+1812 Lucas
