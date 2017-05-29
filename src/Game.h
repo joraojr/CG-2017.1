@@ -56,6 +56,7 @@ private:
     bool verifyCoord(int x,int y,int** trash);///verifica se a coordenada esta dentro da matriz
     void clearTrashListAux(int ** trashListAux);///limpa a matriz de coordenadas de blocos
     void copyToTrashListFinal(int** trashListAux, int** trashListFinal, int *trashCount);
+    void lineBlock(int player, int trashCount);
 
 public:
     Piece* getPiece2();
