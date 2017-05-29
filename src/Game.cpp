@@ -96,6 +96,13 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
         glutSolidCube(7.0);
         glPopMatrix();
         break;
+    case 6:
+        glColor3f(105,105,105);
+        glPushMatrix();
+        glTranslatef(positionX,positionY,3.5);
+        glutSolidCube(7.0);
+        glPopMatrix();
+        break;
     default:
         break;
     }
@@ -556,7 +563,7 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
         {
             for(int j = 0; j < 7; j++)
             {
-                if(field[i][j] != 0)
+                if(field[i][j] != 0 && field[i][j] != 6)
                 {
                     if(trash == 0)
                     {
@@ -569,6 +576,7 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
                 }
             }
         }
+        lineBlock(player,trashCount1);
         brokenBlocks1 += trashCount1;
         int brokenBlocksPoints = trashCount1;
         getReadjustPosition();
@@ -595,7 +603,7 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
         {
             for(int j = 0; j < 7; j++)
             {
-                if(field[i][j] != 0)
+                if(field[i][j] != 0 && field[i][j] != 6)
                 {
                     if(trash == 0)
                     {
@@ -608,6 +616,7 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
                 }
             }
         }
+        lineBlock(player,trashCount2);
         brokenBlocks2 += trashCount2;
         int brokenBlocksPoints2 = trashCount2;
         getReadjustPosition();
@@ -1270,6 +1279,125 @@ int Game::getBrokenBlocks()
 int Game::getBrokenBlocks2()
 {
     return this->brokenBlocks2;
+}
+
+void Game::lineBlock(int player, int trashCount) ///linha bloqueada
+{
+    int mod = trashCount % 3;
+    if(player == 1)
+    {
+        while (mod != 0)
+        {
+            int i = 0;
+            while(this->field2[i][3] == 6 && i < 15)
+            {
+                i++;
+            }
+            if(i<15)
+            {
+                int k = 15 ;
+                for(int j =0 ; j <7; j++)
+                {
+
+                    while(this->field2[k][j] != 0)
+                    {
+                        k++;
+                    }
+                    while(i != k)
+                    {
+                        this->field2[k][j] = this->field2[k -1][j];
+                        k --;
+                    }
+                    addColor(field2,i,j,6);
+                }
+            }
+            if(this->field1[i][3] != 0)
+            {
+
+                i = 0;
+                while(this->field1[i][3] == 6 && i < 15)
+                {
+                    i++;
+                }
+                if(i <15)
+                {
+                    int k = 15 ;
+                    for(int j =0 ; j <7; j++)
+                    {
+
+                        while(this->field1[k][j] != 0)
+                        {
+                            k++;
+                        }
+                        while(i != k -1)
+                        {
+                            this->field1[i][j] = this->field1[i + 1][j];
+                            i ++;
+                        }
+                    }
+
+                }
+            }
+            mod --;
+        }
+    }
+    else if(player == 2)
+    {
+        while (mod != 0)
+        {
+            int i = 0;
+            while(this->field1[i][3] == 6 && i < 15)
+            {
+                i++;
+            }
+            if(i<15)
+            {
+                int k = 15 ;
+                for(int j =0 ; j <7; j++)
+                {
+
+                    while(this->field1[k][j] != 0)
+                    {
+                        k++;
+                    }
+                    while(i != k)
+                    {
+                        this->field1[k][j] = this->field1[k -1][j];
+                        k --;
+                    }
+                    addColor(field1,i,j,6);
+                }
+            }
+            if(this->field2[i][3] != 0)
+            {
+                i = 0;
+                while(this->field2[i][3] == 6 && i < 15)
+                {
+                    i++;
+                }
+                if(i <15)
+                {
+                    int k = 15 ;
+                    for(int j =0 ; j <7; j++)
+                    {
+
+                        while(this->field2[k][j] != 0)
+                        {
+                            k++;
+                        }
+                        while(i != k -1)
+                        {
+                            this->field2[i][j] = this->field2[i + 1][j];
+                            i ++;
+                        }
+                    }
+
+                }
+            }
+            mod --;
+        }
+    }
+
 }
 
 
