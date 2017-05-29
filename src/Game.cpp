@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -209,38 +210,6 @@ void Game::getReadjustPosition()
     }
 }
 
-void Game::redrawPiece(int column,float moveY)
-{
-    glPushMatrix();
-    for(int i = 0; i < 15; i++)
-    {
-        if(trashReadjust[i][column] == 1)
-        {
-            Cube* c = new Cube();
-            glTranslatef(moveY,0.0,0.0);
-            c->drawCube(7*i + 3.5,7*column + 3.5);
-        }
-    }
-    glPopMatrix();
-}
-
-int Game::readjustCalculation(int** mat,int column)
-{
-    int countL = 0;
-    int coord = getCoord(trashReadjust,column);
-    printf("\n%d\n",coord);
-    for(int i = 0; i < 15; i++)
-    {
-        if(mat[i][column] == 0)
-        {
-            countL = i;
-            break;
-        }
-    }
-    printf("\n%d\n",countL);
-    return (coord - countL);
-}
-
 int Game::getCoord(int** mat, int column)
 {
     int coord = 0;
@@ -267,14 +236,24 @@ int Game::getColor(int** field,int i, int j)
     return field[i][j];
 }
 
-bool Game::isGameOver(int** field)
+int Game::isGameOver(int player)
 {
-    for(int i = 0; i < 7; i++)
-    {
-        if(field[15][i] != 0)
-            return true;
+    int loser = 0;
+    if(player == 1){
+        for(int i = 0; i < 7; i++)
+        {
+            if(field1[15][i] != 0)
+                loser = 1;
+        }
+    }else{
+        for(int i = 0; i < 7; i++)
+        {
+            if(field2[15][i] != 0)
+                loser = 2;
+        }
     }
-    return false;
+
+    return loser;
 }
 
 void Game::printMatrix()
@@ -586,7 +565,7 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
 
         if(trash == 1)
         {
-            points += fatorialPoints(brokenBlocksPoints);
+            points += exponencialPoints(brokenBlocksPoints);
             if(points/level > 250)
             {
                 level += 1;
@@ -626,7 +605,7 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
 
         if(trash == 1)
         {
-            points += fatorialPoints(brokenBlocksPoints2);
+            points += exponencialPoints(brokenBlocksPoints2);
             if(points/level > 250)
             {
                 level += 1;
@@ -692,12 +671,9 @@ void Game::readjust(int** field)
     }
 }
 
-int Game::fatorialPoints(int i)
+int Game::exponencialPoints(int i)
 {
-    if(i < 2)
-        return 1;
-    else
-        return i*fatorialPoints(i - 1);
+    return pow(2,i-1);
 }
 int Game::getPoints()
 {
@@ -766,7 +742,6 @@ void Game::resetGame()
     points = 0 ;
     trashCount1 = 0;
     trashCount2 = 0;
-    gameState = 0;
     level = 1;
     pause = false;
 
@@ -875,7 +850,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glutPostRedisplay();
 }
 
-void Game::displayGame2Players(int width, int height, int moveX, int moveY, int last_x, int last_y, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2,float distOrigem,float rotationX, float rotationY)
+void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2,float distOrigem,float rotationX, float rotationY)
 {
     ///player1
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -1201,67 +1176,7 @@ void Game::drawStartScreenPlayerOption(int w,int h)
     }
 }
 
-void Game::displayGameOver(int w,int h)
-{
-    glDisable(GL_LIGHTING);
-    glDisable(GL_DEPTH_TEST);
-    glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
-    glLoadIdentity();
-    glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
 
-    glViewport ((int) 0, (int) 0, (int) w, (int) h);
-    char gameover[] = "GAME OVER";
-
-    ranking->addPointsToCurrentRanking(points);
-    glColor3f(1,1,1);
-
-    for (int i = 0; i < 9; i++)
-    {
-        glRasterPos3f (125 + i*5,-20, 0);
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, gameover[i]);
-    }
-
-    char time_1[] = "Your score was  ";
-
-    for (int i = 0; i < 14; i++)
-    {
-        glRasterPos3f (110 + i*5,-40, 0);
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, time_1[i]);
-    }
-    scoreDisplay(200,-40,0,5,this->points);
-
-    if(points >= ranking->getScores()[0].score)
-    {
-        char enterName[] = "Enter your name:";
-        for (int i = 0; i < 16; i++)
-        {
-            glRasterPos3f (110 + i*5,-60, 0);
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, enterName[i]);
-        }
-
-        for (int i = 0; ranking->getCurrentName(i); i++)
-        {
-            glRasterPos3f (125 + i*5,-80, 0);
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ranking->getCurrentName(i));
-        }
-
-        char save[] = "Press enter to save";
-        for (int i = 0; i < 19; i++)
-        {
-            glRasterPos3f (110 + i*5,-100, 0);
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, save[i]);
-        }
-    }
-    else
-    {
-        char leave[] = "Press esc to leave to main menu";
-        for (int i = 0; i < 31; i++)
-        {
-            glRasterPos3f (110 + i*5,-100, 0);
-            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, leave[i]);
-        }
-    }
-}
 
 void Game::displayRanking(int w,int h)
 {
@@ -1426,6 +1341,109 @@ void Game::lineBlock(int player, int trashCount) ///linha bloqueada
         }
     }
 
+}
+
+void Game::displayGameOver2Players(int w,int h){
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
+    glLoadIdentity();
+    glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
+
+    glViewport ((int) 0, (int) 0, (int) w, (int) h);
+    char msg[] = "CONGRATULATIONS";
+
+    glColor3f(1,1,1);
+
+    for (int i = 0; i < 15; i++)
+    {
+        glRasterPos3f (125 + i*5,-20, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, msg[i]);
+    }
+
+    char player [15];
+    if(isGameOver(2) == 2){
+        strcpy(player,"Player One won!");
+    }else if(isGameOver(1) == 1){
+        strcpy(player,"Player Two won!");
+    }
+
+    //
+    for (int i = 0; i < 15; i++)
+    {
+        glRasterPos3f (110 + i*5,-40, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, player[i]);
+    }
+
+    char leave[] = "Press esc to leave to main menu";
+    for (int i = 0; i < 31; i++)
+    {
+        glRasterPos3f (110 + i*5,-100, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, leave[i]);
+    }
+
+}
+
+void Game::displayGameOver(int w,int h)
+{
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
+    glLoadIdentity();
+    glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
+
+    glViewport ((int) 0, (int) 0, (int) w, (int) h);
+    char gameover[] = "GAME OVER";
+
+    ranking->addPointsToCurrentRanking(points);
+    glColor3f(1,1,1);
+
+    for (int i = 0; i < 9; i++)
+    {
+        glRasterPos3f (125 + i*5,-20, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, gameover[i]);
+    }
+
+    char time_1[] = "Your score was  ";
+
+    for (int i = 0; i < 14; i++)
+    {
+        glRasterPos3f (110 + i*5,-40, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, time_1[i]);
+    }
+    scoreDisplay(200,-40,0,5,this->points);
+
+    if(points >= ranking->getScores()[0].score)
+    {
+        char enterName[] = "Enter your name:";
+        for (int i = 0; i < 16; i++)
+        {
+            glRasterPos3f (110 + i*5,-60, 0);
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, enterName[i]);
+        }
+
+        for (int i = 0; ranking->getCurrentName(i); i++)
+        {
+            glRasterPos3f (125 + i*5,-80, 0);
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ranking->getCurrentName(i));
+        }
+
+        char save[] = "Press enter to save";
+        for (int i = 0; i < 19; i++)
+        {
+            glRasterPos3f (110 + i*5,-100, 0);
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, save[i]);
+        }
+    }
+    else
+    {
+        char leave[] = "Press esc to leave to main menu";
+        for (int i = 0; i < 31; i++)
+        {
+            glRasterPos3f (110 + i*5,-100, 0);
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, leave[i]);
+        }
+    }
 }
 
 

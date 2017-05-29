@@ -62,18 +62,18 @@ public:
     Piece* getPiece2();
     void drawField(int ** field,float animationMove);
     void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift, float animationMove,float rotationX, float rotationY,float distOrigem);
-    void displayGame2Players(int width, int height, int moveX,int last_x, int last_y, int moveY, bool &shift, int typeShift,float animationMove,int moveX2,int moveY2,bool &shift2,float distOrigem,float rotationX, float rotationY);
+    void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2,int moveY2,bool &shift2,float distOrigem,float rotationX, float rotationY);
     void addColor(int ** field,int i, int j, int color);
     Game();
     ~Game();
     int getColor(int** field,int i, int j);///retorna a cor da posição i e j
-    bool isGameOver(int** field);///verifica se o jogo acabou
+    int isGameOver(int player);///verifica se o jogo acabou
     void printMatrix();///para teste
     bool verifyMoveLeft(int** field,int i,int j);///verifica se mover para esquerda é valido
     bool verifyMoveRight(int** field,int i,int j);///verifica se mover para direita é valido
     void readjust(int** field);///reajusta a matriz após destruição
     int verifyAll(int** field, int** trashListAux,int** trashListFinal,int *trashCount,int line,int column);///verifica todas as direções
-    int fatorialPoints(int i);///calcula os pontos em fatorial de blocos destruidos
+    int exponencialPoints(int i);///calcula os pontos em fatorial de blocos destruidos
     void drawMenu();///desenha menu
     int getPoints();///retorna os pontos
     void clearTrashListFinal(int ** trashListFinal,int *trashCount);///limpa a matriz de coordenadas para destruição
@@ -107,8 +107,6 @@ public:
     int** getTrashListFinal();
     int** getTrashListFinal2();
     int getAnimationOn();
-    void redrawPiece(int column,float moveY);
-    int readjustCalculation(int** mat, int column);
     int getCoord(int** mat,int column);
     void setGameView(int gv);
     int getGameView();
@@ -116,6 +114,7 @@ public:
     int getTrashCount2();
     int getBrokenBlocks();
     int getBrokenBlocks2();
+    void displayGameOver2Players(int w,int h);
 
 };
 
