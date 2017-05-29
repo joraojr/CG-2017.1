@@ -114,6 +114,7 @@ void idle()
 void init()
 {
     glClearColor(0.0,0.0,0.0,0.0);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 }
 
 void timer(int value)

@@ -5,7 +5,7 @@ using namespace std;
 
 Game::Game()
 {
-    /// 1- vermelho, 2-Verde, 3-Azul, 4- Amarelo, 5-Magenta , 0-Vazio
+    /// 1- vermelho cube, 2-Verde torus, 3-Azul sphere, 4- Amarelo teapot, 5-Magenta cone, 0-Vazio
     field1 = new int*[18];
     field2 = new int*[18];
     for(int i = 0; i < 18; i++)
@@ -58,53 +58,49 @@ Game::Game()
 
 void Game::drawCubeColor(int** field,int i, int j, float positionX, float positionY)
 {
+    Cube* c;
     ///desenhar a cor do cubo
-    switch(field[i][j])
-    {
-    case 1:
-        glColor3f(1,0,0);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,3.5);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 2:
-        glColor3f(0,1,0);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,3.5);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 3:
-        glColor3f(0,0,1);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,3.5);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 4:
-        glColor3f(1,1,0);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,3.5);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 5:
-        glColor3f(1,0,1);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,3.5);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    case 6:
-        glColor3f(105,105,105);
-        glPushMatrix();
-        glTranslatef(positionX,positionY,3.5);
-        glutSolidCube(7.0);
-        glPopMatrix();
-        break;
-    default:
-        break;
+    glEnable(GL_LIGHTING);
+    switch(field[i][j]){
+        case 1:
+            glPushMatrix();
+            c = new Cube();
+            c->drawObject(1,positionX,positionY);
+            glPopMatrix();
+            break;
+        case 2:
+            glPushMatrix();
+            c = new Cube();
+            c->drawObject(2,positionX,positionY);
+            glPopMatrix();
+            break;
+        case 3:
+            glPushMatrix();
+            c = new Cube();
+            c->drawObject(3,positionX,positionY);
+            glPopMatrix();
+            break;
+        case 4:
+            glPushMatrix();
+            c = new Cube();
+            c->drawObject(4,positionX,positionY);
+            glPopMatrix();
+            break;
+        case 5:
+            glPushMatrix();
+            c = new Cube();
+            c->drawObject(5,positionX,positionY);
+            glPopMatrix();
+            break;
+        case 6:
+            glColor3f(105,105,105);
+            glPushMatrix();
+            glTranslatef(positionX,positionY,3.5);
+            glutSolidCube(7.0);
+            glPopMatrix();
+            break;
+        default:
+            break;
     }
 }
 
@@ -119,6 +115,7 @@ void Game::drawField(int ** field,float animationMove)
             for(int j = 0; j < 7; j++)
             {
                 this->drawCubeColor(field,i,j,x+3.5,y+3.5);
+                glDisable(GL_LIGHTING);
                 glColor3f(0.0,0.0,0.3);
                 glBegin(GL_LINE_LOOP);
                 glVertex3f(x,y,0.0);
@@ -576,7 +573,8 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
                 }
             }
         }
-        lineBlock(player,trashCount1);
+        if(gameState == 5)
+            lineBlock(player,trashCount1);
         brokenBlocks1 += trashCount1;
         int brokenBlocksPoints = trashCount1;
         getReadjustPosition();
@@ -806,33 +804,50 @@ void Game::setPause(bool p)
 void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem)
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
+    glEnable(GL_DEPTH_TEST);///z-buffer
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if(gameView == 0)
-    {
-        glDisable(GL_DEPTH_TEST);
-        glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-    }
-    else
-    {
-        glEnable(GL_DEPTH_TEST);///z-buffer
+    if(gameView == 0){
+        glOrtho(-1.0,60.0,-1.0,105.0,-10.0,10.0);
+    }else{
+
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
-
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.55, (int) height);
+
+    glEnable(GL_LIGHTING);
+
+    GLfloat cor0[] = {1.0,1.0,1.0,1.0};
+    GLfloat corAmbient[] = {0.5,0.5,0.5,1.0};
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_AMBIENT,corAmbient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, cor0);
+    glLightfv(GL_LIGHT0, GL_SPECULAR , cor0);
+
+    float light0_position [3] = {18.0,105.0,1.0};
+    glPushMatrix();
+        ///luz mexe junto com a camera
+		//glLoadIdentity();
+		glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
+		glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+		glColor3f(1.0, 1.0, 1.0);
+		glutWireSphere(0.05, 10, 10);
+	glPopMatrix();
+
+
+
     glPushMatrix();
     if(gameView != 0)
     {
         glRotatef( rotationY, 1.0, 0.0, 0.0 );
         glRotatef( rotationX, 0.0, 1.0, 0.0 );
     }
+
     this->drawField(field1,animationMove);
+    glEnable(GL_LIGHTING);
     this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
 
@@ -840,14 +855,14 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(20.0,55.0,20,60.0,0.0,10.0);
+    glOrtho(20.0,55.0,20,60.0,-10.0,10.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) width*0.79, (int) height*0.71, (int) width*0.21, (int) height*0.29);
     this->getNextPiece()->drawPiece(0,-80);
 
-
+    glDisable(GL_LIGHTING);
     this->drawPoints(width,height);
     if(shift)
     {
@@ -867,32 +882,49 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-
-    if(gameView == 0)
-    {
-        glDisable(GL_DEPTH_TEST);
-        glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
+    glDisable(GL_DEPTH_TEST);
+    if(gameView == 0){
+        glOrtho(-1.0,60.0,-1.0,105.0,-10.0,10.0);
     }
-    else
-    {
+    else{
         glEnable(GL_DEPTH_TEST);
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
 
 
+    glEnable(GL_LIGHTING);
+
+    GLfloat cor0[] = {1.0,1.0,1.0,1.0};
+    GLfloat corAmbient[] = {0.5,0.5,0.5,1.0};
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_AMBIENT,corAmbient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, cor0);
+    glLightfv(GL_LIGHT0, GL_SPECULAR , cor0);
+
+    float light0_position [3] = {18.0,105.0,1.0};
+    glPushMatrix();
+        ///luz mexe junto com a camera
+		//glLoadIdentity();
+		glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
+		glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+		glColor3f(1.0, 1.0, 1.0);
+		glutWireSphere(0.05, 10, 10);
+	glPopMatrix();
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.53, (int) height);
 
     glPushMatrix();
-    if(gameView != 0)
-    {
-        glRotatef( rotationY, 1.0, 0.0, 0.0 );
-        glRotatef( rotationX, 0.0, 1.0, 0.0 );
-    }
-    this->drawField(this->field1,animationMove);
-    this->getPiece()->drawPiece(moveX,moveY);
+        if(gameView != 0)
+        {
+            glRotatef( rotationY, 1.0, 0.0, 0.0 );
+            glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        }
+        this->drawField(this->field1,animationMove);
+        glEnable(GL_LIGHTING);
+        this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
 
 
@@ -900,12 +932,9 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
     ///player2
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if(gameView == 0)
-    {
-        glOrtho(-1.0,60.0,-1.0,105.0,0.0,10.0);
-    }
-    else
-    {
+    if(gameView == 0){
+        glOrtho(-1.0,60.0,-1.0,105.0,-10.0,10.0);
+    }else{
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
@@ -914,25 +943,24 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, int 
     glLoadIdentity();
     glViewport ((int) width*0.55, (int) 0, (int) width*0.53 ,(int) height);
     glPushMatrix();
-    if(gameView != 0)
-    {
-        glRotatef( rotationY, 1.0, 0.0, 0.0 );
-        glRotatef( rotationX, 0.0, 1.0, 0.0 );
-    }
-    this->drawField(this->field2,animationMove);
-    this->getPiece2()->drawPiece(moveX2,moveY2);
+        if(gameView != 0)
+        {
+            glRotatef( rotationY, 1.0, 0.0, 0.0 );
+            glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        }
+        this->drawField(this->field2,animationMove);
+        glEnable(GL_LIGHTING);
+        this->getPiece2()->drawPiece(moveX2,moveY2);
     glPopMatrix();
 
 
 
-    if(shift)
-    {
+    if(shift){
         piece->shiftColor();
         shift = false;
     }
 
-    if(shift2)
-    {
+    if(shift2){
         piece2->shiftColor();
         shift2 = false;
     }
@@ -1283,7 +1311,7 @@ int Game::getBrokenBlocks2()
 
 void Game::lineBlock(int player, int trashCount) ///linha bloqueada
 {
-    int mod = trashCount % 3;
+    int mod = trashCount / 3;
     if(player == 1)
     {
         while (mod != 0)
@@ -1306,7 +1334,7 @@ void Game::lineBlock(int player, int trashCount) ///linha bloqueada
                     while(i != k)
                     {
                         this->field2[k][j] = this->field2[k -1][j];
-                        k --;
+                        k--;
                     }
                     addColor(field2,i,j,6);
                 }
@@ -1332,13 +1360,13 @@ void Game::lineBlock(int player, int trashCount) ///linha bloqueada
                         while(i != k -1)
                         {
                             this->field1[i][j] = this->field1[i + 1][j];
-                            i ++;
+                            i++;
                         }
                     }
 
                 }
             }
-            mod --;
+            mod--;
         }
     }
     else if(player == 2)
@@ -1363,7 +1391,7 @@ void Game::lineBlock(int player, int trashCount) ///linha bloqueada
                     while(i != k)
                     {
                         this->field1[k][j] = this->field1[k -1][j];
-                        k --;
+                        k--;
                     }
                     addColor(field1,i,j,6);
                 }
@@ -1388,13 +1416,13 @@ void Game::lineBlock(int player, int trashCount) ///linha bloqueada
                         while(i != k -1)
                         {
                             this->field2[i][j] = this->field2[i + 1][j];
-                            i ++;
+                            i++;
                         }
                     }
 
                 }
             }
-            mod --;
+            mod--;
         }
     }
 
