@@ -10,8 +10,8 @@ using namespace std;
 float yMin2 = -105.0;
 float linha2 = 15;
 int coluna2 = 3;
-int animationTime2 = 500;
-int animationAux2 = 500;
+float animationTime2 = 25;
+float animationAux2 = 25;
 float moveX2 = 0.0, moveY2 = 0.0;
 bool shift2 = false;
 
@@ -24,10 +24,11 @@ int last_x,last_y;
 float distOrigem = 60;
 float rotationX = 0.0, rotationY = -30.0;
 bool timeOn = true,fullScreen = false,shift = false,shiftMouse = false;
-int animationTime = 500.0,animationAux = 500,fastSpeed = 10;
+float animationTime = 25.0,animationAux = 25,fastSpeed = 0.8;
 int typeShift = 0;
 Game* game;
 int height = 680,width = 860;
+int level;
 
 void timer (int value);
 void displayGame();
@@ -39,15 +40,16 @@ void resetAll()
     moveY = 0.0;
     linha = 15;
     coluna = 3;
-    animationTime = 300;
-    animationAux = 500;
+    animationTime = 25;
+    animationAux = 25;
 
     linha2 = 15;
     coluna2 = 3;
-    animationTime2 = 500;
-    animationAux2 = 500;
+    animationTime2 = 25;
+    animationAux2 = 25;
     moveX2 = 0.0;
     moveY2 = 0.0;
+    level = game->getLevel();
 }
 
 void drawState()
@@ -128,21 +130,24 @@ void timer(int value){
         if (game->isGameOver(2) != 2 && game->isGameOver(1) != 1){
             if(game->getColor(game->getField2(),linha2 - 1,coluna2) == 0 && moveY2 > yMin2){
                 if(!game->getPause()){
-                    moveY2 -= 3.5;
-                    linha2 -=0.5;
+                    moveY2 -= 0.7;
+                    linha2 -= 0.1;
                 }
             }
             else if(!game->getPause())
             {
                 int* cubeColors2 = game->getPiece2()->getCubesColor();
-
-                game->addColor(game->getField2(),linha2,coluna2,cubeColors2[2]);
-                game->addColor(game->getField2(),linha2 + 1,coluna2,cubeColors2[1]);
-                game->addColor(game->getField2(),linha2 + 2,coluna2,cubeColors2[0]);
+                int linhaTemp = linha2;
+                game->addColor(game->getField2(),linhaTemp,coluna2,cubeColors2[2]);
+                game->addColor(game->getField2(),linhaTemp + 1,coluna2,cubeColors2[1]);
+                game->addColor(game->getField2(),linhaTemp + 2,coluna2,cubeColors2[0]);
 
                 game->runVerification(game->getField2(),game->getTrashListAux2(),game->getTrashListFinal2(),2);
-                cout << game->getLevel();
-                animationTime2 = animationAux2/game->getLevel();
+                if(level < game->getLevel()){
+                    animationAux2 = animationAux2 - game->getLevel()/2;
+                    level = game->getLevel();
+                }
+                animationTime2 = animationAux2;
                 moveX2 = 0.0;
                 moveY2 = 0.0;
                 linha2 = 15, coluna2 = 3;
@@ -168,20 +173,21 @@ void timer(int value){
         if (game->isGameOver(1) != 1 && game->isGameOver(2) != 2){
             if(game->getColor(game->getField1(),linha - 1,coluna) == 0 && moveY > yMin){
                 if(!game->getPause()){
-                    //moveY -= 3.5;
-                    //linha -=0.5;
-                    linha -=0.5;
-                    moveY -= 3.5;
-
+                    moveY -= 0.7;
+                    linha -= 0.1;
                 }
             }else if(!game->getPause()){
+                int linhaTemp = linha;
                 int* cubeColors = game->getPiece()->getCubesColor();
-                game->addColor(game->getField1(),linha,coluna,cubeColors[2]);
-                game->addColor(game->getField1(),linha + 1,coluna,cubeColors[1]);
-                game->addColor(game->getField1(),linha + 2,coluna,cubeColors[0]);
+                game->addColor(game->getField1(),linhaTemp,coluna,cubeColors[2]);
+                game->addColor(game->getField1(),linhaTemp + 1,coluna,cubeColors[1]);
+                game->addColor(game->getField1(),linhaTemp + 2,coluna,cubeColors[0]);
                 game->runVerification(game->getField1(),game->getTrashListAux(),game->getTrashListFinal(),1);
-                //cout << game->getLevel();
-                animationTime = animationAux/game->getLevel();
+                if(level < game->getLevel()){
+                    animationAux = animationAux - game->getLevel()/2;
+                    level = game->getLevel();
+                }
+                animationTime = animationAux;
                 moveX = 0.0;
                 moveY = 0.0;
                 linha = 15, coluna = 3;
@@ -288,7 +294,7 @@ void specialKeysRelease(int key, int x, int y)
     switch (key)
     {
     case GLUT_KEY_DOWN:
-        animationTime = animationAux/game->getLevel();
+        animationTime = animationAux;
         break;
 
     default:
@@ -302,7 +308,7 @@ void keyboardKeysRelease(unsigned char key, int x, int y)
     switch (key)
     {
     case 's':
-        animationTime2 = animationAux2/game->getLevel();
+        animationTime2 = animationAux2;
         break;
 
     default:
@@ -384,7 +390,7 @@ void mouse(int button, int state, int x, int y)
         else if (state==GLUT_DOWN && !game->getPause() && (game->getGameState() == 5 || game->getGameState() == 1))
             animationTime2 = fastSpeed;
         else if (state==GLUT_UP && !game->getPause() && (game->getGameState() == 5 || game->getGameState() == 1))
-            animationTime2 = animationAux/game->getLevel();
+            animationTime2 = animationAux2;
         else if(game->getPause() && (game->getGameState() == 1))
         {
             if ( button == GLUT_LEFT_BUTTON && state == GLUT_DOWN )
