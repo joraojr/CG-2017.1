@@ -613,7 +613,6 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
             runVerification(field,trashListAux,trashListFinal,player);
         }
     }
-    cout <<"Player 1 = "<<brokenBlocks1<<endl<<"player 2= "<<brokenBlocks2<<endl;
 }
 
 int** Game::getField1()
