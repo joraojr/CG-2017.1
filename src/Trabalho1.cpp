@@ -31,7 +31,6 @@ int height = 680,width = 860;
 
 void timer (int value);
 void timer2 (int value);
-void timer3(int value);
 void displayGame();
 
 void resetAll()
@@ -63,19 +62,20 @@ void drawState()
     case 1:
         glutSetCursor(GLUT_CURSOR_NONE);
         game->displayGame(width,height,moveX,moveY,shift,typeShift,animationMove,rotationX,rotationY,distOrigem);
-        if(timeOn){
-            glutTimerFunc(animationTime,timer,1);
-            glutTimerFunc(animationTime2,timer2,1);
-            timeOn = false;
-        }
+        timeOn = true;
         break;
     case 2:
         game->displayRanking(width,height);
         break;
     case 3:
         game->displayGameOver(width,height);
-        timeOn = true;
         resetAll();
+        /*
+        if(timeOn){
+            timer(1);
+            timer2(1);
+            timeOn = false;
+        }*/
         break;
     case 4:
         resetAll();
@@ -84,15 +84,16 @@ void drawState()
     case 5:
         glutSetCursor(GLUT_CURSOR_NONE);
         game->displayGame2Players(width,height,moveX,moveY,shift,typeShift,animationMove,moveX2,moveY2,shift2,distOrigem,rotationX,rotationY);
-        if(timeOn){
-            glutTimerFunc(animationTime,timer,1);
-            glutTimerFunc(animationTime2,timer2,1);
-            timeOn = false;
-        }
+        timeOn = true;
         break;
     case 6:
         game->displayGameOver2Players(width,height);
-        timeOn = true;
+        /*
+        if(timeOn){
+            timer(1);
+            timer2(1);
+            timeOn = false;
+        }*/
         break;
     }
 
@@ -131,6 +132,7 @@ void init()
 
 void timer(int value)
 {
+
     if (game->isGameOver(1) != 1 && game->isGameOver(2) != 2)
     {
         if(game->getColor(game->getField1(),linha - 1,coluna) == 0 && moveY > yMin)
@@ -154,10 +156,11 @@ void timer(int value)
             linha = 15, coluna = 3;
             game->setPiece(game->getNextPiece());
             game->createNextPiece();
+            //glutTimerFunc(animationTime,timer,1);
         }
 
         glutPostRedisplay();
-        glutTimerFunc(animationTime,timer,1);
+
     }
     else
     {
@@ -170,10 +173,12 @@ void timer(int value)
         }
         glutPostRedisplay();
     }
+    glutTimerFunc(animationTime,timer,1);
 }
 
 
 void timer2(int value){
+    cout << game->getGameState() << endl;
     if(game->getGameState() == 5){
         if (game->isGameOver(2) != 2 && game->isGameOver(1) != 1){
             if(game->getColor(game->getField2(),linha2 - 1,coluna2) == 0 && moveY2 > yMin2){
@@ -191,7 +196,7 @@ void timer2(int value){
                 game->addColor(game->getField2(),linha2 + 2,coluna2,cubeColors2[0]);
 
                 game->runVerification(game->getField2(),game->getTrashListAux2(),game->getTrashListFinal2(),2);
-                animationTime = animationAux/game->getLevel();
+                animationTime2 = animationAux/game->getLevel();
                 moveX2 = 0.0;
                 moveY2 = 0.0;
                 linha2 = 15, coluna2 = 3;
@@ -202,7 +207,7 @@ void timer2(int value){
             }
 
             glutPostRedisplay();
-            glutTimerFunc(animationTime2,timer2,1);
+            //glutTimerFunc(animationTime2,timer2,1);
         }
         else
         {
@@ -215,6 +220,7 @@ void timer2(int value){
             glutPostRedisplay();
         }
     }
+    glutTimerFunc(animationTime2,timer2,1);
 }
 
 void reshape(int w,int h)
@@ -238,6 +244,7 @@ void keyboard(unsigned char key, int x, int y){
         case 27:
             game->setGameState(0);
             game->resetGame();
+            timeOn = true;
             resetAll();
             glutPostRedisplay();
             break;
@@ -248,17 +255,14 @@ void keyboard(unsigned char key, int x, int y){
             }else if(game->getGameState() == 5 && !game->getPause()){
                 if (key == 'w'){
                     shift2 = true;
-                }
-                if (key == 'd'){
+                }else if (key == 'd'){
                     if(moveX2 < 21 && moveY2 > yMin2 && game->verifyMoveRight(game->getField2(),linha2,coluna2)){
                         moveX2 += 7;
                         coluna2 += 1;
                     }
-                }
-                if (key == 's'){
+                }else if (key == 's'){
                     animationTime2 = fastSpeed;
-                }
-                if (key == 'a'){
+                }else if (key == 'a'){
                     if(moveX2 > -21.0 && moveY2 > yMin2 && game->verifyMoveLeft(game->getField2(),linha2,coluna2)){
                         moveX2 -= 7;
                         coluna2 -= 1;
@@ -393,10 +397,10 @@ void mouse(int button, int state, int x, int y)
                 }
             }
         }
-        else if (state==GLUT_DOWN && game->getGameState() == 1 && !game->getPause())
-            animationTime = fastSpeed;
-        else if (state==GLUT_UP && game->getGameState() == 1 && !game->getPause())
-            animationTime = animationAux/game->getLevel();
+        else if (state==GLUT_DOWN && !game->getPause() && (game->getGameState() == 5 || game->getGameState() == 1))
+            animationTime2 = fastSpeed;
+        else if (state==GLUT_UP && !game->getPause() && (game->getGameState() == 5 || game->getGameState() == 1))
+            animationTime2 = animationAux/game->getLevel();
         else if(game->getPause() && (game->getGameState() == 1))
         {
             if ( button == GLUT_LEFT_BUTTON && state == GLUT_DOWN )
@@ -472,6 +476,8 @@ int main (int argc,char *argv[])
     glutDisplayFunc(display);
     glutMotionFunc(motion);
     glutIdleFunc(idle);
+    glutTimerFunc(animationTime,timer,1);
+    glutTimerFunc(animationTime2,timer2,1);
 
     glutMainLoop();
 }
