@@ -94,10 +94,10 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
             glPopMatrix();
             break;
         case 6:
-            glColor3f(105,105,105);
+            //glColor3f(105,105,105);
             glPushMatrix();
-            glTranslatef(positionX,positionY,3.5);
-            glutSolidCube(7.0);
+            c = new Cube();
+            c->drawObject(6,positionX,positionY);
             glPopMatrix();
             break;
         default:

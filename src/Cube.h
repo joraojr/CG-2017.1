@@ -11,6 +11,7 @@ class Cube{
         Cube();
         ~Cube();
         void drawCube(float positionX,float positionY);///desenha o cubo e translada para posição x e y
+        void drawGrayCube(float positionX,float positionY);
         void drawSphere(float positionX,float positionY);
         void drawTorus(float positionX,float positionY);
         void drawCone(float positionX,float positionY);
