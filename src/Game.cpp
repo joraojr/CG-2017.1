@@ -782,7 +782,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if(gameView == 0){
-        glOrtho(-1.0,60.0,-1.0,105.0,-10.0,10.0);
+        glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
     }else{
 
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
@@ -858,7 +858,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glLoadIdentity();
     glDisable(GL_DEPTH_TEST);
     if(gameView == 0){
-        glOrtho(-1.0,60.0,-1.0,105.0,-10.0,10.0);
+        glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
     }
     else{
         glEnable(GL_DEPTH_TEST);
@@ -888,7 +888,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glViewport ((int) 0, (int) 0, (int) width*0.53, (int) height);
+    glViewport ((int) 0, (int) 0, (int) width*0.45, (int) height);
 
     glPushMatrix();
         if(gameView != 0)
@@ -901,13 +901,13 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
         this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
 
-
+    drawLevel(width,height);
 
     ///player2
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if(gameView == 0){
-        glOrtho(-1.0,60.0,-1.0,105.0,-10.0,10.0);
+        glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
     }else{
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
@@ -915,7 +915,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glViewport ((int) width*0.55, (int) 0, (int) width*0.53 ,(int) height);
+    glViewport ((int) width*0.55, (int) 0, (int) width*0.45 ,(int) height);
     glPushMatrix();
         if(gameView != 0)
         {
@@ -941,6 +941,32 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
 
     glutPostRedisplay();
 
+}
+
+void Game::drawLevel(int w,int h){
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-100.0,1100.0,-300,200.0,0.0,10.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) w*0.45, (int) 0, (int) w*0.10, (int) h);
+    glColor3f(1,1,1);
+    char lvl [] = "LVL: ";
+    int x = -100;
+    for ( int i = 0; i < 5; i++)
+    {
+        glRasterPos3f ( x + i*250,50, 0);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, lvl[i]);
+    }
+
+    scoreDisplay(1000,50,0,180,this->level);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Game::drawPoints(int w,int h)
