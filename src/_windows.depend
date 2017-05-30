@@ -95,7 +95,7 @@
 1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\piece.cpp
 	"Piece.h"
 
-1496158961 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
+1496159515 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
@@ -110,7 +110,7 @@
 	<iostream>
 	<time.h>
 
-1496075059 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.h
+1496162744 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.h
 	"glm.h"
 
 1496075604 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.cpp
@@ -121,7 +121,7 @@
 1492812798 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.h
 	"Cube.h"
 
-1496159343 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
+1496162954 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
 	"Game.h"
 	<iostream>
 	<math.h>

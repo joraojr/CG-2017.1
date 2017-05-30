@@ -19,44 +19,48 @@ void Cube::setMaterial(GLfloat *ambient, GLfloat *diffuse, GLfloat *specular,
 }
 
 void Cube::drawObject(int t,float positionX,float positionY){
+    int object;
     if(t != 0){
-        switch(t){
-            case 1:
-                drawCube(positionX,positionY);
-                break;
-            case 2:
-                drawTorus(positionX,positionY);
-                break;
-            case 3:
-                drawSphere(positionX,positionY);
-                break;
-            case 4:
-                drawTeapot(positionX,positionY);
-                break;
-            case 5:
-                drawCone(positionX,positionY);
-                break;
-        }
+        object = t;
     }else{
-        switch(type){
-            case 1:
-                drawCube(positionX,positionY);
-                break;
-            case 2:
-                drawTorus(positionX,positionY);
-                break;
-            case 3:
-                drawSphere(positionX,positionY);
-                break;
-            case 4:
-                drawTeapot(positionX,positionY);
-                break;
-            case 5:
-                drawCone(positionX,positionY);
-                break;
-        }
+        object = type;
     }
 
+    switch(object){
+        case 1:
+            drawCube(positionX,positionY);
+            break;
+        case 2:
+            drawTorus(positionX,positionY);
+            break;
+        case 3:
+            drawSphere(positionX,positionY);
+            break;
+        case 4:
+            drawTeapot(positionX,positionY);
+            break;
+        case 5:
+            drawCone(positionX,positionY);
+            break;
+        case 6:
+            drawGrayCube(positionX,positionY);
+            break;
+    }
+}
+
+void Cube::drawGrayCube(float positionX,float positionY){
+    GLfloat objeto_ambient[]   = { 0.4145, 0.41175, 0.41175, 1.0 };
+    GLfloat objeto_difusa[]    = { 0.39424, 0.38136, 0.38136, 1.0 };
+    GLfloat objeto_especular[] = { 0.67811, 0.226959, 0.126959, 1.0 };
+    GLfloat objeto_brilho[]    = { 90.0f };
+
+
+
+    glPushMatrix();
+        setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
+        glTranslatef(positionX,positionY,3.5);
+        glutSolidCube(size*0.8);
+    glPopMatrix();
 }
 
 void Cube::drawCube(float positionX,float positionY){
@@ -64,7 +68,6 @@ void Cube::drawCube(float positionX,float positionY){
     GLfloat objeto_difusa[]    = { 0.71424, 0.24136, 0.24136, 1.0 };
     GLfloat objeto_especular[] = { 0.67811, 0.226959, 0.126959, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
-
 
 
     glPushMatrix();
