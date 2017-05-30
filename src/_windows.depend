@@ -103,7 +103,7 @@
 	"Game.h"
 	<time.h>
 
-1496092859 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.cpp
+1496163300 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.cpp
 	"Cube.h"
 	<GL/glui.h>
 	<cstdlib>

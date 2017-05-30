@@ -39,7 +39,7 @@ void resetAll()
     moveY = 0.0;
     linha = 15;
     coluna = 3;
-    animationTime = 500;
+    animationTime = 300;
     animationAux = 500;
 
     linha2 = 15;
@@ -124,58 +124,55 @@ void init()
 }
 
 void timer(int value){
-    if(value == 2){
-        if(game->getGameState() == 5){
-            if (game->isGameOver(2) != 2 && game->isGameOver(1) != 1){
-                if(game->getColor(game->getField2(),linha2 - 1,coluna2) == 0 && moveY2 > yMin2){
-                    if(!game->getPause()){
-                        moveY2 -= 3.5;
-                        linha2 -=0.5;
-                    }
+    if(value == 2 && game->getGameState() == 5){
+        if (game->isGameOver(2) != 2 && game->isGameOver(1) != 1){
+            if(game->getColor(game->getField2(),linha2 - 1,coluna2) == 0 && moveY2 > yMin2){
+                if(!game->getPause()){
+                    moveY2 -= 3.5;
+                    linha2 -=0.5;
                 }
-                else if(!game->getPause())
-                {
-                    int* cubeColors2 = game->getPiece2()->getCubesColor();
-
-                    game->addColor(game->getField2(),linha2,coluna2,cubeColors2[2]);
-                    game->addColor(game->getField2(),linha2 + 1,coluna2,cubeColors2[1]);
-                    game->addColor(game->getField2(),linha2 + 2,coluna2,cubeColors2[0]);
-
-                    game->runVerification(game->getField2(),game->getTrashListAux2(),game->getTrashListFinal2(),2);
-                    cout << game->getLevel();
-                    animationTime2 = animationAux2/game->getLevel();
-                    moveX2 = 0.0;
-                    moveY2 = 0.0;
-                    linha2 = 15, coluna2 = 3;
-
-                    game->setPiece2(game->getNextPiece2());
-
-                    game->createNextPiece();
-                }
-
-                glutPostRedisplay();
-                glutTimerFunc(animationTime2,timer,2);
             }
-            else
+            else if(!game->getPause())
             {
-                if(game->getGameState() == 1){
-                    game->setGameState(3);
-                }else{
-                    ///tela de gameOver de 2 player
-                    game->setGameState(6);
-                }
-                glutPostRedisplay();
+                int* cubeColors2 = game->getPiece2()->getCubesColor();
+
+                game->addColor(game->getField2(),linha2,coluna2,cubeColors2[2]);
+                game->addColor(game->getField2(),linha2 + 1,coluna2,cubeColors2[1]);
+                game->addColor(game->getField2(),linha2 + 2,coluna2,cubeColors2[0]);
+
+                game->runVerification(game->getField2(),game->getTrashListAux2(),game->getTrashListFinal2(),2);
+                cout << game->getLevel();
+                animationTime2 = animationAux2/game->getLevel();
+                moveX2 = 0.0;
+                moveY2 = 0.0;
+                linha2 = 15, coluna2 = 3;
+
+                game->setPiece2(game->getNextPiece2());
+
+                game->createNextPiece();
             }
+
+            glutPostRedisplay();
+            glutTimerFunc(animationTime2,timer,2);
         }
-        //glutTimerFunc(animationTime2,timer,2);
+        else
+        {
+            if(game->getGameState() == 1){
+                game->setGameState(3);
+            }
+            glutPostRedisplay();
+        }
     }
 
     if(value == 1 && (game->getGameState() == 1 || game->getGameState() == 5)){
         if (game->isGameOver(1) != 1 && game->isGameOver(2) != 2){
             if(game->getColor(game->getField1(),linha - 1,coluna) == 0 && moveY > yMin){
                 if(!game->getPause()){
-                    moveY -= 3.5;
+                    //moveY -= 3.5;
+                    //linha -=0.5;
                     linha -=0.5;
+                    moveY -= 3.5;
+
                 }
             }else if(!game->getPause()){
                 int* cubeColors = game->getPiece()->getCubesColor();
