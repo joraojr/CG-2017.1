@@ -115,6 +115,7 @@ public:
     int getBrokenBlocks();
     int getBrokenBlocks2();
     void displayGameOver2Players(int w,int h);
+    void drawLevel(int w,int h);
 
 };
 
