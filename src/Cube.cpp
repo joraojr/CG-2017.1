@@ -164,3 +164,7 @@ void Cube::randomObject(){
 void Cube::setType(int t){
     type = t;
 }
+
+Cube::~Cube(){
+
+}
