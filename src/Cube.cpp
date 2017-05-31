@@ -92,7 +92,7 @@ void Cube::drawSphere(float positionX,float positionY){
 }
 
 void Cube::drawTeapot(float positionX,float positionY){
-
+    glDisable(GL_CULL_FACE);
     GLfloat objeto_ambient[]   = { 0.93231, 0.93554, 0.02132, 0.5 };
     GLfloat objeto_difusa[]    = { 0.83221, 0.85431, 0.0211, 0.6 };
     GLfloat objeto_especular[] = { 0.73125, 0.7888, 0.021, 0.6 };
@@ -104,6 +104,7 @@ void Cube::drawTeapot(float positionX,float positionY){
         glTranslatef(positionX,positionY,3.5);
         glutSolidTeapot(size*0.29);
     glPopMatrix();
+    glEnable(GL_CULL_FACE);
 }
 
 void Cube::drawTorus(float positionX,float positionY){

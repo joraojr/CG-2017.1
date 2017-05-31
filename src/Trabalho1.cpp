@@ -107,6 +107,7 @@ void drawState()
 void display()
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_CULL_FACE);
 
     drawState();
 
@@ -126,8 +127,6 @@ void init()
 }
 
 void timer(int value){
-
-
     if(value == 2 && game->getGameState() == 5){
         if(level < game->getLevel()){
             animationAux2 = animationAux2 - game->getLevel()/2;

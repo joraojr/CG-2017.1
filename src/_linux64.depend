@@ -218,3 +218,52 @@
 	<windows.h>
 	<GL/glut.h>
 
+1496201970 source:/home/joraojr/Documentos/CG/CG-2017.1/src/Desenvolvimento2.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Scene.h"
+
+1496201970 /home/joraojr/Documentos/CG/CG-2017.1/include/GL/glut.h
+	"freeglut_std.h"
+
+1496201970 /home/joraojr/Documentos/CG/CG-2017.1/include/GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1496201970 /home/joraojr/Documentos/CG/CG-2017.1/include/GL/glui.h
+	<GL/freeglut.h>
+	<GL/openglut.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdlib>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1496201970 /home/joraojr/Documentos/CG/CG-2017.1/include/GL/freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1496201970 /home/joraojr/Documentos/CG/CG-2017.1/include/GL/freeglut_ext.h
+	<stdarg.h>
+
+1496201970 /home/joraojr/Documentos/CG/CG-2017.1/src/Scene.h
+	"glm.h"
+
+1496201970 /home/joraojr/Documentos/CG/CG-2017.1/src/glm.h
+	<GL/glut.h>
+
+1496201970 source:/home/joraojr/Documentos/CG/CG-2017.1/src/Scene.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Scene.h"
+
