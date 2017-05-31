@@ -25,6 +25,7 @@ Game::Game()
     trashListAux2 = new int*[15];
     trashListFinal2 = new int*[15];
     trashReadjust = new int*[15];
+    trashReadjust2 = new int*[15];
     for(int i = 0; i < 15; i++)
     {
         trashListAux[i] = new int[7];
@@ -32,6 +33,7 @@ Game::Game()
         trashListAux2[i] = new int[7];
         trashListFinal2[i] = new int[7];
         trashReadjust[i] = new int[7];
+        trashReadjust2[i] = new int[7];
         for(int j =0; j < 7; j++)
         {
             trashListAux[i][j] = 0;
@@ -39,9 +41,11 @@ Game::Game()
             trashListAux2[i][j] = 0;
             trashListFinal2[i][j] = 0;
             trashReadjust[i][j] = 0;
+            trashReadjust2[i][j] = 0;
         }
     }
     animationOn = 0;
+    animationOn2 = 0;
     points = 0 ;
     trashCount1 = 0;
     trashCount2 = 0;
@@ -104,9 +108,10 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
     }
 }
 
-void Game::drawField(int ** field,float animationMove)
+void Game::drawField(int ** field,int** trashr,float animationMove, int animation)
 {
-    if(animationOn == 0)
+
+    if(animation == 0)
     {
         float x = 0.0;
         float y = 0.0;
@@ -137,10 +142,9 @@ void Game::drawField(int ** field,float animationMove)
         {
             for(int j = 0; j < 7; j++)
             {
-                if(trashReadjust[i][j] != 0)
+                if(trashr[i][j] != 0)
                 {
                     this->drawCubeColor(field,i,j,x+3.5,y+3.5 - animationMove);
-                    cout <<" a " << animationMove << endl;
                     glDisable(GL_LIGHTING);
                     glColor3f(0.0,0.0,0.3);
                     glBegin(GL_LINE_LOOP);
@@ -500,7 +504,7 @@ int Game::verifyAll(int** field, int** trashListAux, int** trashListFinal,int* t
     return trash;
 }
 
-int Game::runVerification(int** field, int** trashListAux, int** trashListFinal, int player)
+int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal1, int player)
 {
     int trash = 0;
     if(player == 1)
@@ -513,11 +517,11 @@ int Game::runVerification(int** field, int** trashListAux, int** trashListFinal,
                 {
                     if(trash == 0)
                     {
-                        trash = verifyAll(field,trashListAux, trashListFinal,&trashCount1,i,j);
+                        trash = verifyAll(field,trashListAux1, trashListFinal1,&trashCount1,i,j);
                     }
                     else
                     {
-                        verifyAll(field,trashListAux, trashListFinal,&trashCount1,i,j);
+                        verifyAll(field,trashListAux1, trashListFinal1,&trashCount1,i,j);
                     }
                 }
             }
@@ -532,16 +536,10 @@ int Game::runVerification(int** field, int** trashListAux, int** trashListFinal,
             {
                 level += 1;
             }
-
-            getReadjustPosition();
-            //printMatrix();///
-            clear(field,trashListFinal,&trashCount1);
+            getReadjustPosition(field,trashListFinal1,trashReadjust);
+            clear(field,trashListFinal1,&trashCount1);
             animationOn = 1;
         }
-
-        ///limpa o trashcount
-        //
-        //clearTrashReadjust();
     }else if(player == 2){
         for(int i = 0; i < 15; i++)
         {
@@ -551,11 +549,11 @@ int Game::runVerification(int** field, int** trashListAux, int** trashListFinal,
                 {
                     if(trash == 0)
                     {
-                        trash = verifyAll(field,trashListAux, trashListFinal,&trashCount2,i,j);
+                        trash = verifyAll(field,trashListAux1, trashListFinal1,&trashCount2,i,j);
                     }
                     else
                     {
-                        verifyAll(field,trashListAux, trashListFinal,&trashCount2,i,j);
+                        verifyAll(field,trashListAux1, trashListFinal1,&trashCount2,i,j);
                     }
                 }
             }
@@ -563,19 +561,18 @@ int Game::runVerification(int** field, int** trashListAux, int** trashListFinal,
         lineBlock(player,trashCount2);
         brokenBlocks2 += trashCount2;
         int brokenBlocksPoints2 = trashCount2;
-        getReadjustPosition();
+
         if(trash == 1){
             points += exponencialPoints(brokenBlocksPoints2);
             if(points/level > 250)
             {
                 level += 1;
             }
+            getReadjustPosition(field,trashListFinal1,trashReadjust2);
+            clear(field,trashListFinal1,&trashCount2);
+            animationOn2 = 1;
         }
-//        printMatrix();///teste apenas
-        clear(field,trashListFinal, &trashCount2);///limpa o trashcount
-        readjust(field);
-        //animationOn = 1;
-        //clearTrashReadjust();
+
     }
     return trash;
 }
@@ -589,70 +586,77 @@ void Game::clearTrashReadjust()
     }
 }
 
-void Game::getPosition(int x, int y)
+void Game::getPosition(int** field,int** trashf,int** trashr,int x, int y)
 {
     for(int i = y + 1; i < 15; i++)
     {
-        if(field1[i][x] != 0 && !verifyCoord(i,x,trashListFinal))
-            trashReadjust[i][x] = field1[i][x];
+        if(field[i][x] != 0 && !verifyCoord(i,x,trashf))
+            trashr[i][x] = field[i][x];
     }
 }
 
-void Game::getReadjustPosition()
+void Game::getReadjustPosition(int** field,int** trashf,int** trashr)
 {
     for(int i = 0; i < 7; i++)
     {
         for(int j = 0; j < 15; j++)
         {
-            if(trashListFinal[j][i] == 1)
+            if(trashf[j][i] == 1)
             {
-                getPosition(i,j);
+                getPosition(field,trashf,trashr,i,j);
             }
         }
     }
 }
 
-void Game::updateFieldReadjust(){
+void Game::updateFieldReadjust(int** field,int** trash){
     for(int i = 0; i < 15; i++){
         for(int j = 0; j < 7; j++){
             if(i == 14){
-                trashReadjust[i][j] = 0;
+                trash[i][j] = 0;
             }else{
-                if(getColor(field1,i,j) == 0 && trashReadjust[i + 1][j] != 0){
-                    trashReadjust[i][j] = trashReadjust[i + 1][j];
-                    trashReadjust[i + 1][j] = 0;
-                    field1[i + 1][j] = 0;
-                    field1[i][j] = trashReadjust[i][j];
+                if(getColor(field,i,j) == 0 && trash[i + 1][j] != 0){
+                    trash[i][j] = trash[i + 1][j];
+                    trash[i + 1][j] = 0;
+                    field[i + 1][j] = 0;
+                    field[i][j] = trash[i][j];
                 }
             }
         }
     }
 }
 
-void Game::updateReadjust(){
-    bool test = false;
+void Game::updateReadjust(int** field,int** trash){
     for(int i = 0; i < 7; i++){
         for(int j = 0; j < 15; j++){
             if(j == 0){
-                trashReadjust[j][i] = 0;
-            }else if(j > 0 && getColor(field1,j - 1,i) == 0 && trashReadjust[j][i] != 0){
+                trash[j][i] = 0;
+            }else if(j > 0 && getColor(field,j - 1,i) == 0 && trash[j][i] != 0){
                 break;
             }else{
-                trashReadjust[j][i] = 0;
+                trash[j][i] = 0;
             }
         }
     }
 }
 
-bool Game::verifyReadjust(){
+bool Game::verifyReadjust(int** trash){
     for(int i = 0; i < 15; i++){
         for(int j = 0; j < 7; j++){
-            if(trashReadjust[i][j] != 0){
+            if(trash[i][j] != 0){
                 return true;
             }
         }
     }
     return false;
+}
+
+int** Game::getTrashReadjust(){
+    return trashReadjust;
+}
+
+int** Game::getTrashReadjust2(){
+    return trashReadjust2;
 }
 
 int** Game::getField1()
@@ -683,31 +687,6 @@ int** Game::getTrashListFinal()
 int** Game::getTrashListFinal2()
 {
     return trashListFinal2;
-}
-
-void Game::readjust(int** field)
-{
-    bool aux = false;
-    for(int i = 0; i < 7; i++)
-    {
-        for(int k = 0; k < 15; k++)
-        {
-            for(int j = 0; j < 17; j++)
-            {
-                if(field[j][i] == 0)
-                {
-                    field[j][i] = field[j + 1][i];
-                    aux = true;
-                }
-                if(aux)
-                {
-                    field[j][i] = field[j + 1][i];
-                }
-            }
-            aux = false;
-            field[17][i] = 0;
-        }
-    }
 }
 
 int Game::exponencialPoints(int i)
@@ -805,6 +784,12 @@ int Game::getAnimationOn()
     return animationOn;
 }
 
+int Game::getAnimationOn2()
+{
+    return animationOn2;
+}
+
+
 bool Game::getPause()
 {
     return pause;
@@ -860,7 +845,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
         glRotatef( rotationX, 0.0, 1.0, 0.0 );
     }
 
-    this->drawField(field1,animationMove);
+    this->drawField(field1,trashReadjust,animationMove,animationOn);
     glEnable(GL_LIGHTING);
     this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
@@ -889,7 +874,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glutPostRedisplay();
 }
 
-void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2,float distOrigem,float rotationX, float rotationY)
+void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2,float distOrigem,float rotationX, float rotationY,float animationMove2)
 {
     ///player1
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -936,7 +921,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
             glRotatef( rotationY, 1.0, 0.0, 0.0 );
             glRotatef( rotationX, 0.0, 1.0, 0.0 );
         }
-        this->drawField(this->field1,animationMove);
+        this->drawField(this->field1,trashReadjust,animationMove,animationOn);
         glEnable(GL_LIGHTING);
         this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
@@ -962,7 +947,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
             glRotatef( rotationY, 1.0, 0.0, 0.0 );
             glRotatef( rotationX, 0.0, 1.0, 0.0 );
         }
-        this->drawField(this->field2,animationMove);
+        this->drawField(this->field2,trashReadjust2,animationMove2,animationOn2);
         glEnable(GL_LIGHTING);
         this->getPiece2()->drawPiece(moveX2,moveY2);
     glPopMatrix();
@@ -1514,6 +1499,10 @@ void Game::displayGameOver(int w,int h)
 
 void Game::setAnimationOn(int a){
     animationOn = a;
+}
+
+void Game::setAnimationOn2(int a){
+    animationOn2 = a;
 }
 
 Game::~Game()
