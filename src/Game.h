@@ -14,6 +14,7 @@ private:
     int** trashListAux2;
     int** trashListFinal2;
     int** trashReadjust;
+    int** trashReadjust2;
     int** field1;
     int** field2;
 
@@ -27,6 +28,7 @@ private:
     int level;
     bool pause;
     int animationOn;
+    int animationOn2;
     Ranking *ranking;
     Piece* piece;
     Piece* piece2;
@@ -34,8 +36,8 @@ private:
     Piece* nextPiece2;
 
     void drawCubeColor(int ** field,int i, int j,float positionX, float positionY);
-    void getPosition(int x,int y);
-    void getReadjustPosition();
+    void getPosition(int** field,int** trashf,int** trashr,int x,int y);
+    void getReadjustPosition(int** field,int** trashf,int** trashr);
     void clearTrashReadjust();
 
     ///verificar em linha
@@ -60,9 +62,9 @@ private:
 
 public:
     Piece* getPiece2();
-    void drawField(int ** field,float animationMove);
+    void drawField(int ** field,int** trashr,float animationMove,int animation);
     void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift, float animationMove,float rotationX, float rotationY,float distOrigem);
-    void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2,int moveY2,bool &shift2,float distOrigem,float rotationX, float rotationY);
+    void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2,int moveY2,bool &shift2,float distOrigem,float rotationX, float rotationY,float animationMove2);
     void addColor(int ** field,int i, int j, int color);
     Game();
     ~Game();
@@ -108,6 +110,8 @@ public:
     int** getTrashListFinal2();
     int getAnimationOn();
     void setAnimationOn(int a);
+    int getAnimationOn2();
+    void setAnimationOn2(int a);
     int getCoord(int** mat,int column);
     void setGameView(int gv);
     int getGameView();
@@ -115,11 +119,13 @@ public:
     int getTrashCount2();
     int getBrokenBlocks();
     int getBrokenBlocks2();
+    int** getTrashReadjust();
+    int** getTrashReadjust2();
     void displayGameOver2Players(int w,int h);
     void drawLevel(int w,int h);
-    void updateFieldReadjust();
-    void updateReadjust();
-    bool verifyReadjust();
+    void updateFieldReadjust(int** field,int** trash);
+    void updateReadjust(int** field,int** trash);
+    bool verifyReadjust(int** trash);
 
 };
 
