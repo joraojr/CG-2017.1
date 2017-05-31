@@ -94,7 +94,6 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
             glPopMatrix();
             break;
         case 6:
-            //glColor3f(105,105,105);
             glPushMatrix();
             c = new Cube();
             c->drawObject(6,positionX,positionY);
@@ -138,9 +137,11 @@ void Game::drawField(int ** field,float animationMove)
         {
             for(int j = 0; j < 7; j++)
             {
-                if(trashReadjust[i][j] == 1)
+                if(trashReadjust[i][j] != 0)
                 {
                     this->drawCubeColor(field,i,j,x+3.5,y+3.5 - animationMove);
+                    cout <<" a " << animationMove << endl;
+                    glDisable(GL_LIGHTING);
                     glColor3f(0.0,0.0,0.3);
                     glBegin(GL_LINE_LOOP);
                     glVertex3f(x,y,0.0);
@@ -152,6 +153,7 @@ void Game::drawField(int ** field,float animationMove)
                 else
                 {
                     this->drawCubeColor(field,i,j,x+3.5,y+3.5);
+                    glDisable(GL_LIGHTING);
                     glColor3f(0.0,0.0,0.3);
                     glBegin(GL_LINE_LOOP);
                     glVertex3f(x,y,0.0);
@@ -176,38 +178,6 @@ void Game::setGameView(int gv)
 int Game::getGameView()
 {
     return gameView;
-}
-
-void Game::clearTrashReadjust()
-{
-    for(int i = 0; i < 15; i++)
-    {
-        for(int j = 0; j < 7; j++)
-            trashReadjust[i][j] = 0;
-    }
-}
-
-void Game::getPosition(int x, int y)
-{
-    for(int i = y + 1; i < 15; i++)
-    {
-        if(field1[i][x] != 0 && !verifyCoord(i,x,trashListFinal))
-            trashReadjust[i][x] = 1;
-    }
-}
-
-void Game::getReadjustPosition()
-{
-    for(int i = 0; i < 7; i++)
-    {
-        for(int j = 0; j < 15; j++)
-        {
-            if(trashListFinal[j][i] == 1)
-            {
-                getPosition(i,j);
-            }
-        }
-    }
 }
 
 int Game::getCoord(int** mat, int column)
@@ -262,7 +232,7 @@ void Game::printMatrix()
     {
         cout << "[";
         for(int j =0; j < 7; j++)
-            cout << field2[i][j] << ";";
+            cout << trashReadjust[i][j] << ";";
         cout  << "]" << endl;
     }
     cout << endl;
@@ -530,11 +500,11 @@ int Game::verifyAll(int** field, int** trashListAux, int** trashListFinal,int* t
     return trash;
 }
 
-void Game::runVerification(int** field, int** trashListAux, int** trashListFinal, int player)
+int Game::runVerification(int** field, int** trashListAux, int** trashListFinal, int player)
 {
+    int trash = 0;
     if(player == 1)
     {
-        int trash = 0;
         for(int i = 0; i < 15; i++)
         {
             for(int j = 0; j < 7; j++)
@@ -556,26 +526,23 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
             lineBlock(player,trashCount1);
         brokenBlocks1 += trashCount1;
         int brokenBlocksPoints = trashCount1;
-        getReadjustPosition();
-//        printMatrix();///teste apenas
-        clear(field,trashListFinal,&trashCount1);///limpa o trashcount
-        readjust(field);
-        //animationOn = 1;
-        clearTrashReadjust();
-
-        if(trash == 1)
-        {
+        if(trash == 1){
             points += exponencialPoints(brokenBlocksPoints);
             if(points/level > 250)
             {
                 level += 1;
             }
-            runVerification(field,trashListAux,trashListFinal,player);
+
+            getReadjustPosition();
+            //printMatrix();///
+            clear(field,trashListFinal,&trashCount1);
+            animationOn = 1;
         }
-    }
-    else if(player == 2)
-    {
-        int trash = 0;
+
+        ///limpa o trashcount
+        //
+        //clearTrashReadjust();
+    }else if(player == 2){
         for(int i = 0; i < 15; i++)
         {
             for(int j = 0; j < 7; j++)
@@ -597,22 +564,95 @@ void Game::runVerification(int** field, int** trashListAux, int** trashListFinal
         brokenBlocks2 += trashCount2;
         int brokenBlocksPoints2 = trashCount2;
         getReadjustPosition();
-//        printMatrix();///teste apenas
-        clear(field,trashListFinal, &trashCount2);///limpa o trashcount
-        readjust(field);
-        //animationOn = 1;
-        clearTrashReadjust();
-
-        if(trash == 1)
-        {
+        if(trash == 1){
             points += exponencialPoints(brokenBlocksPoints2);
             if(points/level > 250)
             {
                 level += 1;
             }
-            runVerification(field,trashListAux,trashListFinal,player);
+        }
+//        printMatrix();///teste apenas
+        clear(field,trashListFinal, &trashCount2);///limpa o trashcount
+        readjust(field);
+        //animationOn = 1;
+        //clearTrashReadjust();
+    }
+    return trash;
+}
+
+void Game::clearTrashReadjust()
+{
+    for(int i = 0; i < 15; i++)
+    {
+        for(int j = 0; j < 7; j++)
+            trashReadjust[i][j] = 0;
+    }
+}
+
+void Game::getPosition(int x, int y)
+{
+    for(int i = y + 1; i < 15; i++)
+    {
+        if(field1[i][x] != 0 && !verifyCoord(i,x,trashListFinal))
+            trashReadjust[i][x] = field1[i][x];
+    }
+}
+
+void Game::getReadjustPosition()
+{
+    for(int i = 0; i < 7; i++)
+    {
+        for(int j = 0; j < 15; j++)
+        {
+            if(trashListFinal[j][i] == 1)
+            {
+                getPosition(i,j);
+            }
         }
     }
+}
+
+void Game::updateFieldReadjust(){
+    for(int i = 0; i < 15; i++){
+        for(int j = 0; j < 7; j++){
+            if(i == 14){
+                trashReadjust[i][j] = 0;
+            }else{
+                if(getColor(field1,i,j) == 0 && trashReadjust[i + 1][j] != 0){
+                    trashReadjust[i][j] = trashReadjust[i + 1][j];
+                    trashReadjust[i + 1][j] = 0;
+                    field1[i + 1][j] = 0;
+                    field1[i][j] = trashReadjust[i][j];
+                }
+            }
+        }
+    }
+}
+
+void Game::updateReadjust(){
+    bool test = false;
+    for(int i = 0; i < 7; i++){
+        for(int j = 0; j < 15; j++){
+            if(j == 0){
+                trashReadjust[j][i] = 0;
+            }else if(j > 0 && getColor(field1,j - 1,i) == 0 && trashReadjust[j][i] != 0){
+                break;
+            }else{
+                trashReadjust[j][i] = 0;
+            }
+        }
+    }
+}
+
+bool Game::verifyReadjust(){
+    for(int i = 0; i < 15; i++){
+        for(int j = 0; j < 7; j++){
+            if(trashReadjust[i][j] != 0){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 int** Game::getField1()
@@ -965,7 +1005,7 @@ void Game::drawLevel(int w,int h){
 
     scoreDisplay(1000,50,0,180,this->level);
     glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -1016,6 +1056,7 @@ void Game::drawStartScreen(int w,int h)
 
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
@@ -1471,6 +1512,9 @@ void Game::displayGameOver(int w,int h)
     }
 }
 
+void Game::setAnimationOn(int a){
+    animationOn = a;
+}
 
 Game::~Game()
 {

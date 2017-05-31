@@ -78,7 +78,7 @@ public:
     int getPoints();///retorna os pontos
     void clearTrashListFinal(int ** trashListFinal,int *trashCount);///limpa a matriz de coordenadas para destruição
     void clear(int** field,int **trashListFinal,int *trashCount);///destrói os blocos nas coordenadas que estiver dentro da matriz de coordenadas
-    void runVerification(int** field, int** trashListAux, int **trashListFinal,int player);///chama a função verifyAll e chama recursivo caso houver destruição
+    int runVerification(int** field, int** trashListAux, int **trashListFinal,int player);///chama a função verifyAll e chama recursivo caso houver destruição
     int getGameState();///retorna o estado de jogo 0 - tela inicial 1 - jogo executando 2 - ranking 3 - fim de jogo 4 - tela de opção de quantos players, 5 - 2 players
     void setGameState(int gameState);
     void drawStartScreen(int w,int h);///desenha tela inicial
@@ -107,6 +107,7 @@ public:
     int** getTrashListFinal();
     int** getTrashListFinal2();
     int getAnimationOn();
+    void setAnimationOn(int a);
     int getCoord(int** mat,int column);
     void setGameView(int gv);
     int getGameView();
@@ -116,6 +117,9 @@ public:
     int getBrokenBlocks2();
     void displayGameOver2Players(int w,int h);
     void drawLevel(int w,int h);
+    void updateFieldReadjust();
+    void updateReadjust();
+    bool verifyReadjust();
 
 };
 
