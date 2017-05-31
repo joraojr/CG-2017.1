@@ -132,6 +132,7 @@ public:
     void addBlockLine(int player,int trash);
     void removeBlockLine(int player,int trash);
     void readjustUp(int player,int trash);
+    void setMaterial(GLfloat *ambient, GLfloat *diffuse, GLfloat *specular, GLfloat *shininess);
 };
 
 #endif // GAME_H_INCLUDED

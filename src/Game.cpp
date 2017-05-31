@@ -1,8 +1,13 @@
 #include "Game.h"
 #include <iostream>
 #include <math.h>
+#include <chrono>
+#include <thread>
 
 using namespace std;
+using namespace std::this_thread; // sleep_for, sleep_until
+    using namespace std::chrono; // nanoseconds, system_clock, seconds
+
 
 Game::Game()
 {
@@ -537,8 +542,11 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
         int brokenBlocksPoints = trashCount1;
         if(trash == 1)
         {
-            if(gameState == 5)
+            if(gameState == 5){
+                while(animationOn)
+                    sleep_for(seconds(10));
                 lineBlock(1,trashCount1);
+                }
             points += exponencialPoints(brokenBlocksPoints);
             if(points/level > 250)
             {
@@ -574,6 +582,8 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
 
         if(trash == 1)
         {
+            while(animationOn2)
+                    sleep_for(seconds(10));
             lineBlock(2,trashCount2);
             points += exponencialPoints(brokenBlocksPoints2);
             if(points/level > 250)
