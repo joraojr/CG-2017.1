@@ -44,6 +44,8 @@ Game::Game()
             trashReadjust2[i][j] = 0;
         }
     }
+    lineblock = 0;
+    lineblock2 = 0;
     animationOn = 0;
     animationOn2 = 0;
     points = 0 ;
@@ -530,12 +532,13 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
                 }
             }
         }
-        if(gameState == 5)
-            lineBlock(player,trashCount1);
+
         brokenBlocks1 += trashCount1;
         int brokenBlocksPoints = trashCount1;
         if(trash == 1)
         {
+            if(gameState == 5)
+                lineBlock(1,trashCount1);
             points += exponencialPoints(brokenBlocksPoints);
             if(points/level > 250)
             {
@@ -565,12 +568,13 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
                 }
             }
         }
-        lineBlock(player,trashCount2);
+
         brokenBlocks2 += trashCount2;
         int brokenBlocksPoints2 = trashCount2;
 
         if(trash == 1)
         {
+            lineBlock(2,trashCount2);
             points += exponencialPoints(brokenBlocksPoints2);
             if(points/level > 250)
             {
@@ -792,6 +796,9 @@ void Game::resetGame()
     level = 1;
     pause = false;
 
+    lineblock = 0;
+    lineblock2 = 0;
+
     clearTrashListAux(this->trashListAux);
     clearTrashListFinal(this->trashListFinal,&trashCount1);
     clearTrashListAux(this->trashListAux2);
@@ -915,14 +922,13 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     if(gameView == 0)
     {
         glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
     }
     else
     {
-        glEnable(GL_DEPTH_TEST);
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
@@ -1329,143 +1335,94 @@ int Game::getBrokenBlocks2()
 {
     return this->brokenBlocks2;
 }
+void Game::addBlockLine(int player,int trash){
+    int lines = trash / 3;
 
-void Game::lineBlock(int player, int trashCount) ///linha bloqueada
-{
-    int mod = trashCount / 3;
-    if(player == 1)
-    {
-        while (mod != 0)
-        {
-            int i = 0;
-            while(this->field2[i][3] == 6 && i < 15)
-            {
-                i++;
+    if(player == 1){
+        for(int j = 0; j < lines; j++){
+            for(int i = 0; i < 7; i++){
+                field1[lineblock][i] = 6;
             }
-            if(i<15)
-            {
-                int k = 15 ;
-                for(int j =0 ; j <7; j++)
-                {
-
-                    while(this->field2[k][j] != 0)
-                    {
-                        k++;
-                    }
-                    while(i != k)
-                    {
-                        this->field2[k][j] = this->field2[k -1][j];
-                        k--;
-                    }
-                    addColor(field2,i,j,6);
-                }
-            }
-            lineBlockRemove(player,trashCount);
-            mod--;
+            lineblock++;
         }
-    }
-    else if(player == 2)
-    {
-        while (mod != 0)
-        {
-            int i = 0;
-            while(this->field1[i][3] == 6 && i < 15)
-            {
-                i++;
+    }else{
+        for(int j = 0; j < lines; j++){
+            for(int i = 0; i < 7; i++){
+                field2[lineblock2][i] = 6;
             }
-            if(i<15)
-            {
-                int k = 15 ;
-                for(int j =0 ; j <7; j++)
-                {
-
-                    while(this->field1[k][j] != 0)
-                    {
-                        k++;
-                    }
-                    while(i != k)
-                    {
-                        this->field1[k][j] = this->field1[k -1][j];
-                        k--;
-                    }
-                    addColor(field1,i,j,6);
-                }
-            }
-            lineBlockRemove(player,trashCount);
-            mod--;
+            lineblock2++;
         }
-    }
-
-}
-void Game::lineBlockRemove(int player, int trashCount)
-{
-    if(player == 1)
-    {
-        if(this->field1[0][3] == 6)
-        {
-            int i = 0;
-            while(this->field1[i][3] == 6 && i < 15)
-            {
-                i++;
-            }
-            i= i-1;
-            int i1 = i;
-            if(i <15)
-            {
-                int k = 0 ;
-                for(int j =0 ; j <7; j++)
-                {
-
-                    while(this->field1[k][j] != 0)
-                    {
-                        k++;
-                    }
-                    while(i1 != k)
-                    {
-                        this->field1[i1][j] = this->field1[i1 + 1][j];
-                        i1++;
-                    }
-                    i1=i;
-                    k=0;
-                }
-
-            }
-        }
-    }
-    else if(player == 2)
-    {
-        if(this->field2[0][3] == 6)
-        {
-            int i = 0;
-            while(this->field2[i][3] == 6 && i < 15)
-            {
-                i++;
-            }
-            int i1 = i;
-            if(i <15)
-            {
-                int k = 0 ;
-                for(int j =0 ; j <7; j++)
-                {
-
-                    while(this->field2[k][j] != 0)
-                    {
-                        k++;
-                    }
-                    while(i1 != k)
-                    {
-                        this->field2[i1][j] = this->field2[i1 + 1][j];
-                        i1++;
-                    }
-                    i1 = i;
-                    k = 0;
-                }
-
-            }
-        }
-
     }
 }
+
+void Game::removeBlockLine(int player,int trash){
+    int lines = trash / 3;
+
+    if(player == 1){
+        if(lineblock == 0)
+            return;
+
+        for(int k = 0; k < lines; k++){
+            for(int i =0; i < 17; i++){
+                for(int j = 0; j < 7; j++){
+                    if(i < 17)
+                        field1[i][j] = field1[i + 1][j];
+                }
+            }
+            lineblock--;
+        }
+    }else{
+        if(lineblock2 == 0)
+            return;
+
+        for(int k = 0; k < lines; k++){
+            for(int i =0; i < 17; i++){
+                for(int j = 0; j < 7; j++){
+                    if(i < 17)
+                        field2[i][j] = field2[i + 1][j];
+                }
+            }
+            lineblock2--;
+        }
+    }
+}
+
+void Game::readjustUp(int player,int trash){
+    int lines = trash / 3;
+    if(player == 1){
+        for(int k = 0; k < lines; k++){
+            for(int i =17; i>= 0; i--){
+                for(int j = 7; j>= 0; j--){
+                    if(i > 0)
+                        field1[i][j] = field1[i - 1][j];
+                }
+            }
+        }
+    }else{
+        for(int k = 0; k < lines; k++){
+            for(int i =17; i>= 0; i--){
+                for(int j = 7; j>= 0; j--){
+                    if(i > 0)
+                        field2[i][j] = field2[i - 1][j];
+                }
+            }
+        }
+    }
+}
+
+void Game::lineBlock(int player, int trashCount){
+
+    if(player == 1){
+        removeBlockLine(1,trashCount);
+        readjustUp(2,trashCount);
+        addBlockLine(2,trashCount);
+    }else{
+        removeBlockLine(2,trashCount);
+        readjustUp(1,trashCount);
+        addBlockLine(1,trashCount);
+    }
+}
+
 void Game::displayGameOver2Players(int w,int h)
 {
     glDisable(GL_LIGHTING);

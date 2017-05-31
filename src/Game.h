@@ -18,6 +18,8 @@ private:
     int** field1;
     int** field2;
 
+    int lineblock;
+    int lineblock2;
     int gameView;
     int trashCount1;
     int trashCount2;
@@ -127,6 +129,9 @@ public:
     void updateReadjust(int** field,int** trash);
     bool verifyReadjust(int** trash);
     void lineBlockRemove(int player, int trashCount);
+    void addBlockLine(int player,int trash);
+    void removeBlockLine(int player,int trash);
+    void readjustUp(int player,int trash);
 };
 
 #endif // GAME_H_INCLUDED
