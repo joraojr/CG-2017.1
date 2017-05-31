@@ -38,7 +38,7 @@ private:
     void drawCubeColor(int ** field,int i, int j,float positionX, float positionY);
     void getPosition(int** field,int** trashf,int** trashr,int x,int y);
     void getReadjustPosition(int** field,int** trashf,int** trashr);
-    void clearTrashReadjust();
+    void clearTrashReadjust(int** trashr);
 
     ///verificar em linha
     int verifyLineLeft(int** field, int ** trashListAux, int color,int line, int column);///verifica recursivo pra esquerda

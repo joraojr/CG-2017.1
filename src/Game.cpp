@@ -585,12 +585,12 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
     return trash;
 }
 
-void Game::clearTrashReadjust()
+void Game::clearTrashReadjust(int** trashr)
 {
     for(int i = 0; i < 15; i++)
     {
         for(int j = 0; j < 7; j++)
-            trashReadjust[i][j] = 0;
+            trashr[i][j] = 0;
     }
 }
 
@@ -796,6 +796,8 @@ void Game::resetGame()
     clearTrashListFinal(this->trashListFinal,&trashCount1);
     clearTrashListAux(this->trashListAux2);
     clearTrashListFinal(this->trashListFinal2,&trashCount2);
+    clearTrashReadjust(trashReadjust);
+    clearTrashReadjust(trashReadjust2);
 
     brokenBlocks1 = 0;
     brokenBlocks2 = 0;
@@ -1082,6 +1084,7 @@ void Game::drawStartScreen(int w,int h)
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
+
     glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
@@ -1174,6 +1177,9 @@ void Game::drawStartScreen(int w,int h)
         glRasterPos3f (posX + i*6,-80, 0);
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, sair[i]);
     }
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 
 }
 
@@ -1202,6 +1208,7 @@ void Game::drawStartScreenPlayerOption(int w,int h)
 {
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
@@ -1265,12 +1272,18 @@ void Game::drawStartScreenPlayerOption(int w,int h)
         glRasterPos3f (posX + i*6,-50, 0);
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, player2[i]);
     }
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 }
 
 
 
 void Game::displayRanking(int w,int h)
 {
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0.0, 300.0, -200.0, 50.0, -1.0, 1.0);
@@ -1295,7 +1308,9 @@ void Game::displayRanking(int w,int h)
         }
         scoreDisplay(200,-130+i*10,0,5,ranking->getScores()[i].score);
     }
-
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 }
 
 int Game::getTrashCount()
