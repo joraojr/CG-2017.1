@@ -126,7 +126,7 @@ public:
     void updateFieldReadjust(int** field,int** trash);
     void updateReadjust(int** field,int** trash);
     bool verifyReadjust(int** trash);
-
+    void lineBlockRemove(int player, int trashCount);
 };
 
 #endif // GAME_H_INCLUDED

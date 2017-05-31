@@ -66,45 +66,46 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
     Cube* c;
     ///desenhar a cor do cubo
     glEnable(GL_LIGHTING);
-    switch(field[i][j]){
-        case 1:
-            glPushMatrix();
-            c = new Cube();
-            c->drawObject(1,positionX,positionY);
-            glPopMatrix();
-            break;
-        case 2:
-            glPushMatrix();
-            c = new Cube();
-            c->drawObject(2,positionX,positionY);
-            glPopMatrix();
-            break;
-        case 3:
-            glPushMatrix();
-            c = new Cube();
-            c->drawObject(3,positionX,positionY);
-            glPopMatrix();
-            break;
-        case 4:
-            glPushMatrix();
-            c = new Cube();
-            c->drawObject(4,positionX,positionY);
-            glPopMatrix();
-            break;
-        case 5:
-            glPushMatrix();
-            c = new Cube();
-            c->drawObject(5,positionX,positionY);
-            glPopMatrix();
-            break;
-        case 6:
-            glPushMatrix();
-            c = new Cube();
-            c->drawObject(6,positionX,positionY);
-            glPopMatrix();
-            break;
-        default:
-            break;
+    switch(field[i][j])
+    {
+    case 1:
+        glPushMatrix();
+        c = new Cube();
+        c->drawObject(1,positionX,positionY);
+        glPopMatrix();
+        break;
+    case 2:
+        glPushMatrix();
+        c = new Cube();
+        c->drawObject(2,positionX,positionY);
+        glPopMatrix();
+        break;
+    case 3:
+        glPushMatrix();
+        c = new Cube();
+        c->drawObject(3,positionX,positionY);
+        glPopMatrix();
+        break;
+    case 4:
+        glPushMatrix();
+        c = new Cube();
+        c->drawObject(4,positionX,positionY);
+        glPopMatrix();
+        break;
+    case 5:
+        glPushMatrix();
+        c = new Cube();
+        c->drawObject(5,positionX,positionY);
+        glPopMatrix();
+        break;
+    case 6:
+        glPushMatrix();
+        c = new Cube();
+        c->drawObject(6,positionX,positionY);
+        glPopMatrix();
+        break;
+    default:
+        break;
     }
 }
 
@@ -213,13 +214,16 @@ int Game::getColor(int** field,int i, int j)
 int Game::isGameOver(int player)
 {
     int loser = 0;
-    if(player == 1){
+    if(player == 1)
+    {
         for(int i = 0; i < 7; i++)
         {
             if(field1[15][i] != 0)
                 loser = 1;
         }
-    }else{
+    }
+    else
+    {
         for(int i = 0; i < 7; i++)
         {
             if(field2[15][i] != 0)
@@ -530,7 +534,8 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
             lineBlock(player,trashCount1);
         brokenBlocks1 += trashCount1;
         int brokenBlocksPoints = trashCount1;
-        if(trash == 1){
+        if(trash == 1)
+        {
             points += exponencialPoints(brokenBlocksPoints);
             if(points/level > 250)
             {
@@ -540,7 +545,9 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
             clear(field,trashListFinal1,&trashCount1);
             animationOn = 1;
         }
-    }else if(player == 2){
+    }
+    else if(player == 2)
+    {
         for(int i = 0; i < 15; i++)
         {
             for(int j = 0; j < 7; j++)
@@ -562,7 +569,8 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
         brokenBlocks2 += trashCount2;
         int brokenBlocksPoints2 = trashCount2;
 
-        if(trash == 1){
+        if(trash == 1)
+        {
             points += exponencialPoints(brokenBlocksPoints2);
             if(points/level > 250)
             {
@@ -609,13 +617,20 @@ void Game::getReadjustPosition(int** field,int** trashf,int** trashr)
     }
 }
 
-void Game::updateFieldReadjust(int** field,int** trash){
-    for(int i = 0; i < 15; i++){
-        for(int j = 0; j < 7; j++){
-            if(i == 14){
+void Game::updateFieldReadjust(int** field,int** trash)
+{
+    for(int i = 0; i < 15; i++)
+    {
+        for(int j = 0; j < 7; j++)
+        {
+            if(i == 14)
+            {
                 trash[i][j] = 0;
-            }else{
-                if(getColor(field,i,j) == 0 && trash[i + 1][j] != 0){
+            }
+            else
+            {
+                if(getColor(field,i,j) == 0 && trash[i + 1][j] != 0)
+                {
                     trash[i][j] = trash[i + 1][j];
                     trash[i + 1][j] = 0;
                     field[i + 1][j] = 0;
@@ -626,24 +641,36 @@ void Game::updateFieldReadjust(int** field,int** trash){
     }
 }
 
-void Game::updateReadjust(int** field,int** trash){
-    for(int i = 0; i < 7; i++){
-        for(int j = 0; j < 15; j++){
-            if(j == 0){
+void Game::updateReadjust(int** field,int** trash)
+{
+    for(int i = 0; i < 7; i++)
+    {
+        for(int j = 0; j < 15; j++)
+        {
+            if(j == 0)
+            {
                 trash[j][i] = 0;
-            }else if(j > 0 && getColor(field,j - 1,i) == 0 && trash[j][i] != 0){
+            }
+            else if(j > 0 && getColor(field,j - 1,i) == 0 && trash[j][i] != 0)
+            {
                 break;
-            }else{
+            }
+            else
+            {
                 trash[j][i] = 0;
             }
         }
     }
 }
 
-bool Game::verifyReadjust(int** trash){
-    for(int i = 0; i < 15; i++){
-        for(int j = 0; j < 7; j++){
-            if(trash[i][j] != 0){
+bool Game::verifyReadjust(int** trash)
+{
+    for(int i = 0; i < 15; i++)
+    {
+        for(int j = 0; j < 7; j++)
+        {
+            if(trash[i][j] != 0)
+            {
                 return true;
             }
         }
@@ -651,11 +678,13 @@ bool Game::verifyReadjust(int** trash){
     return false;
 }
 
-int** Game::getTrashReadjust(){
+int** Game::getTrashReadjust()
+{
     return trashReadjust;
 }
 
-int** Game::getTrashReadjust2(){
+int** Game::getTrashReadjust2()
+{
     return trashReadjust2;
 }
 
@@ -806,9 +835,12 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glEnable(GL_DEPTH_TEST);///z-buffer
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if(gameView == 0){
+    if(gameView == 0)
+    {
         glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
-    }else{
+    }
+    else
+    {
 
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
@@ -828,13 +860,13 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
 
     float light0_position [3] = {18.0,105.0,1.0};
     glPushMatrix();
-        ///luz mexe junto com a camera
-		//glLoadIdentity();
-		glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
-		glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-		glColor3f(1.0, 1.0, 1.0);
-		glutWireSphere(0.05, 10, 10);
-	glPopMatrix();
+    ///luz mexe junto com a camera
+    //glLoadIdentity();
+    glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    glColor3f(1.0, 1.0, 1.0);
+    glutWireSphere(0.05, 10, 10);
+    glPopMatrix();
 
 
 
@@ -882,10 +914,12 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glDisable(GL_DEPTH_TEST);
-    if(gameView == 0){
+    if(gameView == 0)
+    {
         glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
     }
-    else{
+    else
+    {
         glEnable(GL_DEPTH_TEST);
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
@@ -903,27 +937,27 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
 
     float light0_position [3] = {18.0,105.0,1.0};
     glPushMatrix();
-        ///luz mexe junto com a camera
-		//glLoadIdentity();
-		glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
-		glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-		glColor3f(1.0, 1.0, 1.0);
-		glutWireSphere(0.05, 10, 10);
-	glPopMatrix();
+    ///luz mexe junto com a camera
+    //glLoadIdentity();
+    glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    glColor3f(1.0, 1.0, 1.0);
+    glutWireSphere(0.05, 10, 10);
+    glPopMatrix();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.45, (int) height);
 
     glPushMatrix();
-        if(gameView != 0)
-        {
-            glRotatef( rotationY, 1.0, 0.0, 0.0 );
-            glRotatef( rotationX, 0.0, 1.0, 0.0 );
-        }
-        this->drawField(this->field1,trashReadjust,animationMove,animationOn);
-        glEnable(GL_LIGHTING);
-        this->getPiece()->drawPiece(moveX,moveY);
+    if(gameView != 0)
+    {
+        glRotatef( rotationY, 1.0, 0.0, 0.0 );
+        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+    }
+    this->drawField(this->field1,trashReadjust,animationMove,animationOn);
+    glEnable(GL_LIGHTING);
+    this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
 
     drawLevel(width,height);
@@ -931,9 +965,12 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     ///player2
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if(gameView == 0){
+    if(gameView == 0)
+    {
         glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
-    }else{
+    }
+    else
+    {
         gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
         gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
@@ -942,24 +979,26 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glLoadIdentity();
     glViewport ((int) width*0.55, (int) 0, (int) width*0.45 ,(int) height);
     glPushMatrix();
-        if(gameView != 0)
-        {
-            glRotatef( rotationY, 1.0, 0.0, 0.0 );
-            glRotatef( rotationX, 0.0, 1.0, 0.0 );
-        }
-        this->drawField(this->field2,trashReadjust2,animationMove2,animationOn2);
-        glEnable(GL_LIGHTING);
-        this->getPiece2()->drawPiece(moveX2,moveY2);
+    if(gameView != 0)
+    {
+        glRotatef( rotationY, 1.0, 0.0, 0.0 );
+        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+    }
+    this->drawField(this->field2,trashReadjust2,animationMove2,animationOn2);
+    glEnable(GL_LIGHTING);
+    this->getPiece2()->drawPiece(moveX2,moveY2);
     glPopMatrix();
 
 
 
-    if(shift){
+    if(shift)
+    {
         piece->shiftColor();
         shift = false;
     }
 
-    if(shift2){
+    if(shift2)
+    {
         piece2->shiftColor();
         shift2 = false;
     }
@@ -968,7 +1007,8 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
 
 }
 
-void Game::drawLevel(int w,int h){
+void Game::drawLevel(int w,int h)
+{
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -1305,33 +1345,7 @@ void Game::lineBlock(int player, int trashCount) ///linha bloqueada
                     addColor(field2,i,j,6);
                 }
             }
-            if(this->field1[i][3] != 0)
-            {
-
-                i = 0;
-                while(this->field1[i][3] == 6 && i < 15)
-                {
-                    i++;
-                }
-                if(i <15)
-                {
-                    int k = 15 ;
-                    for(int j =0 ; j <7; j++)
-                    {
-
-                        while(this->field1[k][j] != 0)
-                        {
-                            k++;
-                        }
-                        while(i != k -1)
-                        {
-                            this->field1[i][j] = this->field1[i + 1][j];
-                            i++;
-                        }
-                    }
-
-                }
-            }
+            lineBlockRemove(player,trashCount);
             mod--;
         }
     }
@@ -1362,39 +1376,83 @@ void Game::lineBlock(int player, int trashCount) ///linha bloqueada
                     addColor(field1,i,j,6);
                 }
             }
-            if(this->field2[i][3] != 0)
-            {
-                i = 0;
-                while(this->field2[i][3] == 6 && i < 15)
-                {
-                    i++;
-                }
-                if(i <15)
-                {
-                    int k = 15 ;
-                    for(int j =0 ; j <7; j++)
-                    {
-
-                        while(this->field2[k][j] != 0)
-                        {
-                            k++;
-                        }
-                        while(i != k -1)
-                        {
-                            this->field2[i][j] = this->field2[i + 1][j];
-                            i++;
-                        }
-                    }
-
-                }
-            }
+            lineBlockRemove(player,trashCount);
             mod--;
         }
     }
 
 }
+void Game::lineBlockRemove(int player, int trashCount)
+{
+    if(player == 1)
+    {
+        if(this->field1[0][3] == 6)
+        {
+            int i = 0;
+            while(this->field1[i][3] == 6 && i < 15)
+            {
+                i++;
+            }
+            i= i-1;
+            int i1 = i;
+            if(i <15)
+            {
+                int k = 0 ;
+                for(int j =0 ; j <7; j++)
+                {
 
-void Game::displayGameOver2Players(int w,int h){
+                    while(this->field1[k][j] != 0)
+                    {
+                        k++;
+                    }
+                    while(i1 != k)
+                    {
+                        this->field1[i1][j] = this->field1[i1 + 1][j];
+                        i1++;
+                    }
+                    i1=i;
+                    k=0;
+                }
+
+            }
+        }
+    }
+    else if(player == 2)
+    {
+        if(this->field2[0][3] == 6)
+        {
+            int i = 0;
+            while(this->field2[i][3] == 6 && i < 15)
+            {
+                i++;
+            }
+            int i1 = i;
+            if(i <15)
+            {
+                int k = 0 ;
+                for(int j =0 ; j <7; j++)
+                {
+
+                    while(this->field2[k][j] != 0)
+                    {
+                        k++;
+                    }
+                    while(i1 != k)
+                    {
+                        this->field2[i1][j] = this->field2[i1 + 1][j];
+                        i1++;
+                    }
+                    i1 = i;
+                    k = 0;
+                }
+
+            }
+        }
+
+    }
+}
+void Game::displayGameOver2Players(int w,int h)
+{
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
@@ -1413,9 +1471,12 @@ void Game::displayGameOver2Players(int w,int h){
     }
 
     char player [15];
-    if(isGameOver(2) == 2){
+    if(isGameOver(2) == 2)
+    {
         strcpy(player,"Player One won!");
-    }else if(isGameOver(1) == 1){
+    }
+    else if(isGameOver(1) == 1)
+    {
         strcpy(player,"Player Two won!");
     }
 
@@ -1497,11 +1558,13 @@ void Game::displayGameOver(int w,int h)
     }
 }
 
-void Game::setAnimationOn(int a){
+void Game::setAnimationOn(int a)
+{
     animationOn = a;
 }
 
-void Game::setAnimationOn2(int a){
+void Game::setAnimationOn2(int a)
+{
     animationOn2 = a;
 }
 
