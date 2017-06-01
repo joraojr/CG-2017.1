@@ -95,7 +95,7 @@
 1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\piece.cpp
 	"Piece.h"
 
-1496203749 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
+1496252747 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
@@ -121,12 +121,14 @@
 1492812798 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.h
 	"Cube.h"
 
-1496208657 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
+1496252805 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
 	"Game.h"
 	<iostream>
 	<math.h>
+	<chrono>
+	<thread>
 
-1496208355 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
+1496213334 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
 	<GL/glui.h>
 	<GL/glut.h>
 	"Ranking.h"
