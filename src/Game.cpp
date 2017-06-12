@@ -1,8 +1,13 @@
 #include "Game.h"
 #include <iostream>
 #include <math.h>
+#include <chrono>
+#include <thread>
 
 using namespace std;
+using namespace std::this_thread; // sleep_for, sleep_until
+    using namespace std::chrono; // nanoseconds, system_clock, seconds
+
 
 Game::Game()
 {
@@ -537,8 +542,9 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
         int brokenBlocksPoints = trashCount1;
         if(trash == 1)
         {
-            if(gameState == 5)
+            if(gameState == 5){
                 lineBlock(1,trashCount1);
+                }
             points += exponencialPoints(brokenBlocksPoints);
             if(points/level > 250)
             {
@@ -572,8 +578,7 @@ int Game::runVerification(int** field, int** trashListAux1, int** trashListFinal
         brokenBlocks2 += trashCount2;
         int brokenBlocksPoints2 = trashCount2;
 
-        if(trash == 1)
-        {
+        if(trash == 1){
             lineBlock(2,trashCount2);
             points += exponencialPoints(brokenBlocksPoints2);
             if(points/level > 250)
@@ -844,15 +849,11 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glEnable(GL_DEPTH_TEST);///z-buffer
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if(gameView == 0)
-    {
+    if(gameView == 0){
         glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
-    }
-    else
-    {
-
-        gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
-        gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+    }else{
+        gluPerspective(60.0, (GLfloat) (width/2)/(GLfloat) height, 1.0, 200.0);
+        gluLookAt (25.0, 40.0, distOrigem, 25.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -929,8 +930,8 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     }
     else
     {
-        gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
-        gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+        gluPerspective(60.0, (GLfloat) (width/2)/(GLfloat) height, 1.0, 200.0);
+        gluLookAt (25.0, 40.0, distOrigem, 25.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
 
 
@@ -979,8 +980,8 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     }
     else
     {
-        gluPerspective(60.0, (GLfloat) width/(GLfloat) height, 1.0, 200.0);
-        gluLookAt (30.0, 40.0, distOrigem, 30.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+        gluPerspective(60.0, (GLfloat) (width/2)/(GLfloat) height, 1.0, 200.0);
+        gluLookAt (25.0, 40.0, distOrigem, 25.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
 
     glMatrixMode(GL_MODELVIEW);
@@ -1359,30 +1360,32 @@ void Game::removeBlockLine(int player,int trash){
     int lines = trash / 3;
 
     if(player == 1){
-        if(lineblock == 0)
-            return;
+
 
         for(int k = 0; k < lines; k++){
             for(int i =0; i < 17; i++){
                 for(int j = 0; j < 7; j++){
+                    if(lineblock == 0)
+                        return;
                     if(i < 17)
                         field1[i][j] = field1[i + 1][j];
                 }
             }
-            lineblock--;
+            if(lineblock > 0)
+                lineblock--;
         }
     }else{
-        if(lineblock2 == 0)
-            return;
-
         for(int k = 0; k < lines; k++){
             for(int i =0; i < 17; i++){
                 for(int j = 0; j < 7; j++){
+                    if(lineblock2 == 0)
+                        return;
                     if(i < 17)
                         field2[i][j] = field2[i + 1][j];
                 }
             }
-            lineblock2--;
+            if(lineblock2 > 0)
+                lineblock2--;
         }
     }
 }

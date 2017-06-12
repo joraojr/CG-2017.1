@@ -27,7 +27,7 @@ float yMin = -105.0;
 float linha = 16;
 int coluna = 3;
 int last_x,last_y;
-float distOrigem = 60;
+float distOrigem = 80;
 float rotationX = 0.0, rotationY = -30.0;
 bool timeOn = true,fullScreen = false,shift = false,shiftMouse = false;
 float animationTime = 6.25,animationAux = 6.25,fastSpeed = 0.8;
