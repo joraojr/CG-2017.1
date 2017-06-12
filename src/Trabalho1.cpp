@@ -124,6 +124,8 @@ void init()
 {
     glClearColor(0.0,0.0,0.0,0.0);
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+
+    glShadeModel(GL_SMOOTH);
 }
 
 void timer(int value){
@@ -502,7 +504,7 @@ int main (int argc,char *argv[])
     game->getRanking()->readFromFile();
 
     glutInit(&argc,argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(width,height);
     glutInitWindowPosition(0,0);
     glutCreateWindow("TetrisCrush");

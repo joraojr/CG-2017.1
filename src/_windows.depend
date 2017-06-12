@@ -95,7 +95,7 @@
 1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\piece.cpp
 	"Piece.h"
 
-1496252747 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
+1497285746 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
 	<GL/glui.h>
 	<iostream>
@@ -121,18 +121,19 @@
 1492812798 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.h
 	"Cube.h"
 
-1496252805 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
+1497288740 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
 	"Game.h"
 	<iostream>
 	<math.h>
 	<chrono>
 	<thread>
 
-1496213334 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
+1497217228 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
 	<GL/glui.h>
 	<GL/glut.h>
 	"Ranking.h"
 	"Piece.h"
+	"glcTexture.h"
 
 1492622599 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
 	<GL/glut.h>
@@ -275,4 +276,49 @@
 	<string.h>
 	<assert.h>
 	"glm.h"
+
+1467836884 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\glctexture.h
+	<string>
+
+1467836864 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\glctexture.cpp
+	<string>
+	<stdio.h>
+	<malloc.h>
+	"GL/glut.h"
+	"png.h"
+	"glcTexture.h"
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\png\png.h
+	"zlib.h"
+	"pngconf.h"
+	<crtdbg.h>
+
+1490749185 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\zlib\zlib.h
+	"zconf.h"
+
+1490749185 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\zlib\zconf.h
+	<windows.h>
+	<sys/types.h>
+	<unistd.h>
+	<unixio.h>
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\png\pngconf.h
+	"pngusr.h"
+	"config.h"
+	<windows.h>
+	<stdio.h>
+	<stdio.h>
+	<sys/types.h>
+	<setjmp.h>
+	<strings.h>
+	<string.h>
+	<stdlib.h>
+	<fp.h>
+	<math.h>
+	<m68881.h>
+	<mem.h>
+	<alloc.h>
+	<malloc.h>
+	<time.h>
+	<dos.h>
 

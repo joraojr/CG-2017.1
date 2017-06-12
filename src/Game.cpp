@@ -49,6 +49,9 @@ Game::Game()
             trashReadjust2[i][j] = 0;
         }
     }
+    textureManager = new glcTexture();
+    textureManager->SetNumberOfTextures(1);///por enquanto 1
+
     lineblock = 0;
     lineblock2 = 0;
     animationOn = 0;
@@ -1097,9 +1100,27 @@ void Game::drawStartScreen(int w,int h)
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
     glLoadIdentity();
     glOrtho(0.0,300.0, -200.0, 50.0, -1.0, 1.0);
-    glColor3f(1.0,0.0,0.0);
-    glViewport ((int) 0, (int) 0, (int) w, (int) h);
 
+
+    glViewport ((int) 0, (int) 0, (int) w, (int) h);
+    textureManager->CreateTexture("../data/telaInicial.png",0);
+    textureManager->Bind(0);
+    glPushMatrix();
+        glBegin(GL_QUADS);
+            glNormal3f(0.0,0.0,1.0);
+            glTexCoord2f(0.0,0.0);
+            glVertex3f (0,-200, -1.0);
+            glTexCoord2f(1.0,0.0);
+            glVertex3f (300, -200.0, -1.0);
+            glTexCoord2f(1.0,1.0);
+            glVertex3f (300, 50, -1.0);
+            glTexCoord2f(0.0,1.0);
+            glVertex3f (0.0,50, -1.0);
+        glEnd();
+    glPopMatrix();
+    textureManager->Disable();
+
+    glColor3f(1.0,0.0,0.0);
     glBegin(GL_QUADS);
     glVertex3f (125, 0, 0.0);
     glVertex3f (125, -30, 0.0);
@@ -1221,9 +1242,27 @@ void Game::drawStartScreenPlayerOption(int w,int h)
     glMatrixMode(GL_PROJECTION);              // Seleciona Matriz de Proje\E7\E3o
     glLoadIdentity();
     glOrtho(0.0,300.0, -200.0, 50.0, -1.0, 1.0);
-    glColor3f(1.0,0.0,0.0);
+
     glViewport ((int) 0, (int) 0, (int) w, (int) h);
 
+
+    textureManager->Bind(0);
+    glPushMatrix();
+        glBegin(GL_QUADS);
+            glNormal3f(0.0,0.0,1.0);
+            glTexCoord2f(0.0,0.0);
+            glVertex3f (0,-200, -1.0);
+            glTexCoord2f(1.0,0.0);
+            glVertex3f (300, -200.0, -1.0);
+            glTexCoord2f(1.0,1.0);
+            glVertex3f (300, 50, -1.0);
+            glTexCoord2f(0.0,1.0);
+            glVertex3f (0.0,50, -1.0);
+        glEnd();
+    glPopMatrix();
+    textureManager->Disable();
+
+    glColor3f(1.0,0.0,0.0);
     glBegin(GL_QUADS);
     glVertex3f (125, 0, 0.0);
     glVertex3f (125, -30, 0.0);
