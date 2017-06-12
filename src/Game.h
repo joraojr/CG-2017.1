@@ -4,6 +4,7 @@
 #include <GL/glut.h>
 #include "Ranking.h"
 #include "Piece.h"
+#include "glcTexture.h"
 
 class Game
 {
@@ -18,6 +19,7 @@ private:
     int** field1;
     int** field2;
 
+    glcTexture *textureManager;
     int lineblock;
     int lineblock2;
     int gameView;
