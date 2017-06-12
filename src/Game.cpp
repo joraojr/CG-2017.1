@@ -49,8 +49,6 @@ Game::Game()
             trashReadjust2[i][j] = 0;
         }
     }
-    textureManager = new glcTexture();
-    textureManager->SetNumberOfTextures(1);///por enquanto 1
 
     lineblock = 0;
     lineblock2 = 0;
@@ -1088,6 +1086,18 @@ void Game::drawPoints(int w,int h)
     scoreDisplay(550,50,0,25,this->level);
 }
 
+void Game::initTexture(){
+    textureManager = new glcTexture();
+    textureManager->SetNumberOfTextures(6);
+    textureManager->CreateTexture("../data/telaInicial.png",0);
+    textureManager->CreateTexture("../data/start.png",1);
+    textureManager->CreateTexture("../data/ranking.png",2);
+    textureManager->CreateTexture("../data/sair.png",3);
+    textureManager->CreateTexture("../data/1_player.png",4);
+    textureManager->CreateTexture("../data/2_players.png",5);
+
+}
+
 void Game::drawStartScreen(int w,int h)
 {
 
@@ -1101,9 +1111,7 @@ void Game::drawStartScreen(int w,int h)
     glLoadIdentity();
     glOrtho(0.0,300.0, -200.0, 50.0, -1.0, 1.0);
 
-
     glViewport ((int) 0, (int) 0, (int) w, (int) h);
-    textureManager->CreateTexture("../data/telaInicial.png",0);
     textureManager->Bind(0);
     glPushMatrix();
         glBegin(GL_QUADS);
@@ -1118,97 +1126,74 @@ void Game::drawStartScreen(int w,int h)
             glVertex3f (0.0,50, -1.0);
         glEnd();
     glPopMatrix();
-    textureManager->Disable();
 
-    glColor3f(1.0,0.0,0.0);
+    textureManager->Bind(1);
     glBegin(GL_QUADS);
+    glTexCoord2f(0.0,1.0);
     glVertex3f (125, 0, 0.0);
+    glTexCoord2f(0.0,0.0);
     glVertex3f (125, -30, 0.0);
+    glTexCoord2f(1.0,0.0);
     glVertex3f (175, -30, 0.0);
+    glTexCoord2f(1.0,1.0);
     glVertex3f (175, 0, 0.0);
     glEnd();
 
 
     glColor3f(1.0,1,1);
     glBegin(GL_LINE_LOOP);
-    glVertex3f (125, 0, 0.0);
-    glVertex3f (125, -30, 0.0);
-    glVertex3f (175, -30, 0.0);
-    glVertex3f (175, 0, 0.0);
+    glVertex3f (125, 0, -1.0);
+    glVertex3f (125, -30, -1.0);
+    glVertex3f (175, -30, -1.0);
+    glVertex3f (175, 0, -1.0);
     glEnd();
 
-
-    int posX = 137;
-
-    char start[] = "START";
-
-    for (int i = 0; i < 5; i++)
-    {
-        glRasterPos3f (posX + i*5,-20, 0);
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, start[i]);
-    }
-
-    glColor3f(0.0,0.5,0.0);
-
-
+    textureManager->Bind(2);
     glBegin(GL_QUADS);
+    glTexCoord2f(0.0,0.0);
     glVertex3f (125, -60, 0.0);
+    glTexCoord2f(0.0,1.0);
     glVertex3f (125, -30, 0.0);
+    glTexCoord2f(1.0,1.0);
     glVertex3f (175, -30, 0.0);
+    glTexCoord2f(1.0,0.0);
     glVertex3f (175, -60, 0.0);
     glEnd();
 
 
     glColor3f(1.0,1,1);
     glBegin(GL_LINE_LOOP);
-    glVertex3f (125, -60, 0.0);
-    glVertex3f (125, -30, 0.0);
-    glVertex3f (175, -30, 0.0);
-    glVertex3f (175, -60, 0.0);
+    glVertex3f (125, -60, -1.0);
+    glVertex3f (125, -30, -1.0);
+    glVertex3f (175, -30, -1.0);
+    glVertex3f (175, -60, -1.0);
     glEnd();
 
-    posX = 130;
-
-    char ranking[] = "RANKING";
-
-    for (int i = 0; i < 7; i++)
-    {
-        glRasterPos3f (posX + i*6,-50, 0);
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ranking[i]);
-    }
-
-    glColor3f(0.2549,0.4117,1);
-
-
+    textureManager->Bind(3);
     glBegin(GL_QUADS);
+    glTexCoord2f(0.0,0.0);
     glVertex3f (125, -90, 0.0);
+    glTexCoord2f(0.0,1.0);
     glVertex3f (125, -60, 0.0);
+    glTexCoord2f(1.0,1.0);
     glVertex3f (175, -60, 0.0);
+    glTexCoord2f(1.0,0.0);
     glVertex3f (175, -90, 0.0);
     glEnd();
 
 
     glColor3f(1.0,1,1);
     glBegin(GL_LINE_LOOP);
-    glVertex3f (125, -90, 0.0);
-    glVertex3f (125, -60, 0.0);
-    glVertex3f (175, -60, 0.0);
-    glVertex3f (175, -90, 0.0);
+    glVertex3f (125, -90, -1.0);
+    glVertex3f (125, -60, -1.0);
+    glVertex3f (175, -60, -1.0);
+    glVertex3f (175, -90, -1.0);
     glEnd();
 
-    posX = 137;
-
-    char sair[] = "SAIR";
-
-    for (int i = 0; i < 4; i++)
-    {
-        glRasterPos3f (posX + i*6,-80, 0);
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, sair[i]);
-    }
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-
+    textureManager->Disable();
 }
 
 void Game::scoreDisplay(int posx, int posy, int posz, int space_char, int scorevar)
@@ -1245,7 +1230,6 @@ void Game::drawStartScreenPlayerOption(int w,int h)
 
     glViewport ((int) 0, (int) 0, (int) w, (int) h);
 
-
     textureManager->Bind(0);
     glPushMatrix();
         glBegin(GL_QUADS);
@@ -1260,13 +1244,17 @@ void Game::drawStartScreenPlayerOption(int w,int h)
             glVertex3f (0.0,50, -1.0);
         glEnd();
     glPopMatrix();
-    textureManager->Disable();
 
-    glColor3f(1.0,0.0,0.0);
+    textureManager->Bind(4);
+
     glBegin(GL_QUADS);
+    glTexCoord2f(0.0,1.0);
     glVertex3f (125, 0, 0.0);
+    glTexCoord2f(0.0,0.0);
     glVertex3f (125, -30, 0.0);
+    glTexCoord2f(1.0,0.0);
     glVertex3f (190, -30, 0.0);
+    glTexCoord2f(1.0,1.0);
     glVertex3f (190, 0, 0.0);
     glEnd();
 
@@ -1279,27 +1267,18 @@ void Game::drawStartScreenPlayerOption(int w,int h)
     glVertex3f (190, 0, 0.0);
     glEnd();
 
-
-    int posX = 137;
-
-    char player1[] = "1 PLAYER";
-
-    for (int i = 0; i < 8; i++)
-    {
-        glRasterPos3f (posX + i*5,-20, 0);
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, player1[i]);
-    }
-
-    glColor3f(0.0,0.5,0.0);
-
+    textureManager->Bind(5);
 
     glBegin(GL_QUADS);
+    glTexCoord2f(0.0,0.0);
     glVertex3f (125, -60, 0.0);
+    glTexCoord2f(0.0,1.0);
     glVertex3f (125, -30, 0.0);
+    glTexCoord2f(1.0,1.0);
     glVertex3f (190, -30, 0.0);
+    glTexCoord2f(1.0,0.0);
     glVertex3f (190, -60, 0.0);
     glEnd();
-
 
     glColor3f(1.0,1,1);
     glBegin(GL_LINE_LOOP);
@@ -1309,18 +1288,10 @@ void Game::drawStartScreenPlayerOption(int w,int h)
     glVertex3f (190, -60, 0.0);
     glEnd();
 
-    posX = 130;
-
-    char player2[] = "2 PLAYERS";
-
-    for (int i = 0; i < 9; i++)
-    {
-        glRasterPos3f (posX + i*6,-50, 0);
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, player2[i]);
-    }
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    textureManager->Disable();
 }
 
 
