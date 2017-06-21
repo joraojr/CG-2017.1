@@ -119,7 +119,6 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
 
 void Game::drawField(int ** field,int** trashr,float animationMove, int animation)
 {
-
     if(animation == 0)
     {
         float x = 0.0;
@@ -862,6 +861,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
 
     glEnable(GL_LIGHTING);
 
+
     GLfloat cor0[] = {1.0,1.0,1.0,1.0};
     GLfloat corAmbient[] = {0.5,0.5,0.5,1.0};
     glEnable(GL_LIGHT0);
@@ -880,13 +880,28 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glPopMatrix();
 
 
-
     glPushMatrix();
     if(gameView != 0)
     {
         glRotatef( rotationY, 1.0, 0.0, 0.0 );
         glRotatef( rotationX, 0.0, 1.0, 0.0 );
     }
+    textureManager->Bind(6);
+    glPushMatrix();
+        glBegin(GL_QUADS);
+            glNormal3f(0.0,0.0,1.0);
+            glTexCoord2f(0.0,0.0);
+            glVertex3f (0.0,-1.0, -10.0);
+            glTexCoord2f(1.0,0.0);
+            glVertex3f (49, -1.0, -10.0);
+            glTexCoord2f(1.0,1.0);
+            glVertex3f (49, 105.0, -1.0);
+            glTexCoord2f(0.0,1.0);
+            glVertex3f (0.0,105.0, -1.0);
+        glEnd();
+    glPopMatrix();
+    textureManager->Disable();
+
 
     this->drawField(field1,trashReadjust,animationMove,animationOn);
     glEnable(GL_LIGHTING);
@@ -1088,13 +1103,15 @@ void Game::drawPoints(int w,int h)
 
 void Game::initTexture(){
     textureManager = new glcTexture();
-    textureManager->SetNumberOfTextures(6);
+    textureManager->SetNumberOfTextures(7);
     textureManager->CreateTexture("../data/telaInicial.png",0);
     textureManager->CreateTexture("../data/start.png",1);
     textureManager->CreateTexture("../data/ranking.png",2);
     textureManager->CreateTexture("../data/sair.png",3);
     textureManager->CreateTexture("../data/1_player.png",4);
     textureManager->CreateTexture("../data/2_players.png",5);
+    textureManager->CreateTexture("../data/line-vertical-dark-point-1600x1200.png",6);
+
 
 }
 
