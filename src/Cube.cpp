@@ -4,10 +4,14 @@
 #include <iostream>
 #include <time.h>
 
-Cube::Cube(){
+Cube::Cube(glcTexture *texture){
     size = 7;
     randomObject();
+    this->textureManager = texture;
 }
+
+
+
 
 void Cube::setMaterial(GLfloat *ambient, GLfloat *diffuse, GLfloat *specular,
 					  GLfloat *shininess){
@@ -64,17 +68,107 @@ void Cube::drawGrayCube(float positionX,float positionY){
 }
 
 void Cube::drawCube(float positionX,float positionY){
-    GLfloat objeto_ambient[]   = { 0.9745, 0.11175, 0.11175, 1.0 };
-    GLfloat objeto_difusa[]    = { 0.71424, 0.24136, 0.24136, 1.0 };
-    GLfloat objeto_especular[] = { 0.67811, 0.226959, 0.126959, 1.0 };
-    GLfloat objeto_brilho[]    = { 90.0f };
 
-
+    textureManager->Bind(0);
     glPushMatrix();
-        setMaterial(objeto_ambient,objeto_difusa,objeto_especular,objeto_brilho);
         glTranslatef(positionX,positionY,3.5);
-        glutSolidCube(size*0.8);
+        glScalef(size*0.8,size*0.8,size*0.8);
+          glBegin(GL_QUADS);
+              glNormal3f(0.0, 0.0, 1.0);
+              glTexCoord2f(0.0, 0.0);
+              glVertex3f(0.0, 0.0, 0.0);
+
+              glTexCoord2f(1.0, 0.0);
+              glVertex3f(0.0,1.0, 0.0);
+
+              glTexCoord2f(1.0, 1.0);
+              glVertex3f(1.0, 1.0, 0.0);
+
+              glTexCoord2f(0.0, 1.0);
+              glVertex3f( 1.0,0.0, 0.0);
+          glEnd();
+
+          glBegin(GL_QUADS);
+              glNormal3f(-1.0, 0.0, 0.0);
+              glTexCoord2f(0.0, 0.0);
+              glVertex3f(0.0, 0.0, 0.0);
+
+              glTexCoord2f(1.0, 0.0);
+              glVertex3f(0.0,1.0,0.0);
+
+              glTexCoord2f(1.0, 1.0);
+              glVertex3f(0.0, 1.0, -1.0);
+
+              glTexCoord2f(0.0, 1.0);
+              glVertex3f( 0.0,0.0, -1.0);
+          glEnd();
+
+          glBegin(GL_QUADS);
+              glNormal3f(1.0, 0.0, 0.0);
+              glTexCoord2f(0.0, 0.0);
+              glVertex3f(1.0, 0.0, 0.0);
+
+              glTexCoord2f(1.0, 0.0);
+              glVertex3f(1.0,0.0,-1.0);
+
+              glTexCoord2f(1.0, 1.0);
+              glVertex3f( 1.0,1.0, -1.0);
+
+
+              glTexCoord2f(0.0, 1.0);
+              glVertex3f(1.0, 1.0, 0.0);
+          glEnd();
+
+          glBegin(GL_QUADS);
+              glNormal3f(0.0, 0.0, -1.0);
+              glTexCoord2f(0.0, 0.0);
+              glVertex3f(1.0, 0.0, -1.0);
+
+              glTexCoord2f(1.0, 0.0);
+              glVertex3f(1.0,1.0,-1.0);
+
+              glTexCoord2f(1.0, 1.0);
+              glVertex3f( 0.0,1.0, -1.0);
+
+
+              glTexCoord2f(0.0, 1.0);
+              glVertex3f(0.0, 0.0, -1.0);
+          glEnd();
+
+          glBegin(GL_QUADS);
+              glNormal3f(0.0, 1.0, 0.0);
+              glTexCoord2f(0.0, 0.0);
+              glVertex3f(1.0, 1.0, 0.0);
+
+              glTexCoord2f(1.0, 0.0);
+              glVertex3f(1.0,1.0,-1.0);
+
+              glTexCoord2f(1.0, 1.0);
+              glVertex3f( 0.0,1.0, -1.0);
+
+
+              glTexCoord2f(0.0, 1.0);
+              glVertex3f(0.0, 1.0, 0.0);
+          glEnd();
+
+          glBegin(GL_QUADS);
+              glNormal3f(0.0, -1.0, 0.0);
+              glTexCoord2f(0.0, 0.0);
+              glVertex3f(0.0, 0.0, 0.0);
+
+              glTexCoord2f(1.0, 0.0);
+              glVertex3f(1.0,0.0,0.0);
+
+              glTexCoord2f(1.0, 1.0);
+              glVertex3f( 1.0,0.0, -1.0);
+
+
+              glTexCoord2f(0.0, 1.0);
+              glVertex3f(0.0, 0.0, -1.0);
+          glEnd();
     glPopMatrix();
+    textureManager->Disable();
+
 }
 
 void Cube::drawSphere(float positionX,float positionY){

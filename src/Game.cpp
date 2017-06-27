@@ -63,10 +63,11 @@ Game::Game()
     ranking = new Ranking();
     brokenBlocks1 = 0;
     brokenBlocks2 = 0;
-    piece = new Piece();
-    piece2 = new Piece();
-    nextPiece = new Piece();
-    nextPiece2 = new Piece();
+    initTexture();
+    piece = new Piece(textureManager);
+    piece2 = new Piece(textureManager);
+    nextPiece = new Piece(textureManager);
+    nextPiece2 = new Piece(textureManager);
 }
 
 void Game::drawCubeColor(int** field,int i, int j, float positionX, float positionY)
@@ -78,37 +79,37 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
     {
     case 1:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(1,positionX,positionY);
         glPopMatrix();
         break;
     case 2:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(2,positionX,positionY);
         glPopMatrix();
         break;
     case 3:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(3,positionX,positionY);
         glPopMatrix();
         break;
     case 4:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(4,positionX,positionY);
         glPopMatrix();
         break;
     case 5:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(5,positionX,positionY);
         glPopMatrix();
         break;
     case 6:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(6,positionX,positionY);
         glPopMatrix();
         break;
@@ -781,8 +782,8 @@ void Game::setPiece2(Piece* p)
 
 void Game::createNextPiece()
 {
-    nextPiece = new Piece();
-    nextPiece2 = new Piece();
+    nextPiece = new Piece(textureManager);
+    nextPiece2 = new Piece(textureManager);
 }
 
 void Game::resetGame()
@@ -813,8 +814,8 @@ void Game::resetGame()
 
     brokenBlocks1 = 0;
     brokenBlocks2 = 0;
-    piece = new Piece();
-    nextPiece = new Piece();
+    piece = new Piece(textureManager);
+    nextPiece = new Piece(textureManager);
 }
 
 int Game::getLevel()
@@ -1103,7 +1104,7 @@ void Game::drawPoints(int w,int h)
 
 void Game::initTexture(){
     textureManager = new glcTexture();
-    textureManager->SetNumberOfTextures(7);
+    textureManager->SetNumberOfTextures(8);
     textureManager->CreateTexture("../data/telaInicial.png",0);
     textureManager->CreateTexture("../data/start.png",1);
     textureManager->CreateTexture("../data/ranking.png",2);
@@ -1111,6 +1112,7 @@ void Game::initTexture(){
     textureManager->CreateTexture("../data/1_player.png",4);
     textureManager->CreateTexture("../data/2_players.png",5);
     textureManager->CreateTexture("../data/line-vertical-dark-point-1600x1200.png",6);
+    textureManager->CreateTexture("/home/joraojr/Documentos/CG/data/background-1409028_1280.png",7);
 
 
 }

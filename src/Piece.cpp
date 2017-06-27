@@ -3,11 +3,11 @@
 #include <ctime>
 
 
-Piece::Piece()
+Piece::Piece(glcTexture * textureManager)
 {
-    c[0] = new Cube();
-    c[1] = new Cube();
-    c[2] = new Cube();
+    c[0] = new Cube(textureManager);
+    c[1] = new Cube(textureManager);
+    c[2] = new Cube(textureManager);
 }
 
 void Piece::drawPiece(float moveX,float moveY)
