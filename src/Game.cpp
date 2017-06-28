@@ -1103,7 +1103,7 @@ void Game::drawPoints(int w,int h)
 
 void Game::initTexture(){
     textureManager = new glcTexture();
-    textureManager->SetNumberOfTextures(8);
+    textureManager->SetNumberOfTextures(12);
     textureManager->CreateTexture("../data/telaInicial.png",0);
     textureManager->CreateTexture("../data/start.png",1);
     textureManager->CreateTexture("../data/ranking.png",2);
@@ -1111,7 +1111,11 @@ void Game::initTexture(){
     textureManager->CreateTexture("../data/1_player.png",4);
     textureManager->CreateTexture("../data/2_players.png",5);
     textureManager->CreateTexture("../data/line-vertical-dark-point-1600x1200.png",6);
-    textureManager->CreateTexture("/home/joraojr/Documentos/CG/data/background-1409028_1280.png",7);
+    textureManager->CreateTexture("../data/background-1409028_1280.png",7);
+    textureManager->CreateTexture("../data/textura-vermelha-do-papel-de-parede_1194-7209.png",8);
+    textureManager->CreateTexture("../data/Verlaeufe-Windows-CE-Hintergrund_600.jpg",9);
+    textureManager->CreateTexture("../data/tapate-Pixel.png",10);
+    textureManager->CreateTexture("../data/depositphotos_69612075-stock-illustration-vector-s.png",11);
 
 
 }
