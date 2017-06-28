@@ -69,9 +69,9 @@ void Cube::drawGrayCube(float positionX,float positionY){
 
 void Cube::drawCube(float positionX,float positionY){
 
-    textureManager->Bind(0);
+    textureManager->Bind(7);
     glPushMatrix();
-        glTranslatef(positionX,positionY,3.5);
+        glTranslatef(positionX-3,positionY-3,5.5);
         glScalef(size*0.8,size*0.8,size*0.8);
           glBegin(GL_QUADS);
               glNormal3f(0.0, 0.0, 1.0);

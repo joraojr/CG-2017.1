@@ -63,7 +63,6 @@ Game::Game()
     ranking = new Ranking();
     brokenBlocks1 = 0;
     brokenBlocks2 = 0;
-    initTexture();
     piece = new Piece(textureManager);
     piece2 = new Piece(textureManager);
     nextPiece = new Piece(textureManager);

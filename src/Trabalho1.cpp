@@ -126,7 +126,7 @@ void init()
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 
     glShadeModel(GL_SMOOTH);
-//    game->initTexture();
+    game->initTexture();
 }
 
 void timer(int value){
