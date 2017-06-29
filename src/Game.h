@@ -63,7 +63,8 @@ private:
     void clearTrashListAux(int ** trashListAux);///limpa a matriz de coordenadas de blocos
     void copyToTrashListFinal(int** trashListAux, int** trashListFinal, int *trashCount);
     void lineBlock(int player, int trashCount);
-
+    void drawBorder();
+    void drawCylinder(float transX, float transY,float transZ, float scaleX, float scaleY, float scaleZ,float rotation);
 public:
     Piece* getPiece2();
     void drawField(int ** field,int** trashr,float animationMove,int animation);
