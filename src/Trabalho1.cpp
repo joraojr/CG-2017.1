@@ -37,6 +37,8 @@ Game* game;
 int height = 680,width = 860;
 int level;
 
+float moveX,moveY,moveZ;
+
 void timer (int value);
 void displayGame();
 

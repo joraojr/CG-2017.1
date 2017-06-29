@@ -63,10 +63,10 @@ Game::Game()
     ranking = new Ranking();
     brokenBlocks1 = 0;
     brokenBlocks2 = 0;
-    piece = new Piece();
-    piece2 = new Piece();
-    nextPiece = new Piece();
-    nextPiece2 = new Piece();
+    piece = new Piece(textureManager);
+    piece2 = new Piece(textureManager);
+    nextPiece = new Piece(textureManager);
+    nextPiece2 = new Piece(textureManager);
 }
 
 void Game::drawCubeColor(int** field,int i, int j, float positionX, float positionY)
@@ -78,37 +78,37 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
     {
     case 1:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(1,positionX,positionY);
         glPopMatrix();
         break;
     case 2:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(2,positionX,positionY);
         glPopMatrix();
         break;
     case 3:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(3,positionX,positionY);
         glPopMatrix();
         break;
     case 4:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(4,positionX,positionY);
         glPopMatrix();
         break;
     case 5:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(5,positionX,positionY);
         glPopMatrix();
         break;
     case 6:
         glPushMatrix();
-        c = new Cube();
+        c = new Cube(textureManager);
         c->drawObject(6,positionX,positionY);
         glPopMatrix();
         break;
@@ -119,7 +119,6 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
 
 void Game::drawField(int ** field,int** trashr,float animationMove, int animation)
 {
-
     if(animation == 0)
     {
         float x = 0.0;
@@ -782,8 +781,8 @@ void Game::setPiece2(Piece* p)
 
 void Game::createNextPiece()
 {
-    nextPiece = new Piece();
-    nextPiece2 = new Piece();
+    nextPiece = new Piece(textureManager);
+    nextPiece2 = new Piece(textureManager);
 }
 
 void Game::resetGame()
@@ -814,8 +813,8 @@ void Game::resetGame()
 
     brokenBlocks1 = 0;
     brokenBlocks2 = 0;
-    piece = new Piece();
-    nextPiece = new Piece();
+    piece = new Piece(textureManager);
+    nextPiece = new Piece(textureManager);
 }
 
 int Game::getLevel()
@@ -844,6 +843,75 @@ void Game::setPause(bool p)
     pause = p;
 }
 
+void Game::drawCylinder(float transX, float transY,float transZ, float scaleX, float scaleY, float scaleZ,float rotation){
+    float a = 0,pi = 3.14, u = 0;
+    int numStep = 100;
+    int r = 1, h = 1;
+    glColor3f(1.0,0.0,0.0);
+    glPushMatrix();
+        glTranslatef(transX,transY,transZ);
+        glRotated(rotation,0.0,0.0,1.0);
+        glScalef(scaleX,scaleY,scaleZ);
+        glPushMatrix();
+        a = 2*pi*u;
+        glBegin(GL_QUAD_STRIP);
+            for (int i = 0; i < numStep; i++){
+                glNormal3f(r * cos(a)/180,0.0,r*sin(a)/180);
+
+                //glTexCoord2f(u,0.0);
+                glVertex3f(r * cos(a)/180,0,r*sin(a)/180);
+                //glTexCoord2f(u,1.0);
+                glVertex3f(r * cos(a)/180,h,r*sin(a)/180);
+
+                u += 0.05;
+                a = 2*pi*u;
+            }
+
+        glEnd();
+        a = 0;
+        u = 0;
+
+        glBegin(GL_TRIANGLE_FAN);
+            glVertex3f(0.0,0.0,0.0);
+            for (int i = 0; i < numStep; i++){
+                glNormal3f(r * cos(a)/180,-1.0,r*sin(a)/180);
+
+                //glTexCoord2f(u,0.0);
+                glVertex3f(r * cos(a)/180,0,r*sin(a)/180);
+
+                u += 0.05;
+                a = 2*pi*u;
+            }
+        glEnd();
+        a = 0;
+        u = 0;
+
+        glBegin(GL_TRIANGLE_FAN);
+            glTexCoord2f(u,0.0);
+            glVertex3f(0.0,h,0.0);
+            for (int i = 0; i < numStep; i++){
+                glNormal3f(r * cos(a)/180,1.0,r*sin(a)/180);
+                //glTexCoord2f(u,1.0);
+
+                glVertex3f(r * cos(a)/180,h,r*sin(a)/180);
+
+                u += 0.05;
+                a = 2*pi*u;
+            }
+        glEnd();
+        a = 0;
+        u = 0;
+        glPopMatrix();
+    glPopMatrix();
+}
+
+void Game::drawBorder(){
+    drawCylinder(0.0,0.0,0.0,60.0,105.0,60,0.0);
+    drawCylinder(49.0,0.0,0.0,60.0,105.0,60,0.0);
+    drawCylinder(49.0,0.0,0.0,60.0,49.0,60,90);
+    drawCylinder(49.0,105.0,0.0,60.0,49.0,60,90);
+}
+
 void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem)
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -851,7 +919,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if(gameView == 0){
-        glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
+        glOrtho(-3.0,52.0,-3.0,107.0,-10.0,10.0);
     }else{
         gluPerspective(60.0, (GLfloat) (width/2)/(GLfloat) height, 1.0, 200.0);
         gluLookAt (25.0, 40.0, distOrigem, 25.0, 35.0, 0.0, 0.0, 1.0, 0.0);
@@ -861,6 +929,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glViewport ((int) 0, (int) 0, (int) width*0.55, (int) height);
 
     glEnable(GL_LIGHTING);
+
 
     GLfloat cor0[] = {1.0,1.0,1.0,1.0};
     GLfloat corAmbient[] = {0.5,0.5,0.5,1.0};
@@ -880,14 +949,29 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glPopMatrix();
 
 
-
     glPushMatrix();
     if(gameView != 0)
     {
         glRotatef( rotationY, 1.0, 0.0, 0.0 );
         glRotatef( rotationX, 0.0, 1.0, 0.0 );
     }
+    textureManager->Bind(6);
+    glPushMatrix();
+        glBegin(GL_QUADS);
+            glNormal3f(0.0,0.0,1.0);
+            glTexCoord2f(0.0,0.0);
+            glVertex3f (0.0,-1.0, -10.0);
+            glTexCoord2f(1.0,0.0);
+            glVertex3f (49, -1.0, -10.0);
+            glTexCoord2f(1.0,1.0);
+            glVertex3f (49, 105.0, -1.0);
+            glTexCoord2f(0.0,1.0);
+            glVertex3f (0.0,105.0, -1.0);
+        glEnd();
+    glPopMatrix();
+    textureManager->Disable();
 
+    drawBorder();
     this->drawField(field1,trashReadjust,animationMove,animationOn);
     glEnable(GL_LIGHTING);
     this->getPiece()->drawPiece(moveX,moveY);
@@ -1088,13 +1172,20 @@ void Game::drawPoints(int w,int h)
 
 void Game::initTexture(){
     textureManager = new glcTexture();
-    textureManager->SetNumberOfTextures(6);
+    textureManager->SetNumberOfTextures(12);
     textureManager->CreateTexture("../data/telaInicial.png",0);
     textureManager->CreateTexture("../data/start.png",1);
     textureManager->CreateTexture("../data/ranking.png",2);
     textureManager->CreateTexture("../data/sair.png",3);
     textureManager->CreateTexture("../data/1_player.png",4);
     textureManager->CreateTexture("../data/2_players.png",5);
+    textureManager->CreateTexture("../data/line-vertical-dark-point-1600x1200.png",6);
+    textureManager->CreateTexture("../data/background-1409028_1280.png",7);
+    textureManager->CreateTexture("../data/textura-vermelha-do-papel-de-parede_1194-7209.png",8);
+    textureManager->CreateTexture("../data/Verlaeufe-Windows-CE-Hintergrund_600.jpg",9);
+    textureManager->CreateTexture("../data/tapate-Pixel.png",10);
+    textureManager->CreateTexture("../data/depositphotos_69612075-stock-illustration-vector-s.png",11);
+
 
 }
 
