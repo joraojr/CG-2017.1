@@ -28,7 +28,7 @@ float linha = 16;
 int coluna = 3;
 int last_x,last_y;
 float distOrigem = 80;
-float rotationX = 0.0, rotationY = -30.0;
+float rotationX = 0.0, rotationY = -15.0;
 bool timeOn = true,fullScreen = false,shift = false,shiftMouse = false;
 float animationTime = 6.25,animationAux = 6.25,fastSpeed = 0.8;
 float animationSpeed = 20;
@@ -37,7 +37,7 @@ Game* game;
 int height = 680,width = 860;
 int level;
 
-float moveX,moveY,moveZ;
+float moveLightX = 18.0,moveLightY = 75.0,moveLightZ = 20.0;
 
 void timer (int value);
 void displayGame();
@@ -71,7 +71,7 @@ void drawState()
         break;
     case 1:
         glutSetCursor(GLUT_CURSOR_NONE);
-        game->displayGame(width,height,moveX,moveY,shift,typeShift,animationMove,rotationX,rotationY,distOrigem);
+        game->displayGame(width,height,moveX,moveY,shift,typeShift,animationMove,rotationX,rotationY,distOrigem,moveLightX,moveLightY,moveLightZ);
         if(timeOn){
             timer(1);
             timeOn = false;
@@ -91,7 +91,7 @@ void drawState()
         break;
     case 5:
         glutSetCursor(GLUT_CURSOR_NONE);
-        game->displayGame2Players(width,height,moveX,moveY,shift,typeShift,animationMove,moveX2,moveY2,shift2,distOrigem,rotationX,rotationY,animationMove2);
+        game->displayGame2Players(width,height,moveX,moveY,shift,typeShift,animationMove,moveX2,moveY2,shift2,distOrigem,rotationX,rotationY,animationMove2,moveLightX,moveLightY,moveLightZ);
         if(timeOn){
             timer(1);
             timer(2);
@@ -295,6 +295,11 @@ void keyboard(unsigned char key, int x, int y){
         case 'A' ... 'Z':
             if((game->getGameState() == 1 || game->getGameState() == 5) && key == 'p'){
                 game->setPause(!game->getPause());
+                if(game->getPause() == true){
+                    glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+                }else{
+                    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+                }
             }else if(game->getGameState() == 5 && !game->getPause()){
                 if (key == 'w'){
                     shift2 = true;
@@ -338,6 +343,22 @@ void keyboard(unsigned char key, int x, int y){
                 fullScreen = false;
             }
             glutPostRedisplay();
+            break;
+        case '8':
+            if((game->getGameState() == 1 || game->getGameState() == 5) && game->getPause())
+                moveLightY += 0.3;
+            break;
+        case '2':
+            if((game->getGameState() == 1 || game->getGameState() == 5) && game->getPause())
+                moveLightY -= 0.3;
+            break;
+        case '4':
+            if((game->getGameState() == 1 || game->getGameState() == 5) && game->getPause())
+                moveLightX -= 0.3;
+            break;
+        case '6':
+            if((game->getGameState() == 1 || game->getGameState() == 5) && game->getPause())
+                moveLightX += 0.3;
             break;
 
         }
@@ -397,6 +418,14 @@ void specialKey(int key, int x, int y)
     case GLUT_KEY_UP:
         if(!game->getPause())
             shift = true;
+        break;
+    case GLUT_KEY_PAGE_DOWN:
+        if((game->getGameState() == 1 || game->getGameState() == 5) && game->getPause())
+            moveLightZ -= 0.3;
+        break;
+    case GLUT_KEY_PAGE_UP:
+        if((game->getGameState() == 1 || game->getGameState() == 5) && game->getPause())
+            moveLightZ += 0.3;
         break;
 
     default:
@@ -491,6 +520,11 @@ void motion(int x, int y )
     {
         rotationY += (float) (y - last_y);
         rotationX += (float) (x - last_x);
+
+        if(rotationY > -15)
+            rotationY = -15;
+        if(rotationY < -30)
+            rotationY = -30;
 
         last_x = x;
         last_y = y;
