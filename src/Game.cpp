@@ -912,17 +912,17 @@ void Game::drawBorder(){
     drawCylinder(49.0,105.0,0.0,60.0,49.0,60,90);
 }
 
-void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem)
+void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem,float &moveLightX,float &moveLightY,float &moveLightZ)
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);///z-buffer
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if(gameView == 0){
-        glOrtho(-3.0,52.0,-3.0,107.0,-10.0,10.0);
+        glOrtho(-3.0,52.0,-3.0,107.0,-40.0,40.0);
     }else{
-        gluPerspective(60.0, (GLfloat) (width/2)/(GLfloat) height, 1.0, 200.0);
-        gluLookAt (25.0, 40.0, distOrigem, 25.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+        gluPerspective(60.0, (GLfloat) (width/2)/(GLfloat) height, 1, 200.0);
+        gluLookAt (25.0, 40.0, distOrigem, 25.0, 40.0, 0.0, 0.0, 1.0, 0.0);
     }
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -932,31 +932,28 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
 
 
     GLfloat cor0[] = {1.0,1.0,1.0,1.0};
-    GLfloat corAmbient[] = {0.5,0.5,0.5,1.0};
+    GLfloat corAmbient[] = {0.9,0.9,0.9,1.0};
     glEnable(GL_LIGHT0);
     glLightfv(GL_LIGHT0, GL_AMBIENT,corAmbient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, cor0);
     glLightfv(GL_LIGHT0, GL_SPECULAR , cor0);
 
-    float light0_position [3] = {18.0,105.0,1.0};
+    float light0_position [3] = {moveLightX,moveLightY,moveLightZ};
+
+    //cout << light0_position[0] << " " << light0_position[1] << " " << light0_position[2] << " ; " << endl;
     glPushMatrix();
     ///luz mexe junto com a camera
     //glLoadIdentity();
     glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
     glColor3f(1.0, 1.0, 1.0);
-    glutWireSphere(0.05, 10, 10);
+    glutWireSphere(0.50, 20, 20);
     glPopMatrix();
 
-
-    glPushMatrix();
-    if(gameView != 0)
-    {
-        glRotatef( rotationY, 1.0, 0.0, 0.0 );
-        glRotatef( rotationX, 0.0, 1.0, 0.0 );
-    }
     textureManager->Bind(6);
     glPushMatrix();
+        if(gameView == 1)
+            glRotatef( -30, 1.0, 0.0, 0.0 );
         glBegin(GL_QUADS);
             glNormal3f(0.0,0.0,1.0);
             glTexCoord2f(0.0,0.0);
@@ -970,6 +967,14 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
         glEnd();
     glPopMatrix();
     textureManager->Disable();
+
+
+    glPushMatrix();
+    if(gameView != 0)
+    {
+        glRotatef( rotationY, 1.0, 0.0, 0.0 );
+        //glRotatef( rotationX, 0.0, 1.0, 0.0 );
+    }
 
     drawBorder();
     this->drawField(field1,trashReadjust,animationMove,animationOn);
@@ -1001,7 +1006,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glutPostRedisplay();
 }
 
-void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2,float distOrigem,float rotationX, float rotationY,float animationMove2)
+void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2, int moveY2, bool &shift2,float distOrigem,float rotationX, float rotationY,float animationMove2,float &moveLightX,float &moveLightY,float &moveLightZ)
 {
     ///player1
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -1182,7 +1187,7 @@ void Game::initTexture(){
     textureManager->CreateTexture("../data/line-vertical-dark-point-1600x1200.png",6);
     textureManager->CreateTexture("../data/background-1409028_1280.png",7);
     textureManager->CreateTexture("../data/textura-vermelha-do-papel-de-parede_1194-7209.png",8);
-    textureManager->CreateTexture("../data/Verlaeufe-Windows-CE-Hintergrund_600.jpg",9);
+    textureManager->CreateTexture("../data/Verlaeufe-Windows-CE-Hintergrund_600.png",9);
     textureManager->CreateTexture("../data/tapate-Pixel.png",10);
     textureManager->CreateTexture("../data/depositphotos_69612075-stock-illustration-vector-s.png",11);
 
