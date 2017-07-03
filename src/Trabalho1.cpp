@@ -37,7 +37,7 @@ Game* game;
 int height = 680,width = 860;
 int level;
 
-float moveLightX = 18.0,moveLightY = 75.0,moveLightZ = 20.0;
+float moveLightX = 25.0,moveLightY = 53.0,moveLightZ = 60.0;
 
 void timer (int value);
 void displayGame();
@@ -125,8 +125,8 @@ void idle(){
 void init()
 {
     glClearColor(0.0,0.0,0.0,0.0);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
-
+    //glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+    glEnable(GL_NORMALIZE);
     glShadeModel(GL_SMOOTH);
     game->initTexture();
 }

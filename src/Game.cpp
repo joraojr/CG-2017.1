@@ -63,10 +63,7 @@ Game::Game()
     ranking = new Ranking();
     brokenBlocks1 = 0;
     brokenBlocks2 = 0;
-    piece = new Piece(textureManager);
-    piece2 = new Piece(textureManager);
-    nextPiece = new Piece(textureManager);
-    nextPiece2 = new Piece(textureManager);
+
 }
 
 void Game::drawCubeColor(int** field,int i, int j, float positionX, float positionY)
@@ -117,11 +114,11 @@ void Game::drawCubeColor(int** field,int i, int j, float positionX, float positi
     }
 }
 
-void Game::drawField(int ** field,int** trashr,float animationMove, int animation)
+void Game::drawField(int ** field,int** trashr,float animationMove, int animation,int xM)
 {
     if(animation == 0)
     {
-        float x = 0.0;
+        float x = xM;
         float y = 0.0;
         for(int i = 0; i < 15; i++)
         {
@@ -139,12 +136,12 @@ void Game::drawField(int ** field,int** trashr,float animationMove, int animatio
                 x += 7.0;
             }
             y += 7.0;
-            x = 0.0;
+            x = xM;
         }
     }
     else
     {
-        float x = 0.0;
+        float x = xM;
         float y = 0.0;
         for(int i = 0; i < 15; i++)
         {
@@ -169,15 +166,15 @@ void Game::drawField(int ** field,int** trashr,float animationMove, int animatio
                     glColor3f(0.0,0.0,0.3);
                     glBegin(GL_LINE_LOOP);
                     glVertex3f(x,y,0.0);
-                    glVertex3f(x + 7.0,y,0.0);
-                    glVertex3f(x + 7.0,y + 7.0,0.0);
+                    glVertex3f(x + 7.0 ,y,0.0);
+                    glVertex3f(x + 7.0 ,y + 7.0,0.0);
                     glVertex3f(x,y + 7.0,0.0);
                     glEnd();
                 }
                 x += 7.0;
             }
             y += 7.0;
-            x = 0.0;
+            x = xM;
         }
     }
 }
@@ -847,7 +844,7 @@ void Game::drawCylinder(float transX, float transY,float transZ, float scaleX, f
     float a = 0,pi = 3.14, u = 0;
     int numStep = 100;
     int r = 1, h = 1;
-    glColor3f(1.0,0.0,0.0);
+    textureManager->Bind(12);
     glPushMatrix();
         glTranslatef(transX,transY,transZ);
         glRotated(rotation,0.0,0.0,1.0);
@@ -858,9 +855,9 @@ void Game::drawCylinder(float transX, float transY,float transZ, float scaleX, f
             for (int i = 0; i < numStep; i++){
                 glNormal3f(r * cos(a)/180,0.0,r*sin(a)/180);
 
-                //glTexCoord2f(u,0.0);
+                glTexCoord2f(u,0.0);
                 glVertex3f(r * cos(a)/180,0,r*sin(a)/180);
-                //glTexCoord2f(u,1.0);
+                glTexCoord2f(u,1.0);
                 glVertex3f(r * cos(a)/180,h,r*sin(a)/180);
 
                 u += 0.05;
@@ -876,7 +873,7 @@ void Game::drawCylinder(float transX, float transY,float transZ, float scaleX, f
             for (int i = 0; i < numStep; i++){
                 glNormal3f(r * cos(a)/180,-1.0,r*sin(a)/180);
 
-                //glTexCoord2f(u,0.0);
+                glTexCoord2f(u,0.0);
                 glVertex3f(r * cos(a)/180,0,r*sin(a)/180);
 
                 u += 0.05;
@@ -891,7 +888,7 @@ void Game::drawCylinder(float transX, float transY,float transZ, float scaleX, f
             glVertex3f(0.0,h,0.0);
             for (int i = 0; i < numStep; i++){
                 glNormal3f(r * cos(a)/180,1.0,r*sin(a)/180);
-                //glTexCoord2f(u,1.0);
+                glTexCoord2f(u,1.0);
 
                 glVertex3f(r * cos(a)/180,h,r*sin(a)/180);
 
@@ -903,13 +900,14 @@ void Game::drawCylinder(float transX, float transY,float transZ, float scaleX, f
         u = 0;
         glPopMatrix();
     glPopMatrix();
+    textureManager->Disable();
 }
 
-void Game::drawBorder(){
-    drawCylinder(0.0,0.0,0.0,60.0,105.0,60,0.0);
-    drawCylinder(49.0,0.0,0.0,60.0,105.0,60,0.0);
-    drawCylinder(49.0,0.0,0.0,60.0,49.0,60,90);
-    drawCylinder(49.0,105.0,0.0,60.0,49.0,60,90);
+void Game::drawBorder(int x){
+    drawCylinder(0.0 + x,0.0,0.0,60.0,105.0,60,0.0);
+    drawCylinder(49.0 + x,0.0,0.0,60.0,105.0,60,0.0);
+    drawCylinder(49.0 + x,0.0,0.0,60.0,49.0,60,90);
+    drawCylinder(49.0 + x,105.0,0.0,60.0,49.0,60,90);
 }
 
 void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem,float &moveLightX,float &moveLightY,float &moveLightZ)
@@ -919,7 +917,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if(gameView == 0){
-        glOrtho(-3.0,52.0,-3.0,107.0,-40.0,40.0);
+        glOrtho(-3.0,52.0,-3.0,107.0,-90.0,90.0);
     }else{
         gluPerspective(60.0, (GLfloat) (width/2)/(GLfloat) height, 1, 200.0);
         gluLookAt (25.0, 40.0, distOrigem, 25.0, 40.0, 0.0, 0.0, 1.0, 0.0);
@@ -976,8 +974,8 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
         //glRotatef( rotationX, 0.0, 1.0, 0.0 );
     }
 
-    drawBorder();
-    this->drawField(field1,trashReadjust,animationMove,animationOn);
+    drawBorder(0);
+    this->drawField(field1,trashReadjust,animationMove,animationOn,0.0);
     glEnable(GL_LIGHTING);
     this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
@@ -1016,7 +1014,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glEnable(GL_DEPTH_TEST);
     if(gameView == 0)
     {
-        glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
+        glOrtho(-3.0,51.0,-3.0,107.0,-90.0,90.0);
     }
     else
     {
@@ -1034,27 +1032,47 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glLightfv(GL_LIGHT0, GL_DIFFUSE, cor0);
     glLightfv(GL_LIGHT0, GL_SPECULAR , cor0);
 
-    float light0_position [3] = {18.0,105.0,1.0};
+    float light0_position [3] = {moveLightX,moveLightY,moveLightZ};
     glPushMatrix();
     ///luz mexe junto com a camera
     //glLoadIdentity();
     glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
     glColor3f(1.0, 1.0, 1.0);
-    glutWireSphere(0.05, 10, 10);
+    glutWireSphere(0.5, 10, 10);
     glPopMatrix();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.45, (int) height);
 
+    textureManager->Bind(6);
+    glPushMatrix();
+        if(gameView == 1)
+            glRotatef( -30, 1.0, 0.0, 0.0 );
+        glBegin(GL_QUADS);
+            glNormal3f(0.0,0.0,1.0);
+            glTexCoord2f(0.0,0.0);
+            glVertex3f (0.0,-1.0, -10.0);
+            glTexCoord2f(1.0,0.0);
+            glVertex3f (49, -1.0, -10.0);
+            glTexCoord2f(1.0,1.0);
+            glVertex3f (49, 105.0, -1.0);
+            glTexCoord2f(0.0,1.0);
+            glVertex3f (0.0,105.0, -1.0);
+        glEnd();
+    glPopMatrix();
+    textureManager->Disable();
+
+
     glPushMatrix();
     if(gameView != 0)
     {
         glRotatef( rotationY, 1.0, 0.0, 0.0 );
-        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        //glRotatef( rotationX, 0.0, 1.0, 0.0 );
     }
-    this->drawField(this->field1,trashReadjust,animationMove,animationOn);
+    drawBorder(0);
+    this->drawField(this->field1,trashReadjust,animationMove,animationOn,0.0);
     glEnable(GL_LIGHTING);
     this->getPiece()->drawPiece(moveX,moveY);
     glPopMatrix();
@@ -1066,26 +1084,56 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glLoadIdentity();
     if(gameView == 0)
     {
-        glOrtho(-1.0,50.0,-1.0,105.0,-10.0,10.0);
+        glOrtho(52.0,106.0,-3.0,107.0,-90.0,90.0);
     }
     else
     {
         gluPerspective(60.0, (GLfloat) (width/2)/(GLfloat) height, 1.0, 200.0);
-        gluLookAt (25.0, 40.0, distOrigem, 25.0, 35.0, 0.0, 0.0, 1.0, 0.0);
+        gluLookAt (77.0, 40.0, distOrigem, 77.0, 35.0, 0.0, 0.0, 1.0, 0.0);
     }
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) width*0.55, (int) 0, (int) width*0.45 ,(int) height);
+
+    glPushMatrix();
+    ///luz mexe junto com a camera
+    //glLoadIdentity();
+    glTranslatef(light0_position[0], light0_position[1], light0_position[2]);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    glColor3f(1.0, 1.0, 1.0);
+    glutWireSphere(0.5, 10, 10);
+    glPopMatrix();
+
+    textureManager->Bind(6);
+    glPushMatrix();
+        if(gameView == 1)
+            glRotatef( -30, 1.0, 0.0, 0.0 );
+        glBegin(GL_QUADS);
+            glNormal3f(0.0,0.0,1.0);
+            glTexCoord2f(0.0,0.0);
+            glVertex3f (53,-1.0, -10.0);
+            glTexCoord2f(1.0,0.0);
+            glVertex3f (102, -1.0, -10.0);
+            glTexCoord2f(1.0,1.0);
+            glVertex3f (102, 105.0, -1.0);
+            glTexCoord2f(0.0,1.0);
+            glVertex3f (53,105.0, -1.0);
+        glEnd();
+    glPopMatrix();
+    textureManager->Disable();
+
+
     glPushMatrix();
     if(gameView != 0)
     {
         glRotatef( rotationY, 1.0, 0.0, 0.0 );
-        glRotatef( rotationX, 0.0, 1.0, 0.0 );
+        //glRotatef( rotationX, 0.0, 1.0, 0.0 );
     }
-    this->drawField(this->field2,trashReadjust2,animationMove2,animationOn2);
+    drawBorder(54);
+    this->drawField(this->field2,trashReadjust2,animationMove2,animationOn2,54);
     glEnable(GL_LIGHTING);
-    this->getPiece2()->drawPiece(moveX2,moveY2);
+    this->getPiece2()->drawPiece(moveX2 + 53,moveY2);
     glPopMatrix();
 
 
@@ -1190,8 +1238,12 @@ void Game::initTexture(){
     textureManager->CreateTexture("../data/Verlaeufe-Windows-CE-Hintergrund_600.png",9);
     textureManager->CreateTexture("../data/tapate-Pixel.png",10);
     textureManager->CreateTexture("../data/depositphotos_69612075-stock-illustration-vector-s.png",11);
+    textureManager->CreateTexture("../data/madeira.png",12);
 
-
+    piece = new Piece(textureManager);
+    piece2 = new Piece(textureManager);
+    nextPiece = new Piece(textureManager);
+    nextPiece2 = new Piece(textureManager);
 }
 
 void Game::drawStartScreen(int w,int h)
