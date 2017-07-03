@@ -63,11 +63,11 @@ private:
     void clearTrashListAux(int ** trashListAux);///limpa a matriz de coordenadas de blocos
     void copyToTrashListFinal(int** trashListAux, int** trashListFinal, int *trashCount);
     void lineBlock(int player, int trashCount);
-    void drawBorder();
+    void drawBorder(int x);
     void drawCylinder(float transX, float transY,float transZ, float scaleX, float scaleY, float scaleZ,float rotation);
 public:
     Piece* getPiece2();
-    void drawField(int ** field,int** trashr,float animationMove,int animation);
+    void drawField(int ** field,int** trashr,float animationMove,int animation,int x);
     void displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift, float animationMove,float rotationX, float rotationY,float distOrigem,float &moveLightX,float &moveLightY,float &moveLightZ);
     void displayGame2Players(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,int moveX2,int moveY2,bool &shift2,float distOrigem,float rotationX, float rotationY,float animationMove2,float &moveLightX,float &moveLightY,float &moveLightZ);
     void addColor(int ** field,int i, int j, int color);
