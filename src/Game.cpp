@@ -912,11 +912,17 @@ void Game::drawBorder(int x){
 
 void Game::drawFieldBackGround(int x){
 
-    textureManager->Bind(6);
-    GLfloat env_color[4] = {1.0,0.0,0.0,1.0};
+
+    if(getPause())
+    {
+        env_color[0] = env_color[0] +0.01;
+        if(env_color[0] >=1)
+            env_color[0] = 0;
+    }
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, env_color);
 
+    textureManager->Bind(6);
     glPushMatrix();
         if(gameView == 1)
             glRotatef( -30, 1.0, 0.0, 0.0 );
@@ -933,8 +939,9 @@ void Game::drawFieldBackGround(int x){
             glVertex3f (0.0 + x,105.0, -1.0);
         glEnd();
     glPopMatrix();
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     textureManager->Disable();
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
 }
 
 void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem,float &moveLightX,float &moveLightY,float &moveLightZ)
@@ -1163,11 +1170,9 @@ void Game::drawPoints(int w,int h)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-100.0,1100.0,-300,200.0,0.0,10.0);
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) w*0.46, (int) h*0.44, (int) w*0.55, (int) h*0.29);
-
     glColor3f(1,1,1);
     int x  = 100;
     char rankingPoints [] = "POINTS: ";

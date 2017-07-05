@@ -18,7 +18,7 @@ private:
     int** trashReadjust2;
     int** field1;
     int** field2;
-
+    GLfloat env_color[4] = {0.0,0.0,0.0,1.0};
     glcTexture *textureManager;
     int lineblock;
     int lineblock2;
