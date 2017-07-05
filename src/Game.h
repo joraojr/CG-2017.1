@@ -65,6 +65,7 @@ private:
     void lineBlock(int player, int trashCount);
     void drawBorder(int x);
     void drawCylinder(float transX, float transY,float transZ, float scaleX, float scaleY, float scaleZ,float rotation);
+    void drawFieldBackGround(int x);
 public:
     Piece* getPiece2();
     void drawField(int ** field,int** trashr,float animationMove,int animation,int x);

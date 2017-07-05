@@ -910,6 +910,33 @@ void Game::drawBorder(int x){
     drawCylinder(49.0 + x,105.0,0.0,60.0,49.0,60,90);
 }
 
+void Game::drawFieldBackGround(int x){
+
+    textureManager->Bind(6);
+    GLfloat env_color[4] = {1.0,0.0,0.0,1.0};
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+    glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, env_color);
+
+    glPushMatrix();
+        if(gameView == 1)
+            glRotatef( -30, 1.0, 0.0, 0.0 );
+
+        glBegin(GL_QUADS);
+            glNormal3f(0.0,0.0,1.0);
+            glTexCoord2f(0.0,0.0);
+            glVertex3f (0.0 + x,0.0, -10.0);
+            glTexCoord2f(1.0,0.0);
+            glVertex3f (49 + x, 0.0, -10.0);
+            glTexCoord2f(1.0,1.0);
+            glVertex3f (49 + x, 105.0, -1.0);
+            glTexCoord2f(0.0,1.0);
+            glVertex3f (0.0 + x,105.0, -1.0);
+        glEnd();
+    glPopMatrix();
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    textureManager->Disable();
+}
+
 void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem,float &moveLightX,float &moveLightY,float &moveLightZ)
 {
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -948,24 +975,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glutWireSphere(0.50, 20, 20);
     glPopMatrix();
 
-    textureManager->Bind(6);
-    glPushMatrix();
-        if(gameView == 1)
-            glRotatef( -30, 1.0, 0.0, 0.0 );
-        glBegin(GL_QUADS);
-            glNormal3f(0.0,0.0,1.0);
-            glTexCoord2f(0.0,0.0);
-            glVertex3f (0.0,-1.0, -10.0);
-            glTexCoord2f(1.0,0.0);
-            glVertex3f (49, -1.0, -10.0);
-            glTexCoord2f(1.0,1.0);
-            glVertex3f (49, 105.0, -1.0);
-            glTexCoord2f(0.0,1.0);
-            glVertex3f (0.0,105.0, -1.0);
-        glEnd();
-    glPopMatrix();
-    textureManager->Disable();
-
+    drawFieldBackGround(0);
 
     glPushMatrix();
     if(gameView != 0)
@@ -1046,24 +1056,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glLoadIdentity();
     glViewport ((int) 0, (int) 0, (int) width*0.45, (int) height);
 
-    textureManager->Bind(6);
-    glPushMatrix();
-        if(gameView == 1)
-            glRotatef( -30, 1.0, 0.0, 0.0 );
-        glBegin(GL_QUADS);
-            glNormal3f(0.0,0.0,1.0);
-            glTexCoord2f(0.0,0.0);
-            glVertex3f (0.0,-1.0, -10.0);
-            glTexCoord2f(1.0,0.0);
-            glVertex3f (49, -1.0, -10.0);
-            glTexCoord2f(1.0,1.0);
-            glVertex3f (49, 105.0, -1.0);
-            glTexCoord2f(0.0,1.0);
-            glVertex3f (0.0,105.0, -1.0);
-        glEnd();
-    glPopMatrix();
-    textureManager->Disable();
-
+    drawFieldBackGround(0);
 
     glPushMatrix();
     if(gameView != 0)
@@ -1105,23 +1098,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glutWireSphere(0.5, 10, 10);
     glPopMatrix();
 
-    textureManager->Bind(6);
-    glPushMatrix();
-        if(gameView == 1)
-            glRotatef( -30, 1.0, 0.0, 0.0 );
-        glBegin(GL_QUADS);
-            glNormal3f(0.0,0.0,1.0);
-            glTexCoord2f(0.0,0.0);
-            glVertex3f (53,-1.0, -10.0);
-            glTexCoord2f(1.0,0.0);
-            glVertex3f (102, -1.0, -10.0);
-            glTexCoord2f(1.0,1.0);
-            glVertex3f (102, 105.0, -1.0);
-            glTexCoord2f(0.0,1.0);
-            glVertex3f (53,105.0, -1.0);
-        glEnd();
-    glPopMatrix();
-    textureManager->Disable();
+    drawFieldBackGround(53);
 
 
     glPushMatrix();
@@ -1133,7 +1110,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     drawBorder(54);
     this->drawField(this->field2,trashReadjust2,animationMove2,animationOn2,54);
     glEnable(GL_LIGHTING);
-    this->getPiece2()->drawPiece(moveX2 + 53,moveY2);
+    this->getPiece2()->drawPiece(moveX2 + 54,moveY2);
     glPopMatrix();
 
 
@@ -1239,6 +1216,7 @@ void Game::initTexture(){
     textureManager->CreateTexture("../data/tapate-Pixel.png",10);
     textureManager->CreateTexture("../data/depositphotos_69612075-stock-illustration-vector-s.png",11);
     textureManager->CreateTexture("../data/madeira.png",12);
+    textureManager->CreateTexture("../data/paper.png",13);
 
     piece = new Piece(textureManager);
     piece2 = new Piece(textureManager);
