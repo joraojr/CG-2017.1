@@ -103,7 +103,7 @@
 	"Game.h"
 	<time.h>
 
-1498700419 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.cpp
+1499214627 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.cpp
 	"Cube.h"
 	<GL/glui.h>
 	<cstdlib>
@@ -124,14 +124,14 @@
 	"Cube.h"
 	"glcTexture.h"
 
-1499116377 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
+1499217449 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
 	"Game.h"
 	<iostream>
 	<math.h>
 	<chrono>
 	<thread>
 
-1499116401 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
+1499215049 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
 	<GL/glui.h>
 	<GL/glut.h>
 	"Ranking.h"
