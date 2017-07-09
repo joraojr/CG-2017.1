@@ -66,6 +66,8 @@ private:
     void drawBorder(int x);
     void drawCylinder(float transX, float transY,float transZ, float scaleX, float scaleY, float scaleZ,float rotation);
     void drawFieldBackGround(int x);
+    void drawMainViewport(int width, int height);
+    void drawAuxViewport(int width,int height,float rotation);
 public:
     Piece* getPiece2();
     void drawField(int ** field,int** trashr,float animationMove,int animation,int x);

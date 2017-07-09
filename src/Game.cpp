@@ -904,10 +904,10 @@ void Game::drawCylinder(float transX, float transY,float transZ, float scaleX, f
 }
 
 void Game::drawBorder(int x){
-    drawCylinder(0.0 + x,0.0,0.0,60.0,105.0,60,0.0);
-    drawCylinder(49.0 + x,0.0,0.0,60.0,105.0,60,0.0);
-    drawCylinder(49.0 + x,0.0,0.0,60.0,49.0,60,90);
-    drawCylinder(49.0 + x,105.0,0.0,60.0,49.0,60,90);
+    drawCylinder(0.0 + x,0.0,0.0,80.0,105.0,60,0.0);
+    drawCylinder(49.0 + x,0.0,0.0,80.0,105.0,60,0.0);
+    drawCylinder(49.0 + x,0.0,0.0,80.0,49.0,60,90);
+    drawCylinder(49.0 + x,105.0,0.0,80.0,49.0,60,90);
 }
 
 void Game::drawFieldBackGround(int x){
@@ -930,18 +930,58 @@ void Game::drawFieldBackGround(int x){
         glBegin(GL_QUADS);
             glNormal3f(0.0,0.0,1.0);
             glTexCoord2f(0.0,0.0);
-            glVertex3f (0.0 + x,0.0, -10.0);
+            glVertex3f (-5 + x,-5.0, -10.0);
             glTexCoord2f(1.0,0.0);
-            glVertex3f (49 + x, 0.0, -10.0);
+            glVertex3f (53 + x, -5.0, -10.0);
             glTexCoord2f(1.0,1.0);
-            glVertex3f (49 + x, 105.0, -1.0);
+            glVertex3f (53 + x, 108.0, -10.0);
             glTexCoord2f(0.0,1.0);
-            glVertex3f (0.0 + x,105.0, -1.0);
+            glVertex3f (-5.0 + x,108.0, -10.0);
         glEnd();
     glPopMatrix();
     textureManager->Disable();
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
+}
+
+
+
+void Game::drawMainViewport(int width, int height){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(200,300,200,300,-90.0,90.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) width*0.55, (int) 0, (int) width*0.45, (int) height);
+
+    textureManager->Bind(14);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
+    glPushMatrix();
+        glBegin(GL_QUADS);
+            glNormal3f(0.0,0.0,1.0);
+            glTexCoord2f(0.0,0.0);
+            glVertex3f (200,200, -50.0);
+            glTexCoord2f(1.0,0.0);
+            glVertex3f (300, 200.0, -50.0);
+            glTexCoord2f(1.0,1.0);
+            glVertex3f (300, 300, -50.0);
+            glTexCoord2f(0.0,1.0);
+            glVertex3f (200,300, -50.0);
+        glEnd();
+    glPopMatrix();
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(20.0,55.0,20,60.0,-10.0,10.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glViewport ((int) width*0.79, (int) height*0.71, (int) width*0.21, (int) height*0.29);
+
+    this->getNextPiece()->drawPiece(0,-80);
+
+    glDisable(GL_LIGHTING);
+    this->drawPoints(width,height);
 }
 
 void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift, int typeShift,float animationMove,float rotationX, float rotationY,float distOrigem,float &moveLightX,float &moveLightY,float &moveLightZ)
@@ -998,7 +1038,7 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glPopMatrix();
 
 
-
+    /*
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(20.0,55.0,20,60.0,-10.0,10.0);
@@ -1006,10 +1046,12 @@ void Game::displayGame(int width, int height, int moveX, int moveY, bool &shift,
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport ((int) width*0.79, (int) height*0.71, (int) width*0.21, (int) height*0.29);
-    this->getNextPiece()->drawPiece(0,-80);
+    //this->getNextPiece()->drawPiece(0,-80);
 
-    glDisable(GL_LIGHTING);
-    this->drawPoints(width,height);
+    //glDisable(GL_LIGHTING);
+    //this->drawPoints(width,height);
+    */
+    drawMainViewport(width,height);
     if(shift)
     {
         if(typeShift == 0)
@@ -1105,7 +1147,7 @@ void Game::displayGame2Players(int width, int height, int moveX, int moveY, bool
     glutWireSphere(0.5, 10, 10);
     glPopMatrix();
 
-    drawFieldBackGround(53);
+    drawFieldBackGround(54);
 
 
     glPushMatrix();
@@ -1207,21 +1249,22 @@ void Game::drawPoints(int w,int h)
 
 void Game::initTexture(){
     textureManager = new glcTexture();
-    textureManager->SetNumberOfTextures(12);
+    textureManager->SetNumberOfTextures(15);
     textureManager->CreateTexture("../data/telaInicial.png",0);
     textureManager->CreateTexture("../data/start.png",1);
     textureManager->CreateTexture("../data/ranking.png",2);
     textureManager->CreateTexture("../data/sair.png",3);
     textureManager->CreateTexture("../data/1_player.png",4);
     textureManager->CreateTexture("../data/2_players.png",5);
-    textureManager->CreateTexture("../data/line-vertical-dark-point-1600x1200.png",6);
+    textureManager->CreateTexture("../data/teste-padr_C3_A3o-geom_C3_A9trico-azul-abstrato-se.png",6);
     textureManager->CreateTexture("../data/background-1409028_1280.png",7);
     textureManager->CreateTexture("../data/textura-vermelha-do-papel-de-parede_1194-7209.png",8);
     textureManager->CreateTexture("../data/Verlaeufe-Windows-CE-Hintergrund_600.png",9);
     textureManager->CreateTexture("../data/tapate-Pixel.png",10);
-    textureManager->CreateTexture("../data/depositphotos_69612075-stock-illustration-vector-s.png",11);
+    textureManager->CreateTexture("../data/fishermen.png",11);
     textureManager->CreateTexture("../data/madeira.png",12);
     textureManager->CreateTexture("../data/paper.png",13);
+    textureManager->CreateTexture("../data/line-vertical-dark-point-1600x1200.png",14);
 
     piece = new Piece(textureManager);
     piece2 = new Piece(textureManager);

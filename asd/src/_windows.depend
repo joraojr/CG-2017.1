@@ -1,0 +1,327 @@
+# depslib dependency file v1.0
+1491401794 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\singlebuffer.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<math.h>
+	<iostream>
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\glut.h
+	"freeglut_std.h"
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\glui.h
+	<GL/freeglut.h>
+	<GL/openglut.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdlib>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\gl\freeglut_ext.h
+	<stdarg.h>
+
+1491405424 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\singlebuffer.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<math.h>
+	<iostream>
+
+1491011726 c:\users\jorgo\onedrive\documents\github\cg-2017.1\include\gl\glut.h
+	"freeglut_std.h"
+
+1491011726 c:\users\jorgo\onedrive\documents\github\cg-2017.1\include\gl\freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1491011726 c:\users\jorgo\onedrive\documents\github\cg-2017.1\include\gl\glui.h
+	<GL/freeglut.h>
+	<GL/openglut.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdlib>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1491011726 c:\users\jorgo\onedrive\documents\github\cg-2017.1\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1491011726 c:\users\jorgo\onedrive\documents\github\cg-2017.1\include\gl\freeglut_ext.h
+	<stdarg.h>
+
+1491019596 source:c:\users\jorgo\downloads\cg\cg\src\gluiexample.cpp
+
+1491075436 source:c:\users\jorgo\downloads\glui_examples\example2.cpp
+
+1492380795 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\gluiexample.cpp
+
+1492205378 source:c:\users\jorgo\downloads\cg\04_mousekeyboard.cpp
+
+1491413251 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento1.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<math.h>
+	<iostream>
+
+1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\cube.cpp
+	"Cube.h"
+
+1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\game.cpp
+	"Game.h"
+
+1492177298 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\src\piece.cpp
+	"Piece.h"
+
+1499116443 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\trabalho1.cpp
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Piece.h"
+	"Game.h"
+	<time.h>
+
+1499214627 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.cpp
+	"Cube.h"
+	<GL/glui.h>
+	<cstdlib>
+	<iostream>
+	<time.h>
+	<math.h>
+
+1498700419 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\cube.h
+	"glm.h"
+	"glcTexture.h"
+
+1498700419 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.cpp
+	"Piece.h"
+	<GL/glut.h>
+	<ctime>
+
+1498700419 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\piece.h
+	"Cube.h"
+	"glcTexture.h"
+
+1499217449 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.cpp
+	"Game.h"
+	<iostream>
+	<math.h>
+	<chrono>
+	<thread>
+
+1499215049 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\game.h
+	<GL/glui.h>
+	<GL/glut.h>
+	"Ranking.h"
+	"Piece.h"
+	"glcTexture.h"
+
+1492622599 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\trabalho1.cpp
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Piece.h"
+	"Game.h"
+	<time.h>
+
+1492624902 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.h
+	"Cube.h"
+
+1492624616 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\cube.h
+
+1492363153 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\cube.cpp
+	"Cube.h"
+	<GL/glui.h>
+	<cstdlib>
+	<iostream>
+	<time.h>
+
+1492578697 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.cpp
+	"Game.h"
+	<iostream>
+
+1492626502 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\game.h
+	<GL/glui.h>
+	<GL/glut.h>
+	"Ranking.h"
+	"Piece.h"
+
+1492363153 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\piece.cpp
+	"Piece.h"
+	<GL/glut.h>
+	<ctime>
+
+1492370874 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\01_quad.cpp
+	<windows.h>
+	<GL/glut.h>
+
+1492373753 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\desenvolvimento1.cpp
+
+1492454550 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\src\startscreen.cpp
+	"StartScreen.h"
+	<GL/glut.h>
+
+1492454624 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\include\startscreen.h
+
+1492492552 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\src\ranking.cpp
+	"Ranking.h"
+
+1492491887 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\include\ranking.h
+	<fstream>
+	<string.h>
+	<stdio.h>
+	<GL/glut.h>
+
+1495417357 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\ranking.h
+	<fstream>
+	<string.h>
+	<stdio.h>
+	<GL/glut.h>
+
+1495430380 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\ranking.cpp
+	"Ranking.h"
+	<iostream>
+
+1492626428 c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\ranking.h
+	<fstream>
+	<string.h>
+	<stdio.h>
+	<GL/glut.h>
+
+1492575718 source:c:\users\jorgo\onedrive\documents\github\cg-2017.1\src\ranking.cpp
+	"Ranking.h"
+	<iostream>
+
+1494609979 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\desenvolvimento2.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Scene.h"
+
+1494610416 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Scene.h"
+
+1494598571 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\scene.h
+	"glm.h"
+
+1494002059 source:/home/joraojr/Documentos/CG-2017.1/src/Scene.cpp
+	<stdio.h>
+	<GL/glut.h>
+	<GL/glui.h>
+	<iostream>
+	"Scene.h"
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/glut.h
+	"freeglut_std.h"
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/freeglut_std.h
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/glui.h
+	<GL/freeglut.h>
+	<GL/openglut.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<cstdlib>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/include/GL/freeglut_ext.h
+	<stdarg.h>
+
+1494002059 /home/joraojr/Documentos/CG-2017.1/src/Scene.h
+
+1494184412 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\glm.h
+	<GL/glut.h>
+
+1470260062 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\glm.cpp
+	<math.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	"glm.h"
+
+1467836884 d:\users\lucas\downloads\cg\d1\cg-2017.1\src\glctexture.h
+	<string>
+
+1467836864 source:d:\users\lucas\downloads\cg\d1\cg-2017.1\src\glctexture.cpp
+	<string>
+	<stdio.h>
+	<malloc.h>
+	"GL/glut.h"
+	"png.h"
+	"glcTexture.h"
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\png\png.h
+	"zlib.h"
+	"pngconf.h"
+	<crtdbg.h>
+
+1490749185 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\zlib\zlib.h
+	"zconf.h"
+
+1490749185 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\zlib\zconf.h
+	<windows.h>
+	<sys/types.h>
+	<unistd.h>
+	<unixio.h>
+
+1490749184 d:\users\lucas\downloads\cg\d1\cg-2017.1\include\png\pngconf.h
+	"pngusr.h"
+	"config.h"
+	<windows.h>
+	<stdio.h>
+	<stdio.h>
+	<sys/types.h>
+	<setjmp.h>
+	<strings.h>
+	<string.h>
+	<stdlib.h>
+	<fp.h>
+	<math.h>
+	<m68881.h>
+	<mem.h>
+	<alloc.h>
+	<malloc.h>
+	<time.h>
+	<dos.h>
+

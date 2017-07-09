@@ -3,7 +3,7 @@
 #include "Cube.h"
 #include "glcTexture.h"
 
-class Piece{
+lass Piece{
     private:
         Cube* c[3];///vetor de cubos para gerar a peça com 3 cores
     public:
